@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Passable
+  - Impassable
+  - Tree
+  - Character
+  - Tile
+  - Item
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Tiles
+  - Trees
+  - Items
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Tiles
+    uniqueID: 1670333077
+    locked: 0
+  - name: Trees
+    uniqueID: 4174268409
+    locked: 0
+  - name: Selector
+    uniqueID: 837447279
+    locked: 0
+  - name: Characters
+    uniqueID: 4227036153
+    locked: 0
+  - name: Items
+    uniqueID: 3555764839
+    locked: 0
+  - name: Walls
+    uniqueID: 3457563437
+    locked: 0
+  - name: UI
+    uniqueID: 2012738053
+    locked: 0
