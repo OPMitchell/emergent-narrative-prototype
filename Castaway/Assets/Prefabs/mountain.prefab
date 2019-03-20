@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4941366781169726}
   - component: {fileID: 212840537406384564}
+  - component: {fileID: 114153132528071488}
   - component: {fileID: 114797742488540672}
   - component: {fileID: 61430379411972068}
   - component: {fileID: 114064803512309386}
@@ -80,6 +81,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Passable: 0
+--- !u!114 &114153132528071488
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1757108356309452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcc054ce3f3925243b3db34ea8c331c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selected: {fileID: 1905393516796246, guid: c2482316bf3038241af944ff796ede8f, type: 2}
+  selected2: {fileID: 1525460179248890, guid: 45275e0442d352743b5b7497c90384d9, type: 2}
 --- !u!114 &114797742488540672
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -91,6 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6442da5dce8a1e14ab0652c34c267e05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item: {fileID: 0}
   Type: 3
 --- !u!212 &212840537406384564
 SpriteRenderer:

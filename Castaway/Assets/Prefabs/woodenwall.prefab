@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4887326352979582}
   - component: {fileID: 212609024113665770}
+  - component: {fileID: 114705579761664834}
   - component: {fileID: 114409336607630072}
   m_Layer: 10
   m_Name: woodenwall
@@ -58,6 +59,19 @@ MonoBehaviour:
   requiredResource: 2
   resourceCost: 1
   passable: 0
+--- !u!114 &114705579761664834
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1153389228776278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcc054ce3f3925243b3db34ea8c331c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selected: {fileID: 1905393516796246, guid: c2482316bf3038241af944ff796ede8f, type: 2}
+  selected2: {fileID: 1525460179248890, guid: 45275e0442d352743b5b7497c90384d9, type: 2}
 --- !u!212 &212609024113665770
 SpriteRenderer:
   m_ObjectHideFlags: 1

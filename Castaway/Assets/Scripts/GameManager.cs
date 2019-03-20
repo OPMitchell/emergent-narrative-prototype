@@ -21,16 +21,6 @@ public class GameManager : MonoBehaviour
 		foreach(GameObject tile in Map)
 		{
 			tile.GetComponent<MouseOver>().ClearSelection();
-			tile.GetComponent<Node>().Selected = false;
-		}
-	}
-
-	public void SetSelected(GameObject t)
-	{
-		foreach(GameObject tile in Map)
-		{
-			if(tile == t)
-				tile.GetComponent<Node>().Selected = true;
 		}
 	}
 
@@ -65,14 +55,13 @@ public class GameManager : MonoBehaviour
 	public List<GameObject> GetItemsOutsideStockpile()
 	{
 		List<GameObject> items = new List<GameObject>();
-		foreach(GameObject item in GameObject.FindGameObjectsWithTag("Item"))
+		foreach(GameObject t in Map)
 		{
-			if(item.GetComponent<Item>().IsStockpilable())
+			Tile tile = t.GetComponent<Tile>();
+			if(tile.item != null && tile.item.tag == "Item" && tile.zone != Zone.Stockpile)
 			{
-				if(item.GetComponent<Item>().Parent.GetComponent<Tile>().zone != Zone.Stockpile)
-					items.Add(item);
+				items.Add(tile.item);
 			}
-
 		}
 		return items;
 	}
@@ -80,11 +69,12 @@ public class GameManager : MonoBehaviour
 	public List<GameObject> GetEmptyStockpileTiles()
 	{
 		List<GameObject> tiles = new List<GameObject>();
-		foreach(GameObject tile in GameObject.FindGameObjectsWithTag("Tile"))
+		foreach(GameObject t in Map)
 		{
-			if(tile.GetComponent<Tile>().zone == Zone.Stockpile && tile.GetComponent<Tile>().item == null)
+			Tile tile = t.GetComponent<Tile>();
+			if(tile.zone == Zone.Stockpile && tile.item == null)
 			{
-				tiles.Add(tile);
+				tiles.Add(t);
 			}
 		}
 		return tiles;
@@ -93,13 +83,54 @@ public class GameManager : MonoBehaviour
 	public List<GameObject> GetTaggedBuildingTiles()
 	{
 		List<GameObject> tiles = new List<GameObject>();
-		foreach(GameObject tile in GameObject.FindGameObjectsWithTag("Tile"))
+		foreach(GameObject t in Map)
 		{
-			if(tile.GetComponent<Tile>().tag == Tag.Build && tile.GetComponent<Tile>().item == null)
+			Tile tile = t.GetComponent<Tile>();
+			if(tile.tag == Tag.Build && tile.item == null)
 			{
-				tiles.Add(tile);
+				tiles.Add(t);
 			}
 		}
-		return tiles;
+		return tiles;	
+	}
+
+	public List<GameObject> GetItemsOfResource(Resource r)
+	{
+		List<GameObject> items = new List<GameObject>();
+		foreach(GameObject t in Map)
+		{
+			Tile tile = t.GetComponent<Tile>();
+			if(tile.zone == Zone.Stockpile && tile.item != null && tile.item.GetComponent<Item>().resource == r)
+			{
+				items.Add(tile.item);
+			}
+		}
+		return items;	
+	}
+
+	public GameObject GetPassableNeighbourTile(Tile rootTile)
+	{
+		int rX = rootTile.X;
+		int rY = rootTile.Y;
+
+		for(int x = -1; x < 2; x++)
+		{
+			for(int y = -1; y < 2; y++)
+			{
+				if(x != 0 && y != 0 || x == 0 && y == 0)
+					continue;
+				int nX = rX + x;
+				int nY = rY + y;
+				if(nX >= 0 && nX < Map.GetLength(0) && nY >= 0 && nY < Map.GetLength(1))
+				{
+					Node neighbourTile = Map[nX, nY].GetComponent<Node>();
+					if(neighbourTile.IsPassable())
+					{
+						return Map[nX, nY];
+					}
+				}
+			}
+		}
+		return null;
 	}
 }

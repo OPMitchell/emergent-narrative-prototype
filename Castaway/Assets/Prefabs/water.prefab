@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4058955549310482}
   - component: {fileID: 212855749561113580}
+  - component: {fileID: 114014603414169868}
   - component: {fileID: 114576565254205862}
   - component: {fileID: 61996188801147924}
   - component: {fileID: 114654130987175804}
@@ -68,6 +69,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
+--- !u!114 &114014603414169868
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1381448008992974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcc054ce3f3925243b3db34ea8c331c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selected: {fileID: 1905393516796246, guid: c2482316bf3038241af944ff796ede8f, type: 2}
+  selected2: {fileID: 1525460179248890, guid: 45275e0442d352743b5b7497c90384d9, type: 2}
 --- !u!114 &114576565254205862
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -79,7 +93,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6442da5dce8a1e14ab0652c34c267e05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: Water
+  item: {fileID: 0}
+  Type: 0
 --- !u!114 &114654130987175804
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -91,6 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71e24a15fb350a147b1be73317c0c7be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Passable: 0
 --- !u!212 &212855749561113580
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -9,7 +9,6 @@ public class MouseOver : MonoBehaviour
 	private GameObject selectedRef;
 
     private GameManager manager;
-    private bool mouseOver = false;
 
     void Start()
     {
@@ -26,12 +25,16 @@ public class MouseOver : MonoBehaviour
 
     void OnMouseOver()
     {
-        if(manager.mouseDown)
+        if(!manager.mouseDown)
         {
-            manager.SetSelected(gameObject);
             ClearSelection();
-            selectedRef = Instantiate(selected2, transform.position, Quaternion.identity);
+            selectedRef = Instantiate(selected, transform.position, Quaternion.identity);
         }
+    }
+
+    void OnMouseExit()
+    {
+        ClearSelection();
     }
 
     void OnMouseUp()

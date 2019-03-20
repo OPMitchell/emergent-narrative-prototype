@@ -11,6 +11,11 @@ public class Item : MonoBehaviour
 	
 	public bool InStockpile{get;set;}
 
+	void Awake()
+	{
+		_lock = null;
+	}
+	
 	public bool IsStockpilable()
 	{
 		return isStockpilable;

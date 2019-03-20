@@ -17,7 +17,6 @@ using UnityEngine;
 		public int Y {get;set;}
 		[SerializeField] private bool Passable;
 		public Node Parent {get; set;}
-		public bool Selected {get;set;}
 
 		public Node(int x, int y, bool passable)
 		{
@@ -26,7 +25,6 @@ using UnityEngine;
 			X = x;
 			Y = y;
 			Passable = passable;
-			Selected = false;
 		}
 
 		public bool IsPassable()

@@ -69,6 +69,12 @@ public class Character : MonoBehaviour
 		}
 	}
 
+	public void DestroyItem()
+	{
+		Destroy(heldItem);
+		heldItem = null;
+	}
+
 	void SpawnAtRandomPos()
 	{
 		Random.InitState((int)Time.time);

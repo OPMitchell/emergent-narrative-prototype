@@ -30,7 +30,7 @@ public class ActionQueue : EventPriorityQueue
 
     private IEnumerator Execute(Action action)
     {
-        Debug.Log("Now executing: " + action.Target + " - " + action.Type);
+        Debug.Log(transform.name + " now executing: " + action.Target + " - " + action.Type);
         StartCoroutine(GetComponent<ActionExecutor>().ExecuteAction(action));
         yield return new WaitUntil(() => !GetComponent<ActionExecutor>().Executing);
         Debug.Log("Finished executing");
