@@ -69,84 +69,93 @@ public class Tile : MonoBehaviour
 	{
 		if(clickController.currentClickAction == ClickAction.Zone_Stockpile)
 		{
-			ToggleZone(Zone.Stockpile);
+			if(zone == Zone.None)
+				SetZone(Zone.Stockpile);
+			else
+				ClearZone();
 		}
 		else if(clickController.currentClickAction == ClickAction.Cut)
 		{
 			if(item != null && item.tag == "Tree")
-				ToggleTagged(Tag.Cut);
+				if(tag == Tag.None)
+					SetTag(Tag.Cut);
+				else
+					ClearTag();
 		}
 		else if(clickController.currentClickAction == ClickAction.Build)
 		{
 			if(item == null)
 			{
 				if(zone == Zone.Stockpile)
-					Unzone();
-				else
+					ClearZone();
+				GameObject item = ui.currentButton.GetComponent<BuildableItemButton>().buildableItem;
+				if(buildManager.CanBuild(item))
 				{
-					GameObject item = ui.currentButton.GetComponent<BuildableItemButton>().buildableItem;
-					if(buildManager.CanBuild(item))
-					{
-						toBuild = item;
-						ToggleTagged(Tag.Build);
-					}
+					toBuild = item;
+					if(tag == Tag.None)
+						SetTag(Tag.Build);
+					else
+						ClearTag();
 				}
 			}
 		}
 	}
 
-	public void DisabledTagged()
+	public void ClearTag()
 	{
 		tag = Tag.None;
+		//ColorItem();
+		ColorTile();
+		ColorZone();
+	}
+
+	public void SetTag(Tag t)
+	{
+		tag = t;
+		//ColorItem();
+		ColorTile();
+	}
+
+	private void ColorItem()
+	{
 		if(item != null)
 		{
-			item.GetComponent<SpriteRenderer>().color = new Color(0, 0.5f, 0, 1);
+			if(tag == Tag.None)
+				item.GetComponent<SpriteRenderer>().color = Color.white;
+			else
+				item.GetComponent<SpriteRenderer>().color = Color.red;
 		}
 	}
 
-	public void ToggleTagged(Tag t)
+	private void ColorTile()
 	{
-		if(tag != t)
-			tag = t;
+		if(tag == Tag.None)
+			GetComponent<SpriteRenderer>().color = Color.white;
 		else
-			tag = Tag.None;
-		if(item != null)
-			ColorItem(t);
+			GetComponent<SpriteRenderer>().color = Color.red;
 	}
 
-	private void ColorItem(Tag t)
+	private void ColorZone()
 	{
-		if(tag == t)
-			item.GetComponent<SpriteRenderer>().color = Color.red;
-		else if (tag == Tag.None)
-			item.GetComponent<SpriteRenderer>().color = Color.white;
+		if(zone == Zone.None)
+			GetComponent<SpriteRenderer>().color = Color.white;
+		else
+			GetComponent<SpriteRenderer>().color = Color.blue;
 	}
 
-	void ToggleZone(Zone zoneType)
+	void SetZone(Zone z)
 	{
 		if(node.IsPassable())
 		{
-			if(zone != zoneType)
-			{
-				zone = zoneType;
-				Color stockpileColor = Color.red;
-				stockpileColor.a = 0.333f;
-				GetComponent<SpriteRenderer>().color = stockpileColor;
-				//ToggleTagged();
-			}
-			else
-			{
-				zone = Zone.None;
-				Color stockpileColor = Color.white;
-				GetComponent<SpriteRenderer>().color = stockpileColor;
-				//ToggleTagged();
-			}
+			zone = z;
+			ColorZone();
 		}
 	}
 
-	void Unzone()
+	void ClearZone()
 	{
 		zone = Zone.None;
+		ColorZone();
 	}
 
 	public bool Free(GameObject owner)

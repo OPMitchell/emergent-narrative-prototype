@@ -32,10 +32,10 @@ public class ActionExecutor : MonoBehaviour
             {
                 character.WalkToCoordinates(tile.X, tile.Y);
                 yield return new WaitUntil(() => (character.cX == tile.X && character.cY == tile.Y));
-                tile.DisabledTagged();
                 yield return new WaitForSeconds(1.0f);
                 Destroy(tile.item);
                 tile.item = null;
+                tile.ClearTag();
                 GameObject logs = Instantiate(items.logs, action.TargetGameObject.GetComponent<Renderer>().bounds.center, Quaternion.identity);
                 logs.name = "Logs" + " ("+ tile.X +"," + tile.Y + ")";
                 tile.AddItem(logs);
@@ -112,7 +112,7 @@ public class ActionExecutor : MonoBehaviour
                 buildManager.Build(action.TargetGameObject, tile.toBuild);
                 action.Status = Status.Successful;
                 tile.Free(gameObject);
-                tile.ToggleTagged(tile.tag);
+                tile.ClearTag();
             }
             else
             {

@@ -33,7 +33,5 @@ public class BuildManager : MonoBehaviour
 		Instantiate(item, t.GetComponent<Renderer>().bounds.center, Quaternion.identity);
 		if(!build.passable)
 			t.GetComponent<Node>().SetPassable(false);
-
-
 	}
 }
