@@ -10,9 +10,11 @@ public class ActionExecutor : MonoBehaviour
     private ItemManager items;
     private ResourceManager resources;
     private BuildManager buildManager;
+	private System.Random rnd;
 
     void Start()
     {
+        rnd = new System.Random();
         character = GetComponent<Character>();
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
         items = GameObject.Find("GameManager").GetComponent<ItemManager>();
@@ -32,7 +34,8 @@ public class ActionExecutor : MonoBehaviour
                 yield return new WaitUntil(() => (character.cX == tile.X && character.cY == tile.Y));
                 tile.DisabledTagged();
                 yield return new WaitForSeconds(1.0f);
-                tile.DeleteItem();
+                Destroy(tile.item);
+                tile.item = null;
                 GameObject logs = Instantiate(items.logs, action.TargetGameObject.GetComponent<Renderer>().bounds.center, Quaternion.identity);
                 logs.name = "Logs" + " ("+ tile.X +"," + tile.Y + ")";
                 tile.AddItem(logs);
@@ -54,9 +57,18 @@ public class ActionExecutor : MonoBehaviour
                 List<GameObject> emptyTiles = manager.GetEmptyStockpileTiles();
                 if(emptyTiles.Count > 0)
                 {
-                    Tile target = emptyTiles[Random.Range(0, emptyTiles.Count -1)].GetComponent<Tile>();
-                    if(target.GetLock(gameObject))
+                    bool a = false;
+                    Tile target = null;
+                    for(int i = 0; i < emptyTiles.Count; i++)
                     {
+                        target = emptyTiles[i].GetComponent<Tile>();
+                        a = target.GetLock(gameObject);
+                        if(a)
+                            break;
+                    }
+                    if(a)
+                    {
+                        target.GetLock(gameObject);
                         Tile parent = item.Parent.GetComponent<Tile>();
                         character.WalkToCoordinates(parent.X, parent.Y);
                         yield return new WaitUntil(() => (character.cX == parent.X && character.cY == parent.Y));
@@ -70,13 +82,9 @@ public class ActionExecutor : MonoBehaviour
                     }
                     else
                     {
-                        action.Status = Status.Failed;
+                         action.Status = Status.Failed;
+                         Debug.Log(transform.name + " couldn't find a free stockpile tile to haul item: " + item.name);
                     }
-
-                }
-                else
-                {
-                    action.Status = Status.Failed;
                 }
             }
             else

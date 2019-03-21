@@ -17,18 +17,19 @@ public class HaulingController : MonoBehaviour
 		manager = GameObject.Find("GameManager").GetComponent<GameManager>();
 		character = GetComponent<Character>();
 		actionQueue = GetComponent<ActionQueue>();	
-		currentAction = character.currentAction;
+		currentAction = null;
 	}
 	
 	void Update() 
 	{
+		//If we already have an action on the go that hasn't finished then return
+		if(currentAction != null && currentAction.Status == Status.Sent)
+		{
+			return;
+		}
 		List<GameObject> tiles = manager.GetEmptyStockpileTiles();
 		if(tiles.Count > 0)
 		{
-			if(currentAction != null && currentAction.Status == Status.Sent)
-			{
-				return;
-			}
 			foreach(GameObject item in manager.GetItemsOutsideStockpile())
 			{
 				if(item.GetComponent<Item>().GetLock(gameObject))

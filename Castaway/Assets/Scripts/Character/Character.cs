@@ -11,8 +11,8 @@ public class Character : MonoBehaviour
 	private GameObject[,] map;
 	private GameManager manager;
 	private UIManager ui;
-	public GameObject heldItem;
-	public Action currentAction;	
+	public GameObject heldItem;	
+	private System.Random rnd;
 
 	private Coroutine currentActionCoroutine;
 
@@ -22,7 +22,7 @@ public class Character : MonoBehaviour
 		manager = GameObject.Find("GameManager").GetComponent<GameManager>();
 		ui = GameObject.Find("GameManager").GetComponent<UIManager>();
 		map = manager.Map;
-		currentAction = null;
+		rnd = new System.Random();
 		SpawnAtRandomPos();
 	}
 
@@ -40,18 +40,16 @@ public class Character : MonoBehaviour
 			if(heldItem == null)
 			{
 				string name = tile.item.name;
-				heldItem = Instantiate(tile.item);
-				tile.DeleteItem();
-				heldItem.name = name;
+				heldItem = GameObject.Find(name);
+				tile.item = null;
 			}
 			else
 			{
 				string name = tile.item.name;
 				GameObject temp = heldItem;
-				heldItem = Instantiate(tile.item);
-				tile.DeleteItem();
+				heldItem = GameObject.Find(name);
+				tile.item = null;
 				tile.AddItem(temp);
-				heldItem.name = name;
 			}
 		}
 	}
@@ -61,11 +59,10 @@ public class Character : MonoBehaviour
 		if(tile.item == null && heldItem != null && AtPosition(tile.X, tile.Y))
 		{
 			string name = heldItem.name;
-			GameObject droppedItem = Instantiate(heldItem);
+			GameObject droppedItem = heldItem;
 			tile.GetComponent<Tile>().AddItem(droppedItem);
-			Destroy(heldItem);
 			heldItem = null;
-			droppedItem.name = name;
+			droppedItem.name = ReplaceCoordinates(droppedItem.name, tile.X, tile.Y);
 		}
 	}
 
@@ -77,11 +74,10 @@ public class Character : MonoBehaviour
 
 	void SpawnAtRandomPos()
 	{
-		Random.InitState((int)Time.time);
 		do
 		{
-			cX = Random.Range(0, map.GetLength(0)-1);
-			cY = Random.Range(0, map.GetLength(1)-1);
+			cX = rnd.Next(0, map.GetLength(0)-1);
+			cY = rnd.Next(0, map.GetLength(1)-1);
 		} while (!map[cX,cY].GetComponent<Node>().IsPassable());
 		transform.position = map[cX,cY].transform.position;
 		Debug.Log(gameObject.name + " spawned at (" + cX + "," + cY +")");
@@ -91,8 +87,6 @@ public class Character : MonoBehaviour
 	{
 		if(AtPosition(x,y))
 			return;
-		if(currentAction != null)
-			StopCoroutine(currentActionCoroutine);
 		Debug.Log("Moving " + Name + " to (" + x + "," + y +")");
 		List<Node> path = FindPathToTarget(x, y);
 		currentActionCoroutine = StartCoroutine(FollowPath(path));
@@ -138,5 +132,14 @@ public class Character : MonoBehaviour
 	void OnMouseDown()
 	{
 		//ui.ShowCharacterPanel();
+	}
+
+	private string ReplaceCoordinates(string s, int x, int y)
+	{
+		int start = s.IndexOf("(");
+		int end = s.IndexOf(")");
+		string result = s.Substring(start+1, end - start - 1);
+		s = s.Replace(result, x + "," + y);
+		return s;
 	}
 }

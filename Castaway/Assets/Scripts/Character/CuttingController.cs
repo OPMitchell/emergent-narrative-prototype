@@ -17,7 +17,7 @@ public class CuttingController : MonoBehaviour
 		manager = GameObject.Find("GameManager").GetComponent<GameManager>();
 		character = GetComponent<Character>();
 		actionQueue = GetComponent<ActionQueue>();	
-		currentAction = character.currentAction;
+		currentAction = null;
 	}
 	
 	void Update() 

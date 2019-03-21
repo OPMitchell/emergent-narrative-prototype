@@ -36,4 +36,11 @@ public class Item : MonoBehaviour
 		}
 		return false;
 	}
+
+	public bool IsFree()
+	{
+		if(_lock == null)
+			return true;
+		return false;
+	}
 }

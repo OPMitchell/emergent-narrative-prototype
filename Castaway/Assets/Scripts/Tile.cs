@@ -49,12 +49,6 @@ public class Tile : MonoBehaviour
 		node = GetComponent<Node>();
 	}
 
-	public void DeleteItem()
-	{
-		Destroy(item);
-		item = null;
-	}
-
 	public void AddItem(GameObject i)
 	{
 		if(i != null)
@@ -172,6 +166,13 @@ public class Tile : MonoBehaviour
 			_lock = owner;
 			return true;
 		}
+		return false;
+	}
+
+	public bool IsFree()
+	{
+		if(_lock == null)
+			return true;
 		return false;
 	}
 }

@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
 		foreach(GameObject t in Map)
 		{
 			Tile tile = t.GetComponent<Tile>();
-			if(tile.item != null && tile.item.tag == "Item" && tile.zone != Zone.Stockpile)
+			if(tile.item != null && tile.item.tag == "Item" && tile.zone != Zone.Stockpile && tile.item.GetComponent<Item>().IsFree())
 			{
 				items.Add(tile.item);
 			}
@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
 		foreach(GameObject t in Map)
 		{
 			Tile tile = t.GetComponent<Tile>();
-			if(tile.zone == Zone.Stockpile && tile.item == null)
+			if(tile.zone == Zone.Stockpile && tile.item == null && tile.IsFree())
 			{
 				tiles.Add(t);
 			}
@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour
 		foreach(GameObject t in Map)
 		{
 			Tile tile = t.GetComponent<Tile>();
-			if(tile.tag == Tag.Build && tile.item == null)
+			if(tile.tag == Tag.Build && tile.item == null && tile.IsFree())
 			{
 				tiles.Add(t);
 			}
@@ -100,7 +100,7 @@ public class GameManager : MonoBehaviour
 		foreach(GameObject t in Map)
 		{
 			Tile tile = t.GetComponent<Tile>();
-			if(tile.zone == Zone.Stockpile && tile.item != null && tile.item.GetComponent<Item>().resource == r)
+			if(tile.zone == Zone.Stockpile && tile.item != null && tile.item.GetComponent<Item>().resource == r && tile.item.GetComponent<Item>().IsFree())
 			{
 				items.Add(tile.item);
 			}
@@ -123,8 +123,9 @@ public class GameManager : MonoBehaviour
 				int nY = rY + y;
 				if(nX >= 0 && nX < Map.GetLength(0) && nY >= 0 && nY < Map.GetLength(1))
 				{
+					Tile tile = Map[nX,nY].GetComponent<Tile>();
 					Node neighbourTile = Map[nX, nY].GetComponent<Node>();
-					if(neighbourTile.IsPassable())
+					if(neighbourTile.IsPassable() && tile.IsFree())
 					{
 						return Map[nX, nY];
 					}
