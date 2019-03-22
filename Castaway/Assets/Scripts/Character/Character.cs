@@ -13,6 +13,7 @@ public class Character : MonoBehaviour
 	private UIManager ui;
 	public GameObject heldItem;	
 	private System.Random rnd;
+	public Action currentAction {get;set;}
 
 	private Coroutine currentActionCoroutine;
 
@@ -24,6 +25,7 @@ public class Character : MonoBehaviour
 		map = manager.Map;
 		rnd = new System.Random();
 		SpawnAtRandomPos();
+		currentAction = null;
 	}
 
 	public bool AtPosition(int x, int y)

@@ -57,7 +57,7 @@ MonoBehaviour:
   Parent: {fileID: 0}
   resource: 1
   requiredResource: 2
-  resourceCost: 1
+  resourceCost: 2
   passable: 0
 --- !u!114 &114705579761664834
 MonoBehaviour:

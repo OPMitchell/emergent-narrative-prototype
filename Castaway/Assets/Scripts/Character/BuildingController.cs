@@ -19,7 +19,7 @@ public class BuildingController : MonoBehaviour
 		buildManager = GameObject.Find("GameManager").GetComponent<BuildManager>();
 		character = GetComponent<Character>();
 		actionQueue = GetComponent<ActionQueue>();	
-		currentAction = null;
+		currentAction = character.currentAction;
 	}
 	
 	void Update() 

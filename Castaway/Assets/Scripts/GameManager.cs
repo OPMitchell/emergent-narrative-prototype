@@ -94,6 +94,23 @@ public class GameManager : MonoBehaviour
 		return tiles;	
 	}
 
+	public int GetNumberOfResourcesRequiredForTaggedBuildingTiles(Resource resource)
+	{
+		int count = 0;
+		List<GameObject> taggedTiles = GetTaggedBuildingTiles();
+		foreach(GameObject taggedTile in taggedTiles)
+		{
+			GameObject itemToBuild = taggedTile.GetComponent<Tile>().toBuild;
+			if(itemToBuild != null)
+			{
+				BuildableItem bI = itemToBuild.GetComponent<BuildableItem>();
+				if(bI.requiredResource == resource)
+					count += bI.resourceCost;
+			}
+		}
+		return count;
+	}
+
 	public List<GameObject> GetItemsOfResource(Resource r)
 	{
 		List<GameObject> items = new List<GameObject>();

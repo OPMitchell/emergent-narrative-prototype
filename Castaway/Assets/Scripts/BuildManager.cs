@@ -6,17 +6,20 @@ public class BuildManager : MonoBehaviour
 {
 	private ItemManager items;
 	private ResourceManager resources;
+	private GameManager manager;
 
 	void Start()
 	{
 		items = GameObject.Find("GameManager").GetComponent<ItemManager>();
 		resources = GameObject.Find("GameManager").GetComponent<ResourceManager>();
+		manager = GameObject.Find("GameManager").GetComponent<GameManager>();
 	}
 
 	public bool CanBuild(GameObject item)
 	{
 		BuildableItem build = item.GetComponent<BuildableItem>();
-		if(resources.GetResourceQuantity(build.requiredResource) >= build.resourceCost)
+		int resourcesNeededForTags = manager.GetNumberOfResourcesRequiredForTaggedBuildingTiles(build.requiredResource);
+		if((resources.GetResourceQuantity(build.requiredResource)-resourcesNeededForTags) >= build.resourceCost)
 			return true;
 		else
 		{

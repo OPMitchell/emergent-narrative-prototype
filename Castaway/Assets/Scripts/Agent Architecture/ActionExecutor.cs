@@ -97,22 +97,42 @@ public class ActionExecutor : MonoBehaviour
         {
             Tile tile = action.TargetGameObject.GetComponent<Tile>();
             GameObject passableTile = manager.GetPassableNeighbourTile(tile);
-            List<GameObject> resources = manager.GetItemsOfResource(tile.toBuild.GetComponent<BuildableItem>().requiredResource);
-            Item resource = resources[0].GetComponent<Item>();
-            if(passableTile != null && resource.GetLock(gameObject))
+            int resourceCost = tile.toBuild.GetComponent<BuildableItem>().resourceCost;
+            int count = 0;
+            if(passableTile != null)
             {
-                Tile resourceTile = resource.Parent.GetComponent<Tile>();
-                character.WalkToCoordinates(resourceTile.X, resourceTile.Y);
-                yield return new WaitUntil(() => (character.AtPosition(resourceTile.X, resourceTile.Y)));
-                character.PickUpItem(resourceTile);
-                Tile destTile = passableTile.GetComponent<Tile>();
-                character.WalkToCoordinates(destTile.X, destTile.Y);
-                yield return new WaitUntil(() => (character.cX == destTile.X && character.cY == destTile.Y));
-                character.DestroyItem();
-                buildManager.Build(action.TargetGameObject, tile.toBuild);
-                action.Status = Status.Successful;
-                tile.Free(gameObject);
-                tile.ClearTag();
+                for(int i = 0; i < resourceCost; i++)
+                {
+                    List<GameObject> resources = manager.GetItemsOfResource(tile.toBuild.GetComponent<BuildableItem>().requiredResource);
+                    Item resource = resources[0].GetComponent<Item>();
+                    if(resource.GetLock(gameObject))
+                    {
+                        Tile resourceTile = resource.Parent.GetComponent<Tile>();
+                        character.WalkToCoordinates(resourceTile.X, resourceTile.Y);
+                        yield return new WaitUntil(() => (character.AtPosition(resourceTile.X, resourceTile.Y)));
+                        character.PickUpItem(resourceTile);
+                        Tile destTile = passableTile.GetComponent<Tile>();
+                        character.WalkToCoordinates(destTile.X, destTile.Y);
+                        yield return new WaitUntil(() => (character.cX == destTile.X && character.cY == destTile.Y));
+                        character.DestroyItem();
+                        count++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                if(count == resourceCost)
+                {
+                    buildManager.Build(action.TargetGameObject, tile.toBuild);
+                    action.Status = Status.Successful;
+                    tile.Free(gameObject);
+                    tile.ClearTag();
+                }
+                else
+                {
+                    action.Status = Status.Failed;
+                }
             }
             else
             {
