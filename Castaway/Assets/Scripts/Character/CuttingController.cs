@@ -32,10 +32,10 @@ public class CuttingController : MonoBehaviour
 		{
 			if(tile.GetComponent<Tile>().GetLock(gameObject))
 			{
-				currentAction = new Action("Cut_Tree", "Cut_Tree", name, tile.name, 1);
+				currentAction = new Action("Cut", "Cut", name, tile.name, null, null, null, null, 1);
 				if(!actionQueue.Contains(currentAction))
 				{
-					currentAction.Status = Status.Sent;
+					currentAction.SetStatus(Status.Sent);
 					GetComponent<ActionQueue>().QueueAction(currentAction);
 					break;
 				}

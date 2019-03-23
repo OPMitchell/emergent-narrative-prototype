@@ -10,6 +10,7 @@ public class TerrainGenerator : MonoBehaviour
 	public GameObject sand;
 
 	public GameObject tree;
+	public GameObject tree2;
 
 	private const float tileWidth = 2.0f;
 	private const int heightMapSize = 6;
@@ -55,7 +56,12 @@ public class TerrainGenerator : MonoBehaviour
 			numberOfTrees = 1;
 		if(numberOfTrees > 0)
 		{
-			GameObject t = Instantiate(tree, new Vector3(x*tileWidth,y*tileWidth,0), Quaternion.identity) as GameObject;
+			int ran = Random.Range(0,2);
+			GameObject t = null;
+			if(ran == 0)
+				t = Instantiate(tree, new Vector3(x*tileWidth,y*tileWidth,0), Quaternion.identity) as GameObject;
+			else
+				t = Instantiate(tree2, new Vector3(x*tileWidth,y*tileWidth,0), Quaternion.identity) as GameObject;
 			t.name = "Tree (" + x + "," + y + ")";
 			return t;
 		}

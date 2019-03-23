@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -36,6 +37,23 @@ public class GameManager : MonoBehaviour
 			GameObject character = Instantiate(c) as GameObject;
 			character.name = character.GetComponent<Character>().Name;
 		}
+	}
+
+	public static string[] SplitParameterString(string effect)
+	{
+		if(effect != "")
+		{
+			int spaces = effect.Count(char.IsWhiteSpace);
+			if(spaces == 2)
+			{
+				return effect.Split(' ');
+			}
+			else
+			{
+				Debug.Log("Error! Tried to parse a malformed action parameter string: " + effect);
+			}
+		}
+		return new string[3];
 	}
 
 	public List<GameObject> GetTaggedTreeTiles()

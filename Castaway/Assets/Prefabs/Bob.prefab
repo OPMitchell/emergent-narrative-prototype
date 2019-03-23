@@ -28,6 +28,9 @@ GameObject:
   - component: {fileID: 114348346743557946}
   - component: {fileID: 114058449553158648}
   - component: {fileID: 114226980711113352}
+  - component: {fileID: 114096044881453808}
+  - component: {fileID: 114517038365600132}
+  - component: {fileID: 114786154213912640}
   m_Layer: 0
   m_Name: Bob
   m_TagString: Character
@@ -84,6 +87,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71daf6d8cf4e4c046ae8727d59ca40a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114096044881453808
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1373307878645326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ced53b2f5c793324aa13f292520dd17f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActionListFile: {fileID: 4900000, guid: bd61dfff251abed4f94904733bbd5dfb, type: 3}
 --- !u!114 &114226980711113352
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -128,6 +143,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 069da3fb108c8a74486bed3489e1c853, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114517038365600132
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1373307878645326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f05c3a344a73b8448a69558d2c58770b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114658785750615140
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -139,6 +165,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71427a96c9bb3f84fac7995d01162a89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114786154213912640
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1373307878645326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13e9b6a249e48d444bf87bf835e0e627, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GoalListFile: {fileID: 4900000, guid: 509bcfc216a708347928f1bd786a698a, type: 3}
 --- !u!114 &114892604677349494
 MonoBehaviour:
   m_ObjectHideFlags: 1

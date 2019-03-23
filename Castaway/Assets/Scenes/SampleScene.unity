@@ -1985,6 +1985,7 @@ MonoBehaviour:
   water: {fileID: 1381448008992974, guid: d8344445b4cb76e4aba630ee07139542, type: 2}
   sand: {fileID: 1926120649548140, guid: 63c2515b1bc977441a7c3426a57c01ad, type: 2}
   tree: {fileID: 1209041698879220, guid: de7d50656d943c747a3882a6b44a1f62, type: 2}
+  tree2: {fileID: 1221911756565194, guid: 8147513e73827a34da227c5b6cda8c46, type: 2}
 --- !u!4 &1641797852
 Transform:
   m_ObjectHideFlags: 0

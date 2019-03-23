@@ -25,7 +25,7 @@ public class ActionExecutor : MonoBehaviour
     public IEnumerator ExecuteAction(Action action)
     {
         Executing = true;
-        if(action.Type == "Cut_Tree")
+        if(action.Type == "Cut")
         {
             Tile tile = action.TargetGameObject.GetComponent<Tile>();
             if(tile != null)
@@ -33,19 +33,20 @@ public class ActionExecutor : MonoBehaviour
                 character.WalkToCoordinates(tile.X, tile.Y);
                 yield return new WaitUntil(() => (character.cX == tile.X && character.cY == tile.Y));
                 yield return new WaitForSeconds(1.0f);
+                GameObject droppedResource = tile.item.GetComponent<DestructableItem>().droppedResource;
                 Destroy(tile.item);
                 tile.item = null;
                 tile.ClearTag();
-                GameObject logs = Instantiate(items.logs, action.TargetGameObject.GetComponent<Renderer>().bounds.center, Quaternion.identity);
-                logs.name = "Logs" + " ("+ tile.X +"," + tile.Y + ")";
-                tile.AddItem(logs);
+                GameObject resource = Instantiate(droppedResource, action.TargetGameObject.GetComponent<Renderer>().bounds.center, Quaternion.identity);
+                resource.name = droppedResource.name + " ("+ tile.X +"," + tile.Y + ")";
+                tile.AddItem(resource);
                 if(tile.zone == Zone.Stockpile)
-                    resources.AddResource(Resource.logs, 1);
-                action.Status = Status.Successful;
+                    resources.AddResource(resource.GetComponent<Item>().resource, 1);
+                action.SetStatus(Status.Successful);
             }
             else
             {
-                action.Status = Status.Failed;
+                action.SetStatus(Status.Failed);
             }
             tile.Free(gameObject);
         }
@@ -77,19 +78,19 @@ public class ActionExecutor : MonoBehaviour
                         yield return new WaitUntil(() => (character.cX == target.X && character.cY == target.Y));
                         character.DropItem(target);
                         resources.AddResource(item.resource, 1);
-                        action.Status = Status.Successful;
+                        action.SetStatus(Status.Successful);
                         target.Free(gameObject);
                     }
                     else
                     {
-                         action.Status = Status.Failed;
-                         Debug.Log(transform.name + " couldn't find a free stockpile tile to haul item: " + item.name);
+                        action.SetStatus(Status.Failed);
+                        Debug.Log(transform.name + " couldn't find a free stockpile tile to haul item: " + item.name);
                     }
                 }
             }
             else
             {
-                action.Status = Status.Failed;
+                action.SetStatus(Status.Failed);
             }
             item.Free(gameObject);
         }
@@ -125,18 +126,18 @@ public class ActionExecutor : MonoBehaviour
                 if(count == resourceCost)
                 {
                     buildManager.Build(action.TargetGameObject, tile.toBuild);
-                    action.Status = Status.Successful;
+                    action.SetStatus(Status.Successful);
                     tile.Free(gameObject);
                     tile.ClearTag();
                 }
                 else
                 {
-                    action.Status = Status.Failed;
+                    action.SetStatus(Status.Failed);
                 }
             }
             else
             {
-                action.Status = Status.Failed;
+                action.SetStatus(Status.Failed);
             }
             tile.Free(gameObject);
         }
