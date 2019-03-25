@@ -25,12 +25,11 @@ public static class ConfigReader
             throw new FileNotFoundException("Could not find personality file: " + absolutePath + "!");
     }
 
-    /*
-    public static EmotionalPersonalityModel ReadEmotionData (string personalXMLPath)
+    public static List<PersonalEmotion> ReadEmotionData (string personalXMLPath)
     {
-        return StandardDeserialization<EmotionalPersonalityModel>(personalXMLPath, "Emotions");
+        return StandardDeserialization<List<PersonalEmotion>>(personalXMLPath, "Emotions");
     }
-    */
+    
 
     public static List<Action> ReadActionList(string actionListXMLPath)
     {

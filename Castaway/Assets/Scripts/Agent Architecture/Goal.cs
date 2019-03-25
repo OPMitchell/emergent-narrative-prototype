@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using System.Linq;
+using UnityEngine;
 
 public enum GoalType
 {
@@ -16,7 +17,7 @@ public class Goal
     [XmlAttribute("target")]
     public string Target { get; private set; }
     [XmlAttribute("parameters")]
-    public string Parameters {get; private set;}
+    public string SuccessCondition {get; private set;}
     public bool Complete {get; set;}
 
     [XmlIgnore]
@@ -35,7 +36,7 @@ public class Goal
         FailedActions = new List<Action>();
         Type = type;
         Target = target;
-        Parameters = parameters;
+        SuccessCondition = parameters;
         Complete = false;
     }
 
@@ -50,5 +51,23 @@ public class Goal
         {
             FailedActions.Add(new Action(action));
         }
+    }
+
+    public bool IsSatisfied()
+    {
+        GameManager manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        string[] successConditionSplit = manager.SplitParameterString(SuccessCondition);
+        float targetValue = float.Parse(successConditionSplit[2], System.Globalization.CultureInfo.InvariantCulture);
+        if(successConditionSplit[1] == "gt")
+        {
+            if(manager.GetStatValue(Target, successConditionSplit[0]) > targetValue)
+                return true;
+        }
+        else if(successConditionSplit[1] == "lt")
+        {
+            if(manager.GetStatValue(Target, successConditionSplit[0]) < targetValue)
+                return true;
+        }
+        return false;
     }
 }

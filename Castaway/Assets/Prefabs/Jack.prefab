@@ -31,6 +31,7 @@ GameObject:
   - component: {fileID: 114446420817589070}
   - component: {fileID: 114953455194517480}
   - component: {fileID: 114601956020424818}
+  - component: {fileID: 114208856199896260}
   m_Layer: 0
   m_Name: Jack
   m_TagString: Character
@@ -87,6 +88,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71daf6d8cf4e4c046ae8727d59ca40a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114208856199896260
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1932041451880542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 449b982d089eac6429e48d2935025b28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EmotionalPersonalityFile: {fileID: 4900000, guid: 7bb7938bddf42fb48b11e12736713bf4,
+    type: 3}
 --- !u!114 &114294081138422862
 MonoBehaviour:
   m_ObjectHideFlags: 1

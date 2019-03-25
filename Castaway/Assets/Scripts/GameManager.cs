@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	public static string[] SplitParameterString(string effect)
+	public string[] SplitParameterString(string effect)
 	{
 		if(effect != "")
 		{
@@ -48,12 +48,8 @@ public class GameManager : MonoBehaviour
 			{
 				return effect.Split(' ');
 			}
-			else
-			{
-				Debug.Log("Error! Tried to parse a malformed action parameter string: " + effect);
-			}
 		}
-		return new string[3];
+		return null;
 	}
 
 	public List<GameObject> GetTaggedTreeTiles()
@@ -168,5 +164,33 @@ public class GameManager : MonoBehaviour
 			}
 		}
 		return null;
+	}
+
+	public float GetStatValue(string characterTarget, string statName)
+	{
+		GameObject target = GameObject.Find(characterTarget);
+		EmotionalPersonalityModel EPM = target.GetComponent<EmotionalPersonalityModel>();
+
+		if(statName == EmotionRef.Disappointment.ToString())
+		{
+			return (float)EPM.GetEmotionValue(EmotionRef.Disappointment);
+		}
+		else if(statName == EmotionRef.Distress.ToString())
+		{
+			return (float)EPM.GetEmotionValue(EmotionRef.Distress);
+		}
+		else if(statName == EmotionRef.Fear.ToString())
+		{
+			return (float)EPM.GetEmotionValue(EmotionRef.Fear);
+		}
+		else if(statName == EmotionRef.Joy.ToString())
+		{
+			return (float)EPM.GetEmotionValue(EmotionRef.Joy);
+		}
+		else if(statName == EmotionRef.Satisfaction.ToString())
+		{
+			return (float)EPM.GetEmotionValue(EmotionRef.Satisfaction);
+		}
+		return float.MinValue;
 	}
 }
