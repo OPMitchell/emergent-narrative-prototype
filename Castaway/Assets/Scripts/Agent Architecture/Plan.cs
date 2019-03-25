@@ -43,4 +43,9 @@ public class Plan
     {
         return actions;
     }
+
+    public Action GetCurrentAction()
+    {
+        return actions.ElementAt(0);
+    }
 }

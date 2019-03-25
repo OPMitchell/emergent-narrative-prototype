@@ -33,7 +33,7 @@ GameObject:
   - component: {fileID: 114601956020424818}
   - component: {fileID: 114208856199896260}
   m_Layer: 0
-  m_Name: Jack
+  m_Name: Rachel
   m_TagString: Character
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 15
-  Name: Jack
+  Name: Rachel
   heldItem: {fileID: 0}
 --- !u!114 &114946798693891556
 MonoBehaviour:
