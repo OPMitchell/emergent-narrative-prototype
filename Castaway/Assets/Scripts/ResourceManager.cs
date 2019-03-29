@@ -6,7 +6,8 @@ public enum Resource
 {
 	nature = 0,
 	buildable = 1,
-	logs = 2
+	logs = 2,
+	bread = 3
 }
 
 public class ResourceManager : MonoBehaviour

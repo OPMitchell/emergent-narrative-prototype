@@ -93,7 +93,7 @@ public class ContinuousActionPlanner : MonoBehaviour
 		{
 			Plan newPlan = new Plan(p);
 			newPlan.AddAction(action);
-			if(!action.HasPrecondition()) //|| action.IsPreconditionSatisfied())
+			if(!action.HasPrecondition() || manager.IsActionSatisfied(action))
 			{
 				plans.Add(newPlan);
 			}

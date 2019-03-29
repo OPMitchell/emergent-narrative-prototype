@@ -55,7 +55,8 @@ public class ActionDirectory : MonoBehaviour
 	{
 		List<Action> matches = ActionList.ConvertAll(x => new Action(x));
 		matches = matches.Where(
-			x => string.Equals(manager.SplitParameterString(x.Effect)[0], parameter)
+			x => x.Effect != ""
+			&& string.Equals(manager.SplitParameterString(x.Effect)[0], parameter)
 			&& string.Equals(manager.SplitParameterString(x.Effect)[1], operation)
 			&& (string.Equals(x.Target, target) || string.Equals(x.Target, "%tgt"))
 		).ToList();
@@ -67,7 +68,8 @@ public class ActionDirectory : MonoBehaviour
 	{
 		List<Action> matches = ActionList.ConvertAll(x => new Action(x));
 		matches = matches.Where(
-			x => string.Equals(manager.SplitParameterString(x.Effect)[0], parameter)
+			x => x.Effect != ""
+			&& string.Equals(manager.SplitParameterString(x.Effect)[0], parameter)
 			&& string.Equals(manager.SplitParameterString(x.Effect)[1], operation)
 			&& (string.Equals(manager.SplitParameterString(x.Effect)[2], value)  || string.Equals(manager.SplitParameterString(x.Effect)[2], "%val") || string.Equals(manager.SplitParameterString(x.Effect)[2], "%tgt"))
 			&& (string.Equals(x.Target, target) || string.Equals(x.Target, "%tgt"))

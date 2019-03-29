@@ -60,13 +60,21 @@ public class Goal
         float targetValue = float.Parse(successConditionSplit[2], System.Globalization.CultureInfo.InvariantCulture);
         if(successConditionSplit[1] == "gt")
         {
-            if(manager.GetStatValue(Target, successConditionSplit[0]) > targetValue)
+            float? actual = (float?)manager.GetStatValue(Target, successConditionSplit[0]);
+            if(actual == null)
+                return false;
+            else if(actual > targetValue)
                 return true;
+            return false;
         }
         else if(successConditionSplit[1] == "lt")
         {
-            if(manager.GetStatValue(Target, successConditionSplit[0]) < targetValue)
+            float? actual = (float?)manager.GetStatValue(Target, successConditionSplit[0]);
+            if(actual == null)
+                return false;
+            else if(actual < targetValue)
                 return true;
+            return false;
         }
         return false;
     }

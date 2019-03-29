@@ -37,7 +37,7 @@ public class Character : MonoBehaviour
 
 	public void PickUpItem(Tile tile)
 	{
-		if(tile.item != null)
+		if(tile.item != null && AtPosition(tile.X, tile.Y))
 		{
 			if(heldItem == null)
 			{

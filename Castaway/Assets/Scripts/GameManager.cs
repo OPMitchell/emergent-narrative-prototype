@@ -166,31 +166,105 @@ public class GameManager : MonoBehaviour
 		return null;
 	}
 
-	public float GetStatValue(string characterTarget, string statName)
+	public object GetStatValue(string characterTarget, string statName)
 	{
 		GameObject target = GameObject.Find(characterTarget);
-		EmotionalPersonalityModel EPM = target.GetComponent<EmotionalPersonalityModel>();
+		if(target != null)
+		{
+			EmotionalPersonalityModel EPM = target.GetComponent<EmotionalPersonalityModel>();
+			Character character = target.GetComponent<Character>();
 
-		if(statName == EmotionRef.Disappointment.ToString())
-		{
-			return (float)EPM.GetEmotionValue(EmotionRef.Disappointment);
+			if(statName == EmotionRef.Disappointment.ToString())
+			{
+				return (float)EPM.GetEmotionValue(EmotionRef.Disappointment);
+			}
+			else if(statName == EmotionRef.Distress.ToString())
+			{
+				return (float)EPM.GetEmotionValue(EmotionRef.Distress);
+			}
+			else if(statName == EmotionRef.Fear.ToString())
+			{
+				return (float)EPM.GetEmotionValue(EmotionRef.Fear);
+			}
+			else if(statName == EmotionRef.Joy.ToString())
+			{
+				return (float)EPM.GetEmotionValue(EmotionRef.Joy);
+			}
+			else if(statName == EmotionRef.Satisfaction.ToString())
+			{
+				return (float)EPM.GetEmotionValue(EmotionRef.Satisfaction);
+			}
+			else if(statName == "inventory")
+			{
+				return character.heldItem;
+			}
+			else if (statName == "location")
+			{
+				return new int[2]{character.cX, character.cY};
+			}
+			else if(statName == "hunger")
+			{
+				return 0.5f;
+			}
 		}
-		else if(statName == EmotionRef.Distress.ToString())
+		return null;
+	}
+
+	public bool IsActionSatisfied(Action action)
+	{
+		string[] precondition = SplitParameterString(action.Precondition);
+		if(precondition == null)
+			return true;
+		else
 		{
-			return (float)EPM.GetEmotionValue(EmotionRef.Distress);
+			string statName = precondition[0];
+			string operation = precondition[1];
+			string value = precondition[2];
+
+			object statValue = GetStatValue(action.Target, statName);
+			if(statValue != null)
+			{
+				if(statName == "inventory")
+				{
+					GameObject heldItem = (GameObject)statValue;
+					if(heldItem.GetComponent<Item>().resource.ToString().ToLower() == value)
+						return true;
+					else
+						return false;
+				}
+				else if(statName == "location")
+				{
+					int[] coordinates = (int[])statValue;
+					Character sender = GameObject.Find(action.Sender).GetComponent<Character>();
+					if(sender.cX == coordinates[0] && sender.cY == coordinates[1])
+						return true;
+					else
+						return false;
+				}
+				else
+				{
+					float targetValue = float.Parse(value, System.Globalization.CultureInfo.InvariantCulture);
+					if(operation == "gt")
+					{
+						float? actual = (float?)statValue;
+						if(actual == null)
+							return false;
+						else if(actual > targetValue)
+							return true;
+						return false;
+					}
+					else if(operation == "lt")
+					{
+						float? actual = (float?)statValue;
+						if(actual == null)
+							return false;
+						else if(actual < targetValue)
+							return true;
+						return false;
+					}
+				}
+			}
+			return false;
 		}
-		else if(statName == EmotionRef.Fear.ToString())
-		{
-			return (float)EPM.GetEmotionValue(EmotionRef.Fear);
-		}
-		else if(statName == EmotionRef.Joy.ToString())
-		{
-			return (float)EPM.GetEmotionValue(EmotionRef.Joy);
-		}
-		else if(statName == EmotionRef.Satisfaction.ToString())
-		{
-			return (float)EPM.GetEmotionValue(EmotionRef.Satisfaction);
-		}
-		return float.MinValue;
 	}
 }

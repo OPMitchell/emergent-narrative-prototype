@@ -141,6 +141,30 @@ public class ActionExecutor : MonoBehaviour
             }
             tile.Free(gameObject);
         }
+        else if(action.Type == "PickUpItem")
+        {
+            string resource = action.Parameters.ToLower();
+            List<GameObject> items = manager.GetItemsOfResource((Resource)System.Enum.Parse(typeof(Resource), resource, true));
+            if(items.Count > 0)
+            {
+                Item item = items[0].GetComponent<Item>();
+                Tile parentTile = item.Parent.GetComponent<Tile>();
+                if(item.GetLock(gameObject))
+                {
+                    character.WalkToCoordinates(parentTile.X, parentTile.Y);
+                    yield return new WaitUntil(() => (character.AtPosition(parentTile.X, parentTile.Y)));
+                    character.PickUpItem(parentTile);
+                    action.SetStatus(Status.Successful);
+                }
+                else
+                {
+                    action.SetStatus(Status.Failed);
+                }
+            }
+            else
+                action.SetStatus(Status.Failed);
+
+        }
         Executing = false;
     }
 }
