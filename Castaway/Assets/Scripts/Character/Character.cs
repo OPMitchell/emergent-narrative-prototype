@@ -17,7 +17,7 @@ public class Character : MonoBehaviour
 
 	private Coroutine currentActionCoroutine;
 
-	void Start () 
+	void Awake() 
 	{
 		heldItem = null;
 		manager = GameObject.Find("GameManager").GetComponent<GameManager>();

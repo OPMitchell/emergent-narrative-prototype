@@ -16,10 +16,5 @@ public abstract class EventPriorityQueue : MonoBehaviour
         CheckQueue();
     }
 
-    public bool ContainsActionType(string actionType)
-    {
-        return queue.ContainsActionType(actionType);
-    }
-
     public abstract void CheckQueue();
 }

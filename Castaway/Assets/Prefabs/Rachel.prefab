@@ -31,7 +31,7 @@ GameObject:
   - component: {fileID: 114446420817589070}
   - component: {fileID: 114953455194517480}
   - component: {fileID: 114601956020424818}
-  - component: {fileID: 114208856199896260}
+  - component: {fileID: 114889207736647880}
   m_Layer: 0
   m_Name: Rachel
   m_TagString: Character
@@ -88,19 +88,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71daf6d8cf4e4c046ae8727d59ca40a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114208856199896260
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1932041451880542}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 449b982d089eac6429e48d2935025b28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EmotionalPersonalityFile: {fileID: 4900000, guid: 7bb7938bddf42fb48b11e12736713bf4,
-    type: 3}
 --- !u!114 &114294081138422862
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -135,6 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ActionListFile: {fileID: 4900000, guid: 12f319e46cc190b4880dfbac4592be80, type: 3}
+  ActionList: []
 --- !u!114 &114601956020424818
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -147,6 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GoalListFile: {fileID: 4900000, guid: bce595a478a7526419d0fc3e7c29a611, type: 3}
+  goalList: []
 --- !u!114 &114782710001930922
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -169,6 +158,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a6e42991dc9b4b4e9585bcff7ebdbef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114889207736647880
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1932041451880542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 449b982d089eac6429e48d2935025b28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Emotions:
+  - name: 1
+    threshold: 0.5
+    decay: 0.5
+    emotionValue: 0.1
+  - name: 2
+    threshold: 0.5
+    decay: 0.5
+    emotionValue: 0.1
+  - name: 3
+    threshold: 0.5
+    decay: 0.5
+    emotionValue: 0.1
+  - name: 4
+    threshold: 0.5
+    decay: 0.5
+    emotionValue: 0.1
+  - name: 5
+    threshold: 0.5
+    decay: 0.5
+    emotionValue: 0.1
 --- !u!114 &114908081652709892
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<Emotions>
-	<PersonalEmotion name="Joy" threshold="3" decay="5" value="1"/>
-	<PersonalEmotion name="Distress" threshold="3" decay="5" value="1"/>
-	<PersonalEmotion name="Fear" threshold="3" decay="5" value="1"/>
-	<PersonalEmotion name="Satisfaction" threshold="3" decay="5" value="1"/>
-	<PersonalEmotion name="Disappointment" threshold="3" decay="5" value="1"/>
-</Emotions>

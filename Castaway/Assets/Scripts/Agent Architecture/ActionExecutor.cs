@@ -27,7 +27,7 @@ public class ActionExecutor : MonoBehaviour
         Executing = true;
         if(action.Type == "Cut")
         {
-            Tile tile = action.TargetGameObject.GetComponent<Tile>();
+            Tile tile = action.TargetObject.GetComponent<Tile>();
             if(tile != null)
             {
                 character.WalkToCoordinates(tile.X, tile.Y);
@@ -37,7 +37,7 @@ public class ActionExecutor : MonoBehaviour
                 Destroy(tile.item);
                 tile.item = null;
                 tile.ClearTag();
-                GameObject resource = Instantiate(droppedResource, action.TargetGameObject.GetComponent<Renderer>().bounds.center, Quaternion.identity);
+                GameObject resource = Instantiate(droppedResource, action.TargetObject.GetComponent<Renderer>().bounds.center, Quaternion.identity);
                 resource.name = droppedResource.name + " ("+ tile.X +"," + tile.Y + ")";
                 tile.AddItem(resource);
                 if(tile.zone == Zone.Stockpile)
@@ -52,7 +52,7 @@ public class ActionExecutor : MonoBehaviour
         }
         else if(action.Type == "HaulItem")
         {
-            Item item = action.TargetGameObject.GetComponent<Item>();
+            Item item = action.TargetObject.GetComponent<Item>();
             if(item != null)
             {
                 List<GameObject> emptyTiles = manager.GetEmptyStockpileTiles();
@@ -96,7 +96,7 @@ public class ActionExecutor : MonoBehaviour
         }
         else if(action.Type == "Build")
         {
-            Tile tile = action.TargetGameObject.GetComponent<Tile>();
+            Tile tile = action.TargetObject.GetComponent<Tile>();
             GameObject passableTile = manager.GetPassableNeighbourTile(tile);
             int resourceCost = tile.toBuild.GetComponent<BuildableItem>().resourceCost;
             int count = 0;
@@ -125,7 +125,7 @@ public class ActionExecutor : MonoBehaviour
                 }
                 if(count == resourceCost)
                 {
-                    buildManager.Build(action.TargetGameObject, tile.toBuild);
+                    buildManager.Build(action.TargetObject, tile.toBuild);
                     action.SetStatus(Status.Successful);
                     tile.Free(gameObject);
                     tile.ClearTag();
@@ -141,6 +141,7 @@ public class ActionExecutor : MonoBehaviour
             }
             tile.Free(gameObject);
         }
+        /*
         else if(action.Type == "PickUpItem")
         {
             string resource = action.Parameters.ToLower();
@@ -164,6 +165,15 @@ public class ActionExecutor : MonoBehaviour
             else
                 action.SetStatus(Status.Failed);
 
+        }
+        */
+        else if(action.Type == "ComplimentRachel")
+        {
+            Character rachel = action.TargetObject.GetComponent<Character>();
+            character.WalkToCoordinates(50,50);
+            yield return new WaitUntil(() => (character.AtPosition(50, 50)));
+            rachel.gameObject.GetComponent<EmotionalPersonalityModel>().AddToValue(action.Effect.Emotion, action.Effect.Change);
+            action.SetStatus(Status.Successful);
         }
         Executing = false;
     }

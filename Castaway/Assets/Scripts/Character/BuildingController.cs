@@ -35,13 +35,13 @@ public class BuildingController : MonoBehaviour
 			Tile tile = t.GetComponent<Tile>();
 			if(tile.GetLock(gameObject))
 			{
-				currentAction = new Action("Build", "Build", name, tile.name, null, null, null, null, 2);
-				if(!actionQueue.Contains(currentAction))
-				{
+				currentAction = new Action("Build", "Build", gameObject, tile.gameObject);
+				//if(!actionQueue.Contains(currentAction))
+				//{
 					currentAction.SetStatus(Status.Sent);
 					GetComponent<ActionQueue>().QueueAction(currentAction);
 					break;
-				}
+				//}
 			}
 		}
 	}

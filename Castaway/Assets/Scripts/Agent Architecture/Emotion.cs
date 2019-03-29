@@ -7,29 +7,50 @@ using UnityEngine;
 /// <summary>
 /// Class to hold data about individual emotions
 /// </summary>
-public abstract class Emotion
-{
-    [XmlAttribute("name")]
-    public string Name { get; set; }
-    [XmlAttribute("threshold")]
-    public int Threshold { get; set; }
-    [XmlAttribute("decay")]
-    public int Decay { get; set; }
-    public abstract object GetValue();
-}
 
-public abstract class GenericEmotion<T> : Emotion
+[System.Serializable]
+public class Emotion
 {
-    [XmlAttribute("value")]
-    public T Value { get; set; }
-
-    public override object GetValue()
+    [SerializeField] private EmotionRef name;
+    public EmotionRef Name
     {
-        return Value;
+        get
+        {
+            return name;
+        }
+    }
+
+    [SerializeField] [Range(0.0f, 1.0f)] private float threshold;
+    public float Threshold
+    {
+        get
+        {
+            return threshold;
+        }
+    }
+
+   [SerializeField] [Range(0.0f, 1.0f)] private float decay;
+    public float Decay
+    {
+        get
+        {
+            return decay;
+        }
+    }
+
+    [SerializeField] [Range(-1.0f, 1.0f)] private float emotionValue;
+    public float EmotionValue
+    {
+        get
+        {
+            return emotionValue;
+        }
+        set
+        {
+            emotionValue = value;
+        }
     }
 }
-
-public class PersonalEmotion : GenericEmotion<int> { }
 
 /*
 public enum EmotionRef
@@ -61,6 +82,7 @@ public enum EmotionRef
 
 public enum EmotionRef
 {
+    None = 0,
     Joy = 1,
     Distress = 2,
     Fear = 3,

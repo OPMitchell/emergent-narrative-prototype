@@ -13,83 +13,143 @@ public enum Status
     Interrupted = 5,
 };
 
+public enum BooleanCondition
+{
+	LessThan = 0,
+	EqualTo = 1,
+	GreaterThan = 2
+};
+
+[System.Serializable]
 public class Action
 {
-    [XmlAttribute("name")]
-    public string Name { get; set; }
-    [XmlAttribute("type")]
-    public string Type { get; set; }
-    [XmlAttribute("sender")]
-    public string Sender { get; set; }
-    [XmlAttribute("target")]
-    public string Target { get; set; }
-    [XmlIgnore]
-    public GameObject TargetGameObject {get;set;}
-    [XmlAttribute("dialogid")]
-    public string DialogID { get; set; }
-    [XmlAttribute("precondition")]
-    public string Precondition { get; set; }
-    [XmlAttribute("effect")]
-    public string Effect { get; set; }
-    [XmlAttribute("parameters")]
-    public string Parameters { get; set; }
-    [XmlAttribute("priority")]
-    public int Priority { get; set; }
-    public Status Status{ get; private set;}
+	[System.Serializable]
+	public class ActionEffect
+	{
+		[SerializeField] private EmotionRef emotion;
+        public EmotionRef Emotion
+        {
+            get
+            {
+                return emotion;
+            }
+        }
+		[Range(-1.0f,1.0f)][SerializeField] private float change;
+        public float Change
+        {
+            get
+            {
+                return change;
+            }
+        }
+		[SerializeField] private GameObject pickedUpItem;
+        public GameObject PickedUpItem
+        {
+            get
+            {
+                return pickedUpItem;
+            }
+        }
+	}
+	[SerializeField] private string name;
+    public string Name
+    {
+        get
+        {
+            return name;
+        }
+        private set
+        {
+            name = value;
+        }
+    }
+	[SerializeField] private string type;
+    public string Type
+    {
+        get
+        {
+            return type;
+        }
+        private set
+        {
+            type = value;
+        }
+    }
+	[SerializeField] private GameObject sendingCharacter;
+    public GameObject SendingCharacter
+    {
+        get
+        {
+            return sendingCharacter;
+        }
+        private set
+        {
+            sendingCharacter = value;
+        }
+    }
+	[SerializeField] private GameObject targetObject;
+    public GameObject TargetObject
+    {
+        get
+        {
+            return targetObject;
+        }
+        private set
+        {
+            targetObject = value;
+        }
+    }
+	[SerializeField] private ActionEffect effect;
+    public ActionEffect Effect
+    {
+        get
+        {
+            return effect;
+        }
+        private set
+        {
+            effect = value;
+        }
+    }
+	[SerializeField] private Precondition precondition;
+    public Precondition Precondition
+    {
+        get
+        {
+            return precondition;
+        }
+        private set
+        {
+            precondition = value;
+        }
+    }
+	public int Priority {get; private set;}
+	public Status Status {get; private set;}
 
     public Action()
     {
         SetStatus(Status.notSent);
     }
 
-    public Action(Action action)
-    {
-        Replace(action);
-        Status = Status.notSent;
-    }
-
-    public Action(string name, string type, string sender, string target, string dialogid, string precondition, string effect, string parameters, int priority)
+    public Action(string name, string type, GameObject sender, GameObject target)
     {
         Name = name;
         Type = type;
-        Sender = sender;
-        Target = target;
-        TargetGameObject = GameObject.Find(Target);
-        DialogID = dialogid;
-        Precondition = precondition;
-        Effect = effect;
-        Parameters = parameters;
-        Priority = priority;
-        Status = Status.notSent;
+        SendingCharacter = sender;
+        TargetObject = target;
+        SetStatus(Status.notSent);
     }
 
-    public void Replace(Action newAction)
+    public bool Compare(Action action)
     {
-        this.Name = newAction.Name;
-        this.Type = newAction.Type;
-        this.Sender = newAction.Sender;
-        this.Target = newAction.Target;
-        this.DialogID = newAction.DialogID;
-        this.Precondition = newAction.Precondition;
-        this.Effect = newAction.Effect;
-        this.Parameters = newAction.Parameters;
-        this.Priority = newAction.Priority;
-    }
-
-    public bool Compare(Action a)
-    {
-       if(this.Name == a.Name
-            && this.Type == a.Type
-            && this.Sender == a.Sender
-            && this.Target == a.Target
-            && this.DialogID == a.DialogID
-            && this.Precondition == a.Precondition
-            && this.Effect == a.Effect
-            && this.Parameters == a.Parameters
-            && this.Priority == a.Priority
-            )
-                return true;
-            return false;
+        if(
+            Name == action.Name &&
+            Type == action.Type &&
+            SendingCharacter == action.SendingCharacter &&
+            TargetObject == action.TargetObject
+        )
+            return true;
+        return false;
     }
 
     public void SetStatus(Status s)
@@ -99,6 +159,13 @@ public class Action
 
     public bool HasPrecondition()
     {
-        return (Precondition != "");
+        if(Precondition.HoldingItem == null && precondition.Emotion == EmotionRef.None)
+            return false;
+        return true;
+    }
+
+    public bool IsPreconditionSatisfied()
+    {
+        return false;
     }
 }

@@ -6,98 +6,87 @@ using System.Linq;
 public class ActionDirectory : MonoBehaviour 
 {
 	[SerializeField] private TextAsset ActionListFile;
-	public List<Action> ActionList {get; private set;}
 	private GameManager manager;
+	[SerializeField] private Action[] ActionList;
 
 	void Awake()
 	{
 		manager = GameObject.Find("GameManager").GetComponent<GameManager>();
-		CreateActionList();
 	}
-
-	private void CreateActionList()
-    {
-        this.ActionList = ConfigReader.ReadActionList(ActionListFile.name + ".xml");
-    }
 
     public Action GetAction(int i)
     {
-        if(i >= 0 && i < ActionList.Count)
+        if(i >= 0 && i < ActionList.Count())
         {
-            return new Action(ActionList[i]);
+            return ActionList[i];
         }
         return null;
     }
 
-    public List<Action> FindActionsSatisfyingPrecondition(string target, string precondition)
+    public List<Action> FindActionsSatisfyingGoalCondition(GameObject targetCharacter, Precondition goalCondition)
 	{
-		List<Action> result = new List<Action>();
-		string[] split = manager.SplitParameterString(precondition);
-		switch(split[1])
+		List<Action> matches = new List<Action>();
+		foreach(Action action in ActionList)
 		{
-			case "lt":
-				result = FindActionsByParameterAndOperation(target, split[0], "-");
-			break;
-			case "gt":
-				result = FindActionsByParameterAndOperation(target, split[0], "+");
-			break;
-			case "contains":
-				result = FindActionsByParameterOperationAndValue(target, split[0], "contains", split[2]);
-			break;
-			case "at":
-				result = FindActionsByParameterOperationAndValue(target, split[0], "at", split[2]);
-			break;
+			bool satisfiesEmotion = SatisfiesEmotion(action, goalCondition, targetCharacter);
+			bool satisfiesItem = SatisfiesItem(action, goalCondition);
+			if(satisfiesEmotion && satisfiesItem)
+				matches.Add(action);
 		}
-		return result;
-	}
-
-	private List<Action> FindActionsByParameterAndOperation(string target, string parameter, string operation)
-	{
-		List<Action> matches = ActionList.ConvertAll(x => new Action(x));
-		matches = matches.Where(
-			x => x.Effect != ""
-			&& string.Equals(manager.SplitParameterString(x.Effect)[0], parameter)
-			&& string.Equals(manager.SplitParameterString(x.Effect)[1], operation)
-			&& (string.Equals(x.Target, target) || string.Equals(x.Target, "%tgt"))
-		).ToList();
-		ReplaceGenericParameters(matches, target);
 		return matches;
 	}
 
-	private List<Action> FindActionsByParameterOperationAndValue(string target, string parameter, string operation, string value)
+	private bool SatisfiesEmotion(Action action, Precondition goalCondition, GameObject targetCharacter)
 	{
-		List<Action> matches = ActionList.ConvertAll(x => new Action(x));
-		matches = matches.Where(
-			x => x.Effect != ""
-			&& string.Equals(manager.SplitParameterString(x.Effect)[0], parameter)
-			&& string.Equals(manager.SplitParameterString(x.Effect)[1], operation)
-			&& (string.Equals(manager.SplitParameterString(x.Effect)[2], value)  || string.Equals(manager.SplitParameterString(x.Effect)[2], "%val") || string.Equals(manager.SplitParameterString(x.Effect)[2], "%tgt"))
-			&& (string.Equals(x.Target, target) || string.Equals(x.Target, "%tgt"))
-		).ToList();
-		ReplaceGenericParameters(matches, target, value);
-		return matches;
+		if(action.TargetObject == targetCharacter)
+		{
+			EmotionRef emotion = goalCondition.Emotion;
+			BooleanCondition condition = goalCondition.BoolCondition;
+			float change = action.Effect.Change;
+
+			if(goalCondition.Emotion != EmotionRef.None)
+			{
+				if(condition == BooleanCondition.LessThan)
+				{
+					if(change < 0.0f)
+						return true;
+				}
+				else if(condition == BooleanCondition.GreaterThan)
+				{
+					if(change > 0.0f)
+						return true;
+				}
+				else if(condition == BooleanCondition.EqualTo)
+				{
+					EmotionalPersonalityModel epm = action.TargetObject.GetComponent<EmotionalPersonalityModel>();
+					if((float)epm.GetEmotionValue(emotion) + change == goalCondition.Value)
+						return true;
+				}
+			}
+		}
+		return false;
 	}
 
-	private void ReplaceGenericParameters(List<Action> actions, string target, string value)
+	private bool SatisfiesItem(Action action, Precondition goalCondition)
 	{
-		foreach(Action action in actions)
+		if(goalCondition.HoldingItem != null)
 		{
-			action.Effect = action.Effect.Replace("%val", value);
-			action.Effect = action.Effect.Replace("%tgt", target);
-			action.Target = action.Target.Replace("%tgt", target);
-			action.Precondition = action.Precondition.Replace("%val", value);
-			action.Precondition = action.Precondition.Replace("%tgt", target);
-			action.Parameters = action.Parameters.Replace("%val", value);
+			if(action.Effect.PickedUpItem != null)
+			{
+				Resource itemType = action.Effect.PickedUpItem.GetComponent<Item>().resource;
+				Resource goalItemType = goalCondition.HoldingItem.GetComponent<Item>().resource;
+				if(itemType == goalItemType)
+					return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
-	}
-
-	private void ReplaceGenericParameters(List<Action> actions, string target)
-	{
-		foreach(Action action in actions)
+		else
 		{
-			action.Effect = action.Effect.Replace("%tgt", target);
-			action.Target = action.Target.Replace("%tgt", target);
-			action.Precondition = action.Precondition.Replace("%tgt", target);
+			return true;
 		}
+		return false;
 	}
 }

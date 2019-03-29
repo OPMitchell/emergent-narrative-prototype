@@ -5,42 +5,37 @@ using System.Linq;
 
 public class GoalDirectory : MonoBehaviour 
 {
-	[SerializeField] private TextAsset GoalListFile;
-	public List<Goal> GoalList {get; private set;}
-
-	void Awake()
-	{
-		CreateGoalList();
-	}
-
-	private void CreateGoalList()
+	[SerializeField] private Goal[] goalList;
+    public Goal[] GoalList
     {
-        GoalList = ConfigReader.ReadGoals(GoalListFile.name + ".xml");
-    }
-
-    public void AddGoal(Goal goal)
-    {
-        if(goal != null)
-            GoalList.Add(goal);
-    }
-
-    public void RemoveGoal(Goal goal)
-    {
-        if(goal != null)
-            GoalList.Remove(goal);
+        get
+        {
+            return goalList;
+        }
+        private set
+        {
+            goalList = value;
+        }
     }
 
     public int Count()
     {
-        return GoalList.Count;
+        return GoalList.Count();
     }
 
     public Goal GetGoal(int i)
     {
-        if(i >= 0 && i < GoalList.Count)
+        if(i >= 0 && i < GoalList.Count())
         {
             return GoalList[i];
         }
         return null;
+    }
+
+    public void RemoveGoal(Goal goal)
+    {
+        List<Goal> temp = goalList.ToList();
+        temp.Remove(goal);
+        goalList = temp.ToArray();
     }
 }

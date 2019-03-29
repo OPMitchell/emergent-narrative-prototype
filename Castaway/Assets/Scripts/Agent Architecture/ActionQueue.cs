@@ -6,14 +6,6 @@ public class ActionQueue : EventPriorityQueue
 {
     Coroutine coroutine;
 
-    public bool Contains(Action action)
-    {
-        PriorityQueue queue = GetQueue();
-        if(queue.ContainsAction(action))
-            return true;
-        return false;
-    }
-
     public PriorityQueue GetQueue()
     {
         return queue;
@@ -30,7 +22,6 @@ public class ActionQueue : EventPriorityQueue
 
     private IEnumerator Execute(Action action)
     {
-        Debug.Log(transform.name + " now executing: " + action.Target + " - " + action.Type);
         StartCoroutine(GetComponent<ActionExecutor>().ExecuteAction(action));
         yield return new WaitUntil(() => !GetComponent<ActionExecutor>().Executing);
         Debug.Log("Finished executing");

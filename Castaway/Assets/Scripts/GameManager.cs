@@ -210,6 +210,7 @@ public class GameManager : MonoBehaviour
 		return null;
 	}
 
+	/*
 	public bool IsActionSatisfied(Action action)
 	{
 		string[] precondition = SplitParameterString(action.Precondition);
@@ -267,4 +268,5 @@ public class GameManager : MonoBehaviour
 			return false;
 		}
 	}
+	*/
 }

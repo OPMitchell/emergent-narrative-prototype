@@ -28,8 +28,8 @@ GameObject:
   - component: {fileID: 114348346743557946}
   - component: {fileID: 114058449553158648}
   - component: {fileID: 114226980711113352}
-  - component: {fileID: 114096044881453808}
   - component: {fileID: 114517038365600132}
+  - component: {fileID: 114096044881453808}
   - component: {fileID: 114786154213912640}
   - component: {fileID: 114663946024736738}
   m_Layer: 0
@@ -100,6 +100,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ActionListFile: {fileID: 4900000, guid: bd61dfff251abed4f94904733bbd5dfb, type: 3}
+  ActionList:
+  - name: ComplimentRachel
+    type: ComplimentRachel
+    sendingCharacter: {fileID: 1373307878645326}
+    targetObject: {fileID: 1932041451880542, guid: 787ac422e662f4a409791138c9f5f696,
+      type: 2}
+    effect:
+      emotion: 1
+      change: 0.2
+      pickedUpItem: {fileID: 0}
+    precondition:
+      holdingItem: {fileID: 0}
+      emotion: 0
+      boolCondition: 0
+      value: 0
 --- !u!114 &114226980711113352
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -177,8 +192,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 449b982d089eac6429e48d2935025b28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EmotionalPersonalityFile: {fileID: 4900000, guid: 59bd80bf7bf3bd940a27b82becf2014f,
-    type: 3}
+  Emotions:
+  - name: 1
+    threshold: 0.5
+    decay: 0.5
+    emotionValue: 0.1
+  - name: 2
+    threshold: 0.5
+    decay: 0.5
+    emotionValue: 0.1
+  - name: 3
+    threshold: 0.5
+    decay: 0.5
+    emotionValue: 0.1
+  - name: 4
+    threshold: 0.5
+    decay: 0.5
+    emotionValue: 0.1
+  - name: 5
+    threshold: 0.5
+    decay: 0.5
+    emotionValue: 0.1
 --- !u!114 &114786154213912640
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -191,6 +225,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GoalListFile: {fileID: 4900000, guid: 509bcfc216a708347928f1bd786a698a, type: 3}
+  goalList:
+  - type: 1
+    targetCharacter: {fileID: 1932041451880542, guid: 787ac422e662f4a409791138c9f5f696,
+      type: 2}
+    successCondition:
+      holdingItem: {fileID: 0}
+      emotion: 1
+      boolCondition: 2
+      value: 0.2
 --- !u!114 &114892604677349494
 MonoBehaviour:
   m_ObjectHideFlags: 1

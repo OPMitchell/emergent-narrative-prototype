@@ -10,17 +10,72 @@ public enum GoalType
     Interest = 2
 };
 
+[System.Serializable]
 public class Goal
 {
-    [XmlAttribute("type")]
-    public GoalType Type { get; private set; }
-    [XmlAttribute("target")]
-    public string Target { get; private set; }
-    [XmlAttribute("parameters")]
-    public string SuccessCondition {get; private set;}
+    [SerializeField] private string name;
+    public string Name
+    {
+        get
+        {
+            return name;
+        }
+    }
+    
+    [SerializeField] private GoalType type;
+    public GoalType Type
+    {
+        get
+        {
+            return type;
+        }
+        private set
+        {
+            type = value;
+        }
+    }
+
+    [SerializeField] private GameObject targetCharacter;
+    public GameObject TargetCharacter
+    {
+        get
+        {
+            return targetCharacter;
+        }
+        private set
+        {
+            targetCharacter = value;
+        }
+    }
+    
+    [SerializeField] private Precondition successCondition;
+    public Precondition SuccessCondition
+    {
+        get
+        {
+            return successCondition;
+        }
+        private set
+        {
+            successCondition = value;
+        }
+    }
     public bool Complete {get; set;}
 
-    [XmlIgnore]
+    private GameObject owner;
+    public GameObject Owner
+    {
+        get
+        {
+            return owner;
+        }
+        private set
+        {
+            owner = value;
+        }
+    }
+
+
     public Plan Plan {get; private set;}
     public List<Action> FailedActions { get; private set; }
     public int TimesFailed { get; set; }
@@ -31,12 +86,12 @@ public class Goal
         Complete = false;
     }
 
-    public Goal(GoalType type, string target, string parameters)
+    public Goal(GoalType type, GameObject targetCharacter, Precondition successCondition)
     {
         FailedActions = new List<Action>();
         Type = type;
-        Target = target;
-        SuccessCondition = parameters;
+        TargetCharacter = targetCharacter;
+        SuccessCondition = successCondition;
         Complete = false;
     }
 
@@ -45,36 +100,64 @@ public class Goal
         Plan = p;
     }
 
-    public void AddFailedAction(Action action)
-    {
-        if(!FailedActions.Any(x => x.Compare(action)))
-        {
-            FailedActions.Add(new Action(action));
-        }
-    }
-
     public bool IsSatisfied()
     {
-        GameManager manager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        string[] successConditionSplit = manager.SplitParameterString(SuccessCondition);
-        float targetValue = float.Parse(successConditionSplit[2], System.Globalization.CultureInfo.InvariantCulture);
-        if(successConditionSplit[1] == "gt")
+        bool holdingItem = IsHoldingItem();
+        bool emotionCondition = IsEmotionCorrect();
+        return (holdingItem && emotionCondition);
+    }
+
+    private bool IsHoldingItem()
+    {
+        if(successCondition.HoldingItem != null)
         {
-            float? actual = (float?)manager.GetStatValue(Target, successConditionSplit[0]);
-            if(actual == null)
+            Character c = owner.GetComponent<Character>();
+            if(c.heldItem != null)
+            {
+                Item heldItem = c.heldItem.GetComponent<Item>();
+                Item targetItem = successCondition.HoldingItem.GetComponent<Item>();
+                if(heldItem.resource != targetItem.resource)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
                 return false;
-            else if(actual > targetValue)
-                return true;
-            return false;
+            }
         }
-        else if(successConditionSplit[1] == "lt")
+        return true;
+    }
+
+    private bool IsEmotionCorrect()
+    {
+        EmotionalPersonalityModel epm = TargetCharacter.GetComponent<EmotionalPersonalityModel>();
+        float value = (float)epm.GetEmotionValue(SuccessCondition.Emotion);
+
+        if(successCondition.BoolCondition == BooleanCondition.LessThan)
         {
-            float? actual = (float?)manager.GetStatValue(Target, successConditionSplit[0]);
-            if(actual == null)
-                return false;
-            else if(actual < targetValue)
+            if(value < successCondition.Value)
                 return true;
-            return false;
+            else
+                return false;
+        }
+        else if(successCondition.BoolCondition == BooleanCondition.GreaterThan)
+        {
+            if(value > successCondition.Value)
+                return true;
+            else
+                return false;
+        }
+        else if(successCondition.BoolCondition == BooleanCondition.EqualTo)
+        {
+            if(value == successCondition.Value)
+                return true;
+            else
+                return false;
         }
         return false;
     }

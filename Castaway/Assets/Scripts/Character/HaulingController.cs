@@ -34,13 +34,13 @@ public class HaulingController : MonoBehaviour
 			{
 				if(item.GetComponent<Item>().GetLock(gameObject))
 				{
-					currentAction = new Action("HaulItem", "HaulItem", name, item.name, null, null, null, null, 3);
-					if(!actionQueue.Contains(currentAction))
-					{
+					currentAction = new Action("HaulItem", "HaulItem", gameObject, item.gameObject);
+					//if(!actionQueue.Contains(currentAction))
+					//{
 						currentAction.SetStatus(Status.Sent);
 						GetComponent<ActionQueue>().QueueAction(currentAction);
 						break;
-					}
+					//}
 				}
 			}
 		}

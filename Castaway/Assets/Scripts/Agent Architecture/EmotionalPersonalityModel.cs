@@ -12,34 +12,34 @@ public class EmotionalPersonalityModel : MonoBehaviour
 {
     //Each character has individual emotions. Hold these in an array.
 
-    [SerializeField] private TextAsset EmotionalPersonalityFile;
-    public List<PersonalEmotion> Emotions { get; private set; }
+    [SerializeField] private Emotion[] Emotions;
 
-    void Start()
+
+    public float GetEmotionValue(EmotionRef emotionName)
     {
-        this.Emotions = ConfigReader.ReadEmotionData(EmotionalPersonalityFile.name + ".xml");
+        return FindEmotion(emotionName).EmotionValue;
     }
 
-    public object GetEmotionValue(EmotionRef emotionName)
-    {
-        return FindEmotion(emotionName).GetValue();
-    }
-
-    public int GetEmotionThreshold(EmotionRef emotionName)
+    public float GetEmotionThreshold(EmotionRef emotionName)
     {
         return FindEmotion(emotionName).Threshold;
     }
 
-    public int GetEmotionDecay(EmotionRef emotionName)
+    public float GetEmotionDecay(EmotionRef emotionName)
     {
         return FindEmotion(emotionName).Decay;
+    }
+
+    public void AddToValue(EmotionRef emotionName, float amount)
+    {
+        FindEmotion(emotionName).EmotionValue += amount;
     }
 
     private Emotion FindEmotion(EmotionRef emotion)
     {
         foreach (Emotion e in Emotions)
         {
-            if (e.Name == emotion.ToString())
+            if (e.Name == emotion)
                 return e;
         }
         return null;
