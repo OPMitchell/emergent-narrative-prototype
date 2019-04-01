@@ -12,7 +12,7 @@ public class ContinuousActionPlanner : MonoBehaviour
 	private GoalDirectory goalDirectory;
 	private ActionQueue actionQueue;
 	private GameManager manager;
-	const int maxFail = 3; 	// Maximum number of times a goal can be replanned.
+	private const int maxFail = 3; 	// Maximum number of times a goal can be replanned.
 
 	// Used for initialisation.
 	void Awake()
@@ -30,7 +30,7 @@ public class ContinuousActionPlanner : MonoBehaviour
 			//if the goal is already satisified then remove it if it's a pursuit goal. Otherwise, don't do anything.
 			if(currentGoal.IsSatisfied())
 			{
-				Testing.WriteToLog(transform.name, "achieved goal: " + currentGoal.Name);
+				Testing.WriteToLog(transform.name, transform.name + " achieved goal: " + currentGoal.Name);
 				goalDirectory.RemoveGoal(currentGoal);
 			}
 			//if the goal isn't satisifed then check if the goal has a plan associated with it.
@@ -48,12 +48,12 @@ public class ContinuousActionPlanner : MonoBehaviour
 					{
 						// Set the goal to complete and it will be removed from the collection the next time Update() is run.
 						currentGoal.Complete = true;
-						Testing.WriteToLog(transform.name, "cancelled goal: " + currentGoal.Name + " because a plan is impossible to make.");
+						Testing.WriteToLog(transform.name, transform.name + " cancelled goal: " + currentGoal.Name + " because a plan is impossible to make.");
 					}
 					// If we successfully constructed one or more plans then we need to pick one for the agent to use.
 					else
 					{
-						Testing.WriteToLog(transform.name, "created a plan for goal: " + currentGoal.Name);
+						Testing.WriteToLog(transform.name, transform.name + " created a plan for goal: " + currentGoal.Name);
 						//pick a plan from List<LinkedList<Action>> plans and assign to g.plan
 						currentGoal.SetPlan(planList.GetBestPlan());
 					}
@@ -64,23 +64,31 @@ public class ContinuousActionPlanner : MonoBehaviour
 					//manage its execution
 					Plan plan = currentGoal.Plan;
 					Action currentAction = plan.GetCurrentAction();
-					switch(currentAction.Status)
+					if(currentAction != null)
 					{
-						case Status.notSent: 
-							currentAction.SetStatus(Status.Sent);
-							actionQueue.QueueAction(currentAction);
-						break;
-						case Status.Failed:
-							//action repair
-							plan.RemoveAction(currentAction);
-						break;
-						case Status.Successful:
-							plan.RemoveAction(currentAction);
-						break;
+						switch(currentAction.Status)
+						{
+							case Status.notSent: 
+								currentAction.SetStatus(Status.Sent);
+								Testing.WriteToLog(transform.name, transform.name + " is queueing action: " + Testing.GetActionInfo(currentAction));
+								actionQueue.QueueAction(currentAction);
+							break;
+							case Status.Failed:
+								//action repair
+								Testing.WriteToLog(transform.name, transform.name + " failed action: " + Testing.GetActionInfo(currentAction));
+								plan.RemoveAction(currentAction);
+							break;
+							case Status.Successful:
+								Testing.WriteToLog(transform.name, transform.name + " succeeded action: " + Testing.GetActionInfo(currentAction));
+								plan.RemoveAction(currentAction);
+							break;
+						}
+					}
+					else
+					{
+						currentGoal.SetPlan(null);
 					}
 				}
-				if(currentGoal.Plan != null && currentGoal.Plan.CountActions() <= 0)
-					currentGoal.SetPlan(null);
 			}
 		}
 	}
@@ -93,7 +101,7 @@ public class ContinuousActionPlanner : MonoBehaviour
 		{
 			Plan newPlan = new Plan(p);
 			newPlan.AddAction(action);
-			if(!action.HasPrecondition() || action.IsPreconditionSatisfied())
+			if(!action.HasPrecondition() || action.IsSatisfied())
 			{
 				plans.Add(newPlan);
 			}

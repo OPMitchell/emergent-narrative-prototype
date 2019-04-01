@@ -22,7 +22,7 @@ TagManager:
   - Tiles
   - Trees
   - Items
-  - 
+  - Characters
   - 
   - 
   - 
@@ -50,20 +50,23 @@ TagManager:
   - name: Tiles
     uniqueID: 1670333077
     locked: 0
-  - name: Trees
-    uniqueID: 4174268409
-    locked: 0
-  - name: Selector
-    uniqueID: 837447279
-    locked: 0
-  - name: Characters
-    uniqueID: 4227036153
+  - name: Walls
+    uniqueID: 3457563437
     locked: 0
   - name: Items
     uniqueID: 3555764839
     locked: 0
-  - name: Walls
-    uniqueID: 3457563437
+  - name: Trees
+    uniqueID: 4174268409
+    locked: 0
+  - name: Characters
+    uniqueID: 4227036153
+    locked: 0
+  - name: HeldItem
+    uniqueID: 2565461937
+    locked: 0
+  - name: Selector
+    uniqueID: 837447279
     locked: 0
   - name: UI
     uniqueID: 2012738053

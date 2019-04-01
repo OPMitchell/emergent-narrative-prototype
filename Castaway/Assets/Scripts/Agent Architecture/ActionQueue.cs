@@ -5,6 +5,14 @@ using UnityEngine;
 public class ActionQueue : EventPriorityQueue
 {
     Coroutine coroutine;
+    Character character;
+    ReceivingQueue receivingQueue;
+
+    void Awake()
+    {
+        character = GetComponent<Character>();
+        receivingQueue = GetComponent<ReceivingQueue>();
+    }
 
     public PriorityQueue GetQueue()
     {
@@ -13,10 +21,19 @@ public class ActionQueue : EventPriorityQueue
 
     public override void CheckQueue()
     {
-        if(!queue.IsEmpty() && !GetComponent<ActionExecutor>().Executing)
+        if(!queue.IsEmpty() && !GetComponent<ActionExecutor>().Executing && character.IsFree() && receivingQueue.IsEmpty())
         {
             Action action = queue.Remove();
-            StartCoroutine(Execute(action));
+            if(action.IsSatisfied())
+            {            
+                Testing.WriteToLog(transform.name, transform.name + " is executing action: " + Testing.GetActionInfo(action));
+                character.currentAction = action;
+                StartCoroutine(Execute(action));
+            }
+            else
+            {
+                Testing.WriteToLog(transform.name, transform.name + " tried to execute action: " + Testing.GetActionInfo(action) + ", but failed the precondition.");
+            }
         }
     }
 
@@ -24,20 +41,8 @@ public class ActionQueue : EventPriorityQueue
     {
         StartCoroutine(GetComponent<ActionExecutor>().ExecuteAction(action));
         yield return new WaitUntil(() => !GetComponent<ActionExecutor>().Executing);
+        character.currentAction = null;
         Debug.Log("Finished executing");
-        //queue.Remove();
-        /*
-        if(action.Status == Status.Successful)
-        {
-            Transform target = GameObject.Find(action.Target).transform;
-            if(target.GetComponent<ReceivingQueue>() != null && target.tag == "Character")
-            {
-                target.GetComponent<ReceivingQueue>().QueueAction(action);
-                if(action.Target != transform.name)
-                    GetComponent<ReceivingQueue>().QueueAction(action);
-            }
-        }
-        */
     }
 
 }

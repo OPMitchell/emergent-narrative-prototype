@@ -6,7 +6,17 @@ using System.Linq;
 using System.IO;
 
 public static class Testing
-{
+{	
+	public static void ClearLogs()
+	{
+		GameManager manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+		foreach(GameObject c in manager.Characters)
+		{
+			string path = Application.dataPath + "/Logs/" + c.name + "_Log";
+			File.WriteAllText(path, System.String.Empty);
+		}
+	}
+
 	public static void WriteToLog(string characterName, string text)
 	{
 		string path = Application.dataPath + "/Logs/" + characterName + "_Log";
@@ -20,8 +30,7 @@ public static class Testing
 
     public static string GetActionInfo(Action action)
 	{
-		//return ("Action(name = " + action.Name + ", sender = " + action.SendingCharacter + ", target = " + action.TargetCharacter + ", precondition = " + action.Precondition + ", effect = " + action.Effect + ")");
-		return "";
+		return ("Action(name = " + action.Name + ", type = " + action.Type.ToString() + ", sender = " + action.SendingCharacter.name + ", target = " + action.TargetObject.name + ", priority = " + action.Priority+ ")");
 	}
 
 	public static void PrintMessage(string message)

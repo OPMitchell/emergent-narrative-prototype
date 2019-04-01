@@ -11,6 +11,8 @@ public class TerrainGenerator : MonoBehaviour
 
 	public GameObject tree;
 	public GameObject tree2;
+	public GameObject flowers1;
+	public GameObject flowers2;
 
 	private const float tileWidth = 2.0f;
 	private const int heightMapSize = 6;
@@ -21,7 +23,8 @@ public class TerrainGenerator : MonoBehaviour
 	{
 		int mapwidth = (int)Mathf.Pow(2,heightMapSize)+1;
 		map = new GameObject[mapwidth, mapwidth];
-		float[,] heightmap = DiamondSquare.CreateHeightmap(heightMapSize, 1233, 1.0f, 0.5f);
+		//seed of 1233 is good
+		float[,] heightmap = DiamondSquare.CreateHeightmap(heightMapSize, 12348, 1.0f, 0.5f);
 		for(int x = 0; x < heightmap.GetLength(0); x++)
 		{
 			for(int y = 0; y < heightmap.GetLength(1); y++)
@@ -49,12 +52,15 @@ public class TerrainGenerator : MonoBehaviour
 
 	private GameObject PlantTree(int x, int y)
 	{
-		int numberOfTrees = Random.Range(0,100);
-		if(numberOfTrees <= 75)
-			numberOfTrees = 0;
-		else if (numberOfTrees > 75 && numberOfTrees <= 100)
-			numberOfTrees = 1;
-		if(numberOfTrees > 0)
+		int selection = 0;
+		int chance = Random.Range(0,100);
+		if(chance <= 70)
+			selection = 0;
+		else if (chance > 70 && chance <= 90)
+			selection = 1;
+		else if (chance > 90 && chance <= 100)
+			selection = 2;
+		if(selection == 1)
 		{
 			int ran = Random.Range(0,2);
 			GameObject t = null;
@@ -63,6 +69,21 @@ public class TerrainGenerator : MonoBehaviour
 			else
 				t = Instantiate(tree2, new Vector3(x*tileWidth,y*tileWidth,0), Quaternion.identity) as GameObject;
 			t.name = "Tree (" + x + "," + y + ")";
+			float scale = Random.Range(1.2f, 2.0f);
+			t.transform.localScale = new Vector3(scale, scale, scale);
+			return t;
+		}
+		else if(selection == 2)
+		{
+			int ran = Random.Range(0,2);
+			GameObject t = null;
+			if(ran == 0)
+				t = Instantiate(flowers1, new Vector3(x*tileWidth,y*tileWidth,0), Quaternion.identity) as GameObject;
+			else
+				t = Instantiate(flowers2, new Vector3(x*tileWidth,y*tileWidth,0), Quaternion.identity) as GameObject;
+			t.name = "Flowers (" + x + "," + y + ")";
+			float scale = Random.Range(0.4f, 0.8f);
+			t.transform.localScale = new Vector3(scale, scale, scale);
 			return t;
 		}
 		return null;

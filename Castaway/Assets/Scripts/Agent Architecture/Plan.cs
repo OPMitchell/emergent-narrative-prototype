@@ -46,6 +46,10 @@ public class Plan
 
     public Action GetCurrentAction()
     {
-        return actions.ElementAt(0);
+        if(actions.Count > 0)
+        {
+            return actions.ElementAt(0);
+        }
+        return null;
     }
 }

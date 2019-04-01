@@ -5,15 +5,14 @@ using UnityEngine;
 public class Character : MonoBehaviour 
 {
 	public float Speed = 5.0f;
-	public string Name;
 	public int cX {get; private set;}
 	public int cY {get; private set;}
 	private GameObject[,] map;
 	private GameManager manager;
 	private UIManager ui;
 	public GameObject heldItem;	
-	private System.Random rnd;
 	public Action currentAction {get;set;}
+	private GameObject _lock;
 
 	private Coroutine currentActionCoroutine;
 
@@ -23,7 +22,6 @@ public class Character : MonoBehaviour
 		manager = GameObject.Find("GameManager").GetComponent<GameManager>();
 		ui = GameObject.Find("GameManager").GetComponent<UIManager>();
 		map = manager.Map;
-		rnd = new System.Random();
 		SpawnAtRandomPos();
 		currentAction = null;
 	}
@@ -35,7 +33,7 @@ public class Character : MonoBehaviour
 		return false;
 	}
 
-	public void PickUpItem(Tile tile)
+	public bool PickUpItem(Tile tile)
 	{
 		if(tile.item != null && AtPosition(tile.X, tile.Y))
 		{
@@ -43,6 +41,7 @@ public class Character : MonoBehaviour
 			{
 				string name = tile.item.name;
 				heldItem = GameObject.Find(name);
+				heldItem.GetComponent<SpriteRenderer>().sortingLayerName = "HeldItem";
 				tile.item = null;
 			}
 			else
@@ -52,7 +51,15 @@ public class Character : MonoBehaviour
 				heldItem = GameObject.Find(name);
 				tile.item = null;
 				tile.AddItem(temp);
+				temp.GetComponent<Item>().Free(gameObject);
+				heldItem.GetComponent<SpriteRenderer>().sortingLayerName = "HeldItem";
+
 			}
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 
@@ -61,10 +68,12 @@ public class Character : MonoBehaviour
 		if(tile.item == null && heldItem != null && AtPosition(tile.X, tile.Y))
 		{
 			string name = heldItem.name;
+			heldItem.GetComponent<Item>().Free(gameObject);
 			GameObject droppedItem = heldItem;
 			tile.GetComponent<Tile>().AddItem(droppedItem);
 			heldItem = null;
 			droppedItem.name = ReplaceCoordinates(droppedItem.name, tile.X, tile.Y);
+			droppedItem.GetComponent<SpriteRenderer>().sortingLayerName = "Item";
 		}
 	}
 
@@ -78,20 +87,26 @@ public class Character : MonoBehaviour
 	{
 		do
 		{
-			cX = rnd.Next(0, map.GetLength(0)-1);
-			cY = rnd.Next(0, map.GetLength(1)-1);
+			cX = manager.GetRandomInt(0, map.GetLength(0)-1);
+			cY = manager.GetRandomInt(0, map.GetLength(1)-1);
 		} while (!map[cX,cY].GetComponent<Node>().IsPassable());
 		transform.position = map[cX,cY].transform.position;
 		Debug.Log(gameObject.name + " spawned at (" + cX + "," + cY +")");
 	}
 
-	public void WalkToCoordinates(int x, int y)
+	public bool WalkToCoordinates(int x, int y)
 	{
 		if(AtPosition(x,y))
-			return;
-		Debug.Log("Moving " + Name + " to (" + x + "," + y +")");
+			return true;
+		Debug.Log("Moving " + gameObject.name + " to (" + x + "," + y +")");
 		List<Node> path = FindPathToTarget(x, y);
-		currentActionCoroutine = StartCoroutine(FollowPath(path));
+		if(path == null)
+			return false;
+		else
+		{
+			currentActionCoroutine = StartCoroutine(FollowPath(path));
+			return true;
+		}
 	}
 
 	List<Node> FindPathToTarget(int tX, int tY)
@@ -108,9 +123,26 @@ public class Character : MonoBehaviour
 	{
 		if(path != null)
 		{
+			Animator animator = GetComponent<Animator>();
 			while(cX != path[path.Count -1].X || cY != path[path.Count -1].Y)
 			{
 				Node currentNode = path[0];
+
+				//calculate direction for animations
+				int horizontal = 0;
+				int vertical = 0;
+				if(currentNode.X < cX)
+					horizontal = -1;
+				else if(currentNode.X > cX)
+					horizontal = 1;
+				if(currentNode.Y < cY)
+					vertical = -1;
+				else if(currentNode.Y > cY)
+					vertical = 1;
+
+				animator.SetInteger("Horizontal", horizontal);
+				animator.SetInteger("Vertical", vertical);
+
 				float step = Speed * Time.deltaTime;
 				Vector3 target = map[currentNode.X, currentNode.Y].GetComponent<Renderer>().bounds.center;
 				transform.position = Vector3.MoveTowards(transform.position, target, step);
@@ -128,6 +160,8 @@ public class Character : MonoBehaviour
 				}
 				yield return null;
 			}
+			animator.SetInteger("Horizontal", 0);
+			animator.SetInteger("Vertical", 0);
 		}
 	}
 
@@ -143,5 +177,28 @@ public class Character : MonoBehaviour
 		string result = s.Substring(start+1, end - start - 1);
 		s = s.Replace(result, x + "," + y);
 		return s;
+	}
+
+	public void Free(GameObject owner)
+	{
+		if(_lock == owner)
+			_lock = null;
+	}
+
+	public bool GetLock(GameObject owner)
+	{
+		if(_lock == null)
+		{
+			_lock = owner;
+			return true;
+		}
+		return false;
+	}
+
+	public bool IsFree()
+	{
+		if(_lock == null)
+			return true;
+		return false;
 	}
 }

@@ -62,7 +62,7 @@ public class Goal
     }
     public bool Complete {get; set;}
 
-    private GameObject owner;
+    [SerializeField] private GameObject owner;
     public GameObject Owner
     {
         get
@@ -102,63 +102,6 @@ public class Goal
 
     public bool IsSatisfied()
     {
-        bool holdingItem = IsHoldingItem();
-        bool emotionCondition = IsEmotionCorrect();
-        return (holdingItem && emotionCondition);
-    }
-
-    private bool IsHoldingItem()
-    {
-        if(successCondition.HoldingItem != null)
-        {
-            Character c = owner.GetComponent<Character>();
-            if(c.heldItem != null)
-            {
-                Item heldItem = c.heldItem.GetComponent<Item>();
-                Item targetItem = successCondition.HoldingItem.GetComponent<Item>();
-                if(heldItem.resource != targetItem.resource)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private bool IsEmotionCorrect()
-    {
-        EmotionalPersonalityModel epm = TargetCharacter.GetComponent<EmotionalPersonalityModel>();
-        float value = (float)epm.GetEmotionValue(SuccessCondition.Emotion);
-
-        if(successCondition.BoolCondition == BooleanCondition.LessThan)
-        {
-            if(value < successCondition.Value)
-                return true;
-            else
-                return false;
-        }
-        else if(successCondition.BoolCondition == BooleanCondition.GreaterThan)
-        {
-            if(value > successCondition.Value)
-                return true;
-            else
-                return false;
-        }
-        else if(successCondition.BoolCondition == BooleanCondition.EqualTo)
-        {
-            if(value == successCondition.Value)
-                return true;
-            else
-                return false;
-        }
-        return false;
+        return successCondition.IsSatisfied(owner, targetCharacter);
     }
 }

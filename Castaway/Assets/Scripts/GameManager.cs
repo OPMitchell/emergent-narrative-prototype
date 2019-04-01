@@ -7,14 +7,23 @@ public class GameManager : MonoBehaviour
 {
 	public GameObject[,] Map {get; private set;}
 	public GameObject[] Characters;
+	private System.Random rnd;
+
 
 	public bool mouseDown {get;set;}
 
-	private void Start()
+	void Awake()
 	{
+		Testing.ClearLogs();
 		mouseDown = false;
+		rnd = new System.Random(System.DateTime.Now.Second);
 		DrawMap();
 		AddCharacters();
+	}
+
+	public int GetRandomInt(int min, int max)
+	{
+		return rnd.Next(min, max);
 	}
 
 	public void ClearTileSelections()
@@ -35,7 +44,7 @@ public class GameManager : MonoBehaviour
 		foreach(GameObject c in Characters)
 		{
 			GameObject character = Instantiate(c) as GameObject;
-			character.name = character.GetComponent<Character>().Name;
+			character.name = c.name;
 		}
 	}
 
@@ -72,7 +81,7 @@ public class GameManager : MonoBehaviour
 		foreach(GameObject t in Map)
 		{
 			Tile tile = t.GetComponent<Tile>();
-			if(tile.item != null && tile.item.tag == "Item" && tile.zone != Zone.Stockpile && tile.item.GetComponent<Item>().IsFree())
+			if(tile.item != null && tile.item.GetComponent<Item>().IsStockpilable() && tile.item.tag == "Item" && tile.zone != Zone.Stockpile && tile.item.GetComponent<Item>().IsFree())
 			{
 				items.Add(tile.item);
 			}
@@ -125,13 +134,27 @@ public class GameManager : MonoBehaviour
 		return count;
 	}
 
-	public List<GameObject> GetItemsOfResource(Resource r)
+	public List<GameObject> GetItemsOfResourceInStockpile(Resource r)
 	{
 		List<GameObject> items = new List<GameObject>();
 		foreach(GameObject t in Map)
 		{
 			Tile tile = t.GetComponent<Tile>();
 			if(tile.zone == Zone.Stockpile && tile.item != null && tile.item.GetComponent<Item>().resource == r && tile.item.GetComponent<Item>().IsFree())
+			{
+				items.Add(tile.item);
+			}
+		}
+		return items;	
+	}
+
+	public List<GameObject> GetItemsOfResource(Resource r)
+	{
+		List<GameObject> items = new List<GameObject>();
+		foreach(GameObject t in Map)
+		{
+			Tile tile = t.GetComponent<Tile>();
+			if(tile.item != null && tile.item.GetComponent<Item>().resource == r && tile.item.GetComponent<Item>().IsFree())
 			{
 				items.Add(tile.item);
 			}

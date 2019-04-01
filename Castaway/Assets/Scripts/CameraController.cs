@@ -10,6 +10,8 @@ public class CameraController : MonoBehaviour
 	public float zoomSpeed = 1.0f;
 	public float minOrtho = 1.0f;
 	public float maxOrtho = 20.0f;
+
+	private GameObject targetToFollow;
 	
 	void Start()
 	{
@@ -25,6 +27,10 @@ public class CameraController : MonoBehaviour
 
 	void Translate()
 	{
+
+		if(Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+			targetToFollow = null;
+			
 		float horizontal = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
 		float vertical = Input.GetAxis("Vertical") * speed * Time.deltaTime;
 		if(!(transform.position.x + horizontal < 0) && !(transform.position.x + horizontal > 172))
@@ -46,5 +52,16 @@ public class CameraController : MonoBehaviour
             targetOrtho = Mathf.Clamp (targetOrtho, minOrtho, maxOrtho);
 		}
 		Camera.main.orthographicSize = Mathf.MoveTowards (Camera.main.orthographicSize, targetOrtho, smoothZoomSpeed * Time.deltaTime);
+	}
+
+	public IEnumerator SmoothMoveToTarget(GameObject targetCharacter)
+	{
+		targetToFollow = targetCharacter;
+		while(targetToFollow != null)
+		{
+			Vector3 target = new Vector3(targetCharacter.transform.position.x, targetCharacter.transform.position.y, -10);
+			transform.position = Vector3.MoveTowards(transform.position, target, 4.0f);
+			yield return null;
+		}
 	}
 }

@@ -10,22 +10,22 @@ public class ActionExecutor : MonoBehaviour
     private ItemManager items;
     private ResourceManager resources;
     private BuildManager buildManager;
-	private System.Random rnd;
+    private DialogueManager dialogueManager;
 
-    void Start()
+    void Awake()
     {
-        rnd = new System.Random();
         character = GetComponent<Character>();
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
         items = GameObject.Find("GameManager").GetComponent<ItemManager>();
         resources = GameObject.Find("GameManager").GetComponent<ResourceManager>();
         buildManager = GameObject.Find("GameManager").GetComponent<BuildManager>();
+        dialogueManager = GameObject.Find("GameManager").GetComponent<DialogueManager>();
     }
 
     public IEnumerator ExecuteAction(Action action)
     {
         Executing = true;
-        if(action.Type == "Cut")
+        if(action.Type == ActionType.Cut)
         {
             Tile tile = action.TargetObject.GetComponent<Tile>();
             if(tile != null)
@@ -50,7 +50,7 @@ public class ActionExecutor : MonoBehaviour
             }
             tile.Free(gameObject);
         }
-        else if(action.Type == "HaulItem")
+        else if(action.Type == ActionType.Haul)
         {
             Item item = action.TargetObject.GetComponent<Item>();
             if(item != null)
@@ -73,13 +73,19 @@ public class ActionExecutor : MonoBehaviour
                         Tile parent = item.Parent.GetComponent<Tile>();
                         character.WalkToCoordinates(parent.X, parent.Y);
                         yield return new WaitUntil(() => (character.cX == parent.X && character.cY == parent.Y));
-                        character.PickUpItem(parent);
-                        character.WalkToCoordinates(target.X, target.Y);
-                        yield return new WaitUntil(() => (character.cX == target.X && character.cY == target.Y));
-                        character.DropItem(target);
-                        resources.AddResource(item.resource, 1);
-                        action.SetStatus(Status.Successful);
-                        target.Free(gameObject);
+                        if(character.PickUpItem(parent))
+                        {
+                            character.WalkToCoordinates(target.X, target.Y);
+                            yield return new WaitUntil(() => (character.cX == target.X && character.cY == target.Y));
+                            character.DropItem(target);
+                            resources.AddResource(item.resource, 1);
+                            action.SetStatus(Status.Successful);
+                            target.Free(gameObject);
+                        }
+                        else
+                        {
+                            action.SetStatus(Status.Failed);
+                        }
                     }
                     else
                     {
@@ -92,9 +98,8 @@ public class ActionExecutor : MonoBehaviour
             {
                 action.SetStatus(Status.Failed);
             }
-            item.Free(gameObject);
         }
-        else if(action.Type == "Build")
+        else if(action.Type == ActionType.Build)
         {
             Tile tile = action.TargetObject.GetComponent<Tile>();
             GameObject passableTile = manager.GetPassableNeighbourTile(tile);
@@ -104,7 +109,7 @@ public class ActionExecutor : MonoBehaviour
             {
                 for(int i = 0; i < resourceCost; i++)
                 {
-                    List<GameObject> resources = manager.GetItemsOfResource(tile.toBuild.GetComponent<BuildableItem>().requiredResource);
+                    List<GameObject> resources = manager.GetItemsOfResourceInStockpile(tile.toBuild.GetComponent<BuildableItem>().requiredResource);
                     Item resource = resources[0].GetComponent<Item>();
                     if(resource.GetLock(gameObject))
                     {
@@ -141,40 +146,95 @@ public class ActionExecutor : MonoBehaviour
             }
             tile.Free(gameObject);
         }
-        /*
-        else if(action.Type == "PickUpItem")
+        else if(action.Type == ActionType.PickUpItem)
         {
-            string resource = action.Parameters.ToLower();
-            List<GameObject> items = manager.GetItemsOfResource((Resource)System.Enum.Parse(typeof(Resource), resource, true));
-            if(items.Count > 0)
+            List<GameObject> items = manager.GetItemsOfResource(action.TargetObject.GetComponent<Item>().resource);
+            GameObject g = items[manager.GetRandomInt(0, items.Count)];
+            Item item = g.GetComponent<Item>();
+            Tile parent = item.Parent.GetComponent<Tile>();
+            if(item.GetLock(gameObject) && character.WalkToCoordinates(parent.X, parent.Y))
             {
-                Item item = items[0].GetComponent<Item>();
-                Tile parentTile = item.Parent.GetComponent<Tile>();
-                if(item.GetLock(gameObject))
+                yield return new WaitUntil(() => (character.AtPosition(parent.X, parent.Y)));
+                if(character.PickUpItem(parent))
                 {
-                    character.WalkToCoordinates(parentTile.X, parentTile.Y);
-                    yield return new WaitUntil(() => (character.AtPosition(parentTile.X, parentTile.Y)));
-                    character.PickUpItem(parentTile);
+                    dialogueManager.Speak(gameObject, action.Dialog);
+                    yield return new WaitForSeconds(5.0f);
+                    action.SetStatus(Status.Successful);
+                }
+                else
+                    action.SetStatus(Status.Failed);
+            }
+            else
+            {
+                action.SetStatus(Status.notSent);
+            }
+        }
+        else if(action.Type == ActionType.TalkToTarget)
+        {
+            GameObject targetCharacter = GameObject.Find(action.TargetObject.name);
+            Character c = targetCharacter.GetComponent<Character>();
+            if(c.GetLock(gameObject))
+            {
+                yield return new WaitUntil(() => c.currentAction == null);
+                Tile tile = manager.GetPassableNeighbourTile(manager.Map[c.cX,c.cY].GetComponent<Tile>()).GetComponent<Tile>();
+                character.WalkToCoordinates(tile.X, tile.Y);
+                yield return new WaitUntil(() => (character.AtPosition(tile.X, tile.Y)));
+                dialogueManager.Speak(gameObject, action.Dialog);
+                yield return new WaitForSeconds(5.0f);
+                action.SetStatus(Status.Successful);
+            }
+            else
+            {
+                action.SetStatus(Status.notSent);
+            }
+        }
+        else if(action.Type == ActionType.GiveItemToTarget)
+        {
+            if(character.heldItem.GetComponent<Item>().resource == action.Precondition.HoldingItem.GetComponent<Item>().resource)
+            {
+                GameObject targetCharacter = GameObject.Find(action.TargetObject.name);
+                Character c = targetCharacter.GetComponent<Character>();
+                if(c.GetLock(gameObject))
+                {
+                    Tile tile = manager.GetPassableNeighbourTile(manager.Map[c.cX,c.cY].GetComponent<Tile>()).GetComponent<Tile>();
+                    character.WalkToCoordinates(tile.X, tile.Y);
+                    yield return new WaitUntil(() => (character.AtPosition(tile.X, tile.Y)));
+                    character.DestroyItem();
+                    dialogueManager.Speak(gameObject, action.Dialog);
+                    yield return new WaitForSeconds(5.0f);
                     action.SetStatus(Status.Successful);
                 }
                 else
                 {
-                    action.SetStatus(Status.Failed);
+                    action.SetStatus(Status.notSent);
                 }
             }
             else
+            {
                 action.SetStatus(Status.Failed);
-
+            }
         }
-        */
-        else if(action.Type == "ComplimentRachel")
+        else
         {
-            Character rachel = action.TargetObject.GetComponent<Character>();
-            character.WalkToCoordinates(50,50);
-            yield return new WaitUntil(() => (character.AtPosition(50, 50)));
-            rachel.gameObject.GetComponent<EmotionalPersonalityModel>().AddToValue(action.Effect.Emotion, action.Effect.Change);
-            action.SetStatus(Status.Successful);
+            Debug.Log("Action not found!");
+            action.SetStatus(Status.Failed);
         }
+        StartCoroutine(SendToTarget(action));
         Executing = false;
+    }
+
+    private IEnumerator SendToTarget(Action action)
+    {
+        //if action was successful, send a receipt to the target
+        if(action.Status == Status.Successful)
+        {
+            GameObject target = GameObject.Find(action.TargetObject.name);
+            if(target != null && target.tag == "Character")
+            {
+                target.GetComponent<ReceivingQueue>().QueueAction(action);
+                yield return new WaitForSeconds(1.0f);
+                target.GetComponent<Character>().Free(gameObject);
+            }
+        }
     }
 }

@@ -1,5 +1,10 @@
-3/29/2019 4:32:52 PM - created a plan for goal: 
-3/29/2019 4:32:54 PM - achieved goal: 
-3/29/2019 4:33:22 PM - achieved goal: 
-3/29/2019 4:33:51 PM - achieved goal: 
-3/29/2019 4:34:35 PM - achieved goal: 
+4/1/2019 1:53:58 PM - Bob created a plan for goal: MakeRachelHappy
+4/1/2019 1:53:58 PM - Bob is queueing action: Action(name = PickUpFlowers, type = PickUpItem, sender = Bob, target = flowers1, priority = 1)
+4/1/2019 1:53:58 PM - Bob added action: Action(name = PickUpFlowers, type = PickUpItem, sender = Bob, target = flowers1, priority = 1) to their action queue
+4/1/2019 1:53:59 PM - Bob is executing action: Action(name = PickUpFlowers, type = PickUpItem, sender = Bob, target = flowers1, priority = 1)
+4/1/2019 1:54:02 PM - Bob succeeded action: Action(name = PickUpFlowers, type = PickUpItem, sender = Bob, target = flowers1, priority = 1)
+4/1/2019 1:54:02 PM - Bob is queueing action: Action(name = GiveRachelFlowers, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1)
+4/1/2019 1:54:02 PM - Bob added action: Action(name = GiveRachelFlowers, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1) to their action queue
+4/1/2019 1:54:02 PM - Bob is executing action: Action(name = GiveRachelFlowers, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1)
+4/1/2019 1:54:18 PM - Bob succeeded action: Action(name = GiveRachelFlowers, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1)
+4/1/2019 1:54:18 PM - Bob achieved goal: MakeRachelHappy

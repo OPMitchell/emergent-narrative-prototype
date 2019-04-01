@@ -5,7 +5,6 @@ using System.Linq;
 
 public class ActionDirectory : MonoBehaviour 
 {
-	[SerializeField] private TextAsset ActionListFile;
 	private GameManager manager;
 	[SerializeField] private Action[] ActionList;
 
@@ -20,6 +19,16 @@ public class ActionDirectory : MonoBehaviour
         {
             return ActionList[i];
         }
+        return null;
+    }
+
+    public Action GetAction(string actionName)
+    {
+		foreach(Action action in ActionList)
+		{
+			if(action.Name.ToLower() == actionName.ToLower())
+				return action;
+		}
         return null;
     }
 
@@ -38,13 +47,16 @@ public class ActionDirectory : MonoBehaviour
 
 	private bool SatisfiesEmotion(Action action, Precondition goalCondition, GameObject targetCharacter)
 	{
+		if(goalCondition.Emotion == EmotionRef.None)
+			return true;
 		if(action.TargetObject == targetCharacter)
 		{
 			EmotionRef emotion = goalCondition.Emotion;
+			EmotionRef actionEmotion = action.Effect.Emotion;
 			BooleanCondition condition = goalCondition.BoolCondition;
 			float change = action.Effect.Change;
 
-			if(goalCondition.Emotion != EmotionRef.None)
+			if(goalCondition.Emotion != EmotionRef.None && emotion == actionEmotion)
 			{
 				if(condition == BooleanCondition.LessThan)
 				{
@@ -54,6 +66,18 @@ public class ActionDirectory : MonoBehaviour
 				else if(condition == BooleanCondition.GreaterThan)
 				{
 					if(change > 0.0f)
+						return true;
+				}
+				else if(condition == BooleanCondition.GreaterThanOrEqualTo)
+				{
+					EmotionalPersonalityModel epm = action.TargetObject.GetComponent<EmotionalPersonalityModel>();
+					if(change > 0.0f || ((float)epm.GetEmotionValue(emotion) + change == goalCondition.Value))
+						return true;
+				}
+				else if(condition == BooleanCondition.LessThan)
+				{
+					EmotionalPersonalityModel epm = action.TargetObject.GetComponent<EmotionalPersonalityModel>();
+					if(change < 0.0f || ((float)epm.GetEmotionValue(emotion) + change == goalCondition.Value))
 						return true;
 				}
 				else if(condition == BooleanCondition.EqualTo)

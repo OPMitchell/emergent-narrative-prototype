@@ -1,12 +1,10 @@
-2/22/2019 10:17:28 AM - Received action: Action(name = ComplimentTarget, sender = Bob, target = Rachel, precondition = , effect = happiness + 0.05)
-2/22/2019 10:17:28 AM - Action started: Action(name = ThankYou_Compliment, sender = Rachel, target = Bob, precondition = , effect = )
-2/22/2019 10:17:28 AM - Action successful: Action(name = ThankYou_Compliment, sender = Rachel, target = Bob, precondition = , effect = )
-2/22/2019 10:17:28 AM - Received action: Action(name = ThankYou_Compliment, sender = Rachel, target = Bob, precondition = , effect = )
-2/22/2019 10:23:14 AM - Received action: Action(name = ComplimentTarget, sender = Bob, target = Rachel, precondition = , effect = happiness + 0.05)
-2/22/2019 10:23:14 AM - Action started: Action(name = ThankYou_Compliment, sender = Rachel, target = Bob, precondition = , effect = )
-2/22/2019 10:23:14 AM - Action successful: Action(name = ThankYou_Compliment, sender = Rachel, target = Bob, precondition = , effect = )
-2/22/2019 10:23:14 AM - Received action: Action(name = ThankYou_Compliment, sender = Rachel, target = Bob, precondition = , effect = )
-3/8/2019 2:38:52 PM - Received action: Action(name = ComplimentTarget, sender = Bob, target = Rachel, precondition = , effect = happiness + 0.05)
-3/8/2019 2:38:52 PM - Action started: Action(name = ThankYou_Compliment, sender = Rachel, target = Bob, precondition = , effect = )
-3/8/2019 2:38:52 PM - Action successful: Action(name = ThankYou_Compliment, sender = Rachel, target = Bob, precondition = , effect = )
-3/8/2019 2:38:52 PM - Received action: Action(name = ThankYou_Compliment, sender = Rachel, target = Bob, precondition = , effect = )
+4/1/2019 1:53:58 PM - Rachel created a plan for goal: PickUpFlowers
+4/1/2019 1:53:58 PM - Rachel is queueing action: Action(name = PickUpFlowers, type = PickUpItem, sender = Rachel, target = flowers1, priority = 1)
+4/1/2019 1:53:58 PM - Rachel added action: Action(name = PickUpFlowers, type = PickUpItem, sender = Rachel, target = flowers1, priority = 1) to their action queue
+4/1/2019 1:53:59 PM - Rachel is executing action: Action(name = PickUpFlowers, type = PickUpItem, sender = Rachel, target = flowers1, priority = 1)
+4/1/2019 1:54:02 PM - Rachel achieved goal: PickUpFlowers
+4/1/2019 1:54:18 PM - Rachel added action: Action(name = GiveRachelFlowers, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1) to their receiving queue
+4/1/2019 1:54:18 PM - Rachel received action: Action(name = GiveRachelFlowers, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1)
+4/1/2019 1:54:18 PM - Rachel responding with action: Action(name = ThankBobFlowers, type = TalkToTarget, sender = Rachel, target = Bob, priority = 0)
+4/1/2019 1:54:18 PM - Rachel added action: Action(name = ThankBobFlowers, type = TalkToTarget, sender = Rachel, target = Bob, priority = 0) to their action queue
+4/1/2019 1:54:19 PM - Rachel is executing action: Action(name = ThankBobFlowers, type = TalkToTarget, sender = Rachel, target = Bob, priority = 0)

@@ -15,9 +15,22 @@ public enum Status
 
 public enum BooleanCondition
 {
-	LessThan = 0,
-	EqualTo = 1,
-	GreaterThan = 2
+	LessThan = 1,
+    LessThanOrEqualTo = 2,
+	EqualTo = 3,
+    GreaterThanOrEqualTo = 4,
+	GreaterThan = 5,
+};
+
+public enum ActionType
+{
+    WalkToTarget = 1,
+    TalkToTarget = 2,
+    GiveItemToTarget = 3,
+    PickUpItem = 4,
+    Cut = 5,
+    Haul = 6,
+    Build = 7,
 };
 
 [System.Serializable]
@@ -63,8 +76,8 @@ public class Action
             name = value;
         }
     }
-	[SerializeField] private string type;
-    public string Type
+	[SerializeField] private ActionType type;
+    public ActionType Type
     {
         get
         {
@@ -123,7 +136,26 @@ public class Action
             precondition = value;
         }
     }
-	public int Priority {get; private set;}
+    [SerializeField] private string dialog;
+    public string Dialog
+    {
+        get
+        {
+            return dialog;
+        }
+    }
+    [Range(1,10)][SerializeField] private int priority;
+	public int Priority
+    {
+        get
+        {
+            return priority;
+        }
+        set
+        {
+            priority = value;
+        }
+    }
 	public Status Status {get; private set;}
 
     public Action()
@@ -131,12 +163,13 @@ public class Action
         SetStatus(Status.notSent);
     }
 
-    public Action(string name, string type, GameObject sender, GameObject target)
+    public Action(string name, ActionType type, GameObject sender, GameObject target, int priority)
     {
         Name = name;
         Type = type;
         SendingCharacter = sender;
         TargetObject = target;
+        Priority = priority;
         SetStatus(Status.notSent);
     }
 
@@ -146,7 +179,8 @@ public class Action
             Name == action.Name &&
             Type == action.Type &&
             SendingCharacter == action.SendingCharacter &&
-            TargetObject == action.TargetObject
+            TargetObject == action.TargetObject &&
+            Dialog == action.Dialog
         )
             return true;
         return false;
@@ -164,8 +198,8 @@ public class Action
         return true;
     }
 
-    public bool IsPreconditionSatisfied()
+    public bool IsSatisfied()
     {
-        return false;
+        return precondition.IsSatisfied(sendingCharacter, targetObject);
     }
 }

@@ -22,18 +22,26 @@ public class UIManager : MonoBehaviour
     public GameObject buildPanel;
     public Button btn_WoodenWall;
 
+    public GameObject characterPanel;
+    public Button characterThumbnail;
+
     public Button currentButton {get; private set;}
 
     ClickController clickController;
 
     List<GameObject> panels = new List<GameObject>();
     List<Button> buttons = new List<Button>();
+    GameManager manager;
+
+    Coroutine focusCamera;
 
     void Awake()
     {
         currentButton = null;
-
+        focusCamera = null;
+        
         clickController = GetComponent<ClickController>();
+        manager = GetComponent<GameManager>();
         workPanel.SetActive(false);
         zonesPanel.SetActive(false);
         resourcesPanel.SetActive(false);
@@ -41,6 +49,7 @@ public class UIManager : MonoBehaviour
 
         AddPanelsToList();
         AddButtonsToList();
+        AddCharacterThumbnails();
 
         btn_Work.onClick.AddListener( () => {TogglePanel(workPanel);} );
         btn_Cut.onClick.AddListener( () => {ToggleCut(btn_Cut);} );
@@ -160,5 +169,27 @@ public class UIManager : MonoBehaviour
             clickController.SetClickAction(ClickAction.None);
             btn.GetComponent<Image>().color = Color.white;
         }
+    }
+
+    private void AddCharacterThumbnails()
+    {
+        foreach(GameObject character in manager.Characters)
+        {
+            Button thumbnail = Instantiate(characterThumbnail);
+            Image image = thumbnail.transform.GetChild(0).gameObject.GetComponent<Image>();
+            image.sprite = GameObject.Find(character.name).GetComponent<SpriteRenderer>().sprite;
+            thumbnail.transform.SetParent(characterPanel.transform, false);
+            thumbnail.onClick.AddListener( () => {FocusCamera(character.name);} );
+        }
+    }
+
+    private void FocusCamera(string characterName)
+    {
+        Debug.Log("Focusing camera on: " + characterName);
+        GameObject targetCharacter = GameObject.Find(characterName);
+        CameraController cameraController = Camera.main.GetComponent<CameraController>();
+        if(focusCamera != null)
+            StopCoroutine(focusCamera);
+        focusCamera = StartCoroutine(cameraController.SmoothMoveToTarget(targetCharacter));
     }
 }

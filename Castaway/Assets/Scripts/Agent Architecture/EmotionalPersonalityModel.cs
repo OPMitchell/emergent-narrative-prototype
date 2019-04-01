@@ -11,9 +11,7 @@ using UnityEngine;
 public class EmotionalPersonalityModel : MonoBehaviour 
 {
     //Each character has individual emotions. Hold these in an array.
-
     [SerializeField] private Emotion[] Emotions;
-
 
     public float GetEmotionValue(EmotionRef emotionName)
     {
