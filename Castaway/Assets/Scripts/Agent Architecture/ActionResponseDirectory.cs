@@ -20,19 +20,22 @@ public class ActionResponseDirectory : MonoBehaviour {
 		{
 			if(response.ReceivedActionName.ToLower() == receivedAction.Name.ToLower())
 			{
-				Action a = actionDirectory.GetAction(response.ResponseActionName);
-				bool satisfied = true;
-				foreach(Precondition precondition in response.Precondition)
+				foreach(Response r in response.Responses)
 				{
-					if(!precondition.IsSatisfied(gameObject, gameObject))
+					Action a = actionDirectory.GetAction(r.ResponseActionName);
+					bool satisfied = true;
+					foreach(Precondition precondition in r.Preconditions)
 					{
-						satisfied = false;
+						if(!precondition.IsSatisfied(gameObject, gameObject))
+						{
+							satisfied = false;
+						}
 					}
-				}
-				if(satisfied)
-				{
-					a.Priority = 0;
-					return a;
+					if(satisfied)
+					{
+						a.Priority = 0;
+						return a;
+					}
 				}
 			}
 		}

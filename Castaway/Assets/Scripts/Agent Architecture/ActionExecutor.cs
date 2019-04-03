@@ -157,8 +157,6 @@ public class ActionExecutor : MonoBehaviour
                 yield return new WaitUntil(() => (character.AtPosition(parent.X, parent.Y)));
                 if(character.PickUpItem(parent))
                 {
-                    dialogueManager.Speak(gameObject, action.Dialog);
-                    yield return new WaitForSeconds(5.0f);
                     action.SetStatus(Status.Successful);
                 }
                 else

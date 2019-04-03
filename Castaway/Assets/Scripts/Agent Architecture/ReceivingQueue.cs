@@ -39,12 +39,15 @@ public class ReceivingQueue : EventPriorityQueue
 
     private void AppraiseAction(Action receivedAction)
     {
-        EmotionRef emotion = receivedAction.Effect.Emotion;
+        StatName stat = receivedAction.Effect.Stat;
         float change = receivedAction.Effect.Change;
-        if(emotion != EmotionRef.None)
+        if(stat != StatName.None)
         {
             // TO-DO: implement threshold and decay for emotions
-            GetComponent<EmotionalPersonalityModel>().AddToValue(emotion, change);
+            if((int)stat > 0 && (int)stat < Precondition.physicalIndex)
+			    GetComponent<EmotionalPersonalityModel>().AddToValue(stat.ToString(), change);
+            else if((int)stat >= Precondition.physicalIndex && (int)stat < Precondition.limitIndex)
+			    GetComponent<PhysicalResourceModel>().AddToValue(stat.ToString(), change);
         }
     }
 

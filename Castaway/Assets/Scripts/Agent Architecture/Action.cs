@@ -39,12 +39,12 @@ public class Action
 	[System.Serializable]
 	public class ActionEffect
 	{
-		[SerializeField] private EmotionRef emotion;
-        public EmotionRef Emotion
+		[SerializeField] private StatName stat;
+        public StatName Stat
         {
             get
             {
-                return emotion;
+                return stat;
             }
         }
 		[Range(-1.0f,1.0f)][SerializeField] private float change;
@@ -193,7 +193,7 @@ public class Action
 
     public bool HasPrecondition()
     {
-        if(Precondition.HoldingItem == null && precondition.Emotion == EmotionRef.None)
+        if(Precondition.HoldingItem == null && precondition.Stat == StatName.None)
             return false;
         return true;
     }

@@ -3,6 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
+public class Response
+{
+	[SerializeField] private Precondition[] preconditions;
+	public Precondition[] Preconditions
+	{
+		get
+		{
+			return preconditions;
+		}
+		private set
+		{
+			preconditions = value;
+		}
+	}
+	[SerializeField] private string responseActionName;
+	public string ResponseActionName
+	{
+		get
+		{
+			return responseActionName;
+		}
+	}
+}
+
+[System.Serializable]
 public class ActionResponse
 {
 	[SerializeField] private string receivedActionName;
@@ -13,24 +38,12 @@ public class ActionResponse
 			return receivedActionName;
 		}
 	}
-	[SerializeField] private Precondition[] precondition;
-    public Precondition[] Precondition
-    {
-        get
-        {
-            return precondition;
-        }
-        private set
-        {
-            precondition = value;
-        }
-    }
-	[SerializeField] private string responseActionName;
-	public string ResponseActionName
+	[SerializeField] private Response[] responses;
+	public Response[] Responses
 	{
 		get
 		{
-			return responseActionName;
+			return responses;
 		}
 	}
 }

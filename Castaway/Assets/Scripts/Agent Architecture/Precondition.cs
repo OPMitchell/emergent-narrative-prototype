@@ -4,9 +4,27 @@ using System.Xml.Serialization;
 using System.Linq;
 using UnityEngine;
 
+public enum StatName
+{
+    None = 0,
+    //emotional
+    Joy = 1,
+    Distress = 2,
+    Fear = 3,
+    Satisfaction = 4,
+    Disappointment = 5,
+    //physical
+    Hunger = 6,
+    Tiredness = 7,
+    Health = 8,
+}
+
 [System.Serializable]
 public class Precondition
 {
+    public const int emotionalIndex = 1;
+    public const int physicalIndex = 6;
+    public const int limitIndex = 9;
 	[SerializeField] private GameObject holdingItem;
     public GameObject HoldingItem
     {
@@ -15,12 +33,12 @@ public class Precondition
             return holdingItem;
         }
     }
-	[SerializeField] private EmotionRef emotion;
-    public EmotionRef Emotion
+	[SerializeField] private StatName stat;
+    public StatName Stat
     {
         get
         {
-            return emotion;
+            return stat;
         }
     }
 	[SerializeField] private BooleanCondition boolCondition;
@@ -43,8 +61,8 @@ public class Precondition
     public bool IsSatisfied(GameObject sender, GameObject target)
     {
         bool holdingItem = IsHoldingItem(sender);
-        bool emotionCondition = IsEmotionCorrect(target);
-        return (holdingItem && emotionCondition);
+        bool statCondition = IsStatCorrect(target);
+        return (holdingItem && statCondition);
     }
 
     private bool IsHoldingItem(GameObject sender)
@@ -73,16 +91,24 @@ public class Precondition
         return true;
     }
 
-    private bool IsEmotionCorrect(GameObject target)
+    private bool IsStatCorrect(GameObject target)
     {
-        if(Emotion == EmotionRef.None)
+        if(Stat == StatName.None)
 			return true;
         GameObject targetCharacter = GameObject.Find(target.name);
         if(targetCharacter.tag == "Character")
         {
-            EmotionalPersonalityModel epm = targetCharacter.GetComponent<EmotionalPersonalityModel>();
-            float value = (float)epm.GetEmotionValue(Emotion);
-
+            float value = 0;
+            if((int)Stat > 0 && (int)Stat < physicalIndex)
+            {
+                EmotionalPersonalityModel epm = targetCharacter.GetComponent<EmotionalPersonalityModel>();
+                value = (float)epm.GetEmotionValue(Stat.ToString());
+            }
+            else if((int)Stat >= physicalIndex && (int)Stat < limitIndex)
+            {
+                PhysicalResourceModel prm = targetCharacter.GetComponent<PhysicalResourceModel>();
+                value = (float)prm.GetPhysicalValue(Stat.ToString());
+            }
             if(BoolCondition == BooleanCondition.LessThan)
             {
                 if(value < Value)

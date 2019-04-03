@@ -37,27 +37,30 @@ public class ActionDirectory : MonoBehaviour
 		List<Action> matches = new List<Action>();
 		foreach(Action action in ActionList)
 		{
-			bool satisfiesEmotion = SatisfiesEmotion(action, goalCondition, targetCharacter);
+			bool satisfiesStat = SatisfiesStat(action, goalCondition, targetCharacter);
 			bool satisfiesItem = SatisfiesItem(action, goalCondition);
-			if(satisfiesEmotion && satisfiesItem)
+			if(satisfiesStat && satisfiesItem)
 				matches.Add(action);
 		}
 		return matches;
 	}
 
-	private bool SatisfiesEmotion(Action action, Precondition goalCondition, GameObject targetCharacter)
+	private bool SatisfiesStat(Action action, Precondition goalCondition, GameObject targetCharacter)
 	{
-		if(goalCondition.Emotion == EmotionRef.None)
+		if(goalCondition.Stat == StatName.None)
 			return true;
 		if(action.TargetObject == targetCharacter)
 		{
-			EmotionRef emotion = goalCondition.Emotion;
-			EmotionRef actionEmotion = action.Effect.Emotion;
+			StatName stat = goalCondition.Stat;
+			StatName actionStat = action.Effect.Stat;
 			BooleanCondition condition = goalCondition.BoolCondition;
 			float change = action.Effect.Change;
 
-			if(goalCondition.Emotion != EmotionRef.None && emotion == actionEmotion)
+			if(goalCondition.Stat != StatName.None && stat == actionStat)
 			{
+				EmotionalPersonalityModel epm = action.TargetObject.GetComponent<EmotionalPersonalityModel>();
+				PhysicalResourceModel prm = action.TargetObject.GetComponent<PhysicalResourceModel>();
+
 				if(condition == BooleanCondition.LessThan)
 				{
 					if(change < 0.0f)
@@ -70,21 +73,42 @@ public class ActionDirectory : MonoBehaviour
 				}
 				else if(condition == BooleanCondition.GreaterThanOrEqualTo)
 				{
-					EmotionalPersonalityModel epm = action.TargetObject.GetComponent<EmotionalPersonalityModel>();
-					if(change > 0.0f || ((float)epm.GetEmotionValue(emotion) + change == goalCondition.Value))
-						return true;
+					if((int)stat > 0 && (int)stat < Precondition.physicalIndex)
+					{
+						if(change > 0.0f || ((float)epm.GetEmotionValue(stat.ToString()) + change == goalCondition.Value))
+							return true;
+					}
+					else if((int)stat >= Precondition.physicalIndex && (int)stat < Precondition.limitIndex)
+					{
+						if(change > 0.0f || ((float)prm.GetPhysicalValue(stat.ToString()) + change == goalCondition.Value))
+							return true;
+					}
 				}
 				else if(condition == BooleanCondition.LessThan)
 				{
-					EmotionalPersonalityModel epm = action.TargetObject.GetComponent<EmotionalPersonalityModel>();
-					if(change < 0.0f || ((float)epm.GetEmotionValue(emotion) + change == goalCondition.Value))
-						return true;
+					if((int)stat > 0 && (int)stat < Precondition.physicalIndex)
+					{
+						if(change < 0.0f || ((float)epm.GetEmotionValue(stat.ToString()) + change == goalCondition.Value))
+							return true;
+					}
+					else if((int)stat >= Precondition.physicalIndex && (int)stat < Precondition.limitIndex)
+					{
+						if(change < 0.0f || ((float)prm.GetPhysicalValue(stat.ToString()) + change == goalCondition.Value))
+							return true;
+					}
 				}
 				else if(condition == BooleanCondition.EqualTo)
 				{
-					EmotionalPersonalityModel epm = action.TargetObject.GetComponent<EmotionalPersonalityModel>();
-					if((float)epm.GetEmotionValue(emotion) + change == goalCondition.Value)
-						return true;
+					if((int)stat > 0 && (int)stat < Precondition.physicalIndex)
+					{
+						if((float)epm.GetEmotionValue(stat.ToString()) + change == goalCondition.Value)
+							return true;
+					}
+					else if((int)stat >= Precondition.physicalIndex && (int)stat < Precondition.limitIndex)
+					{
+						if((float)prm.GetPhysicalValue(stat.ToString()) + change == goalCondition.Value)
+							return true;
+					}
 				}
 			}
 		}
