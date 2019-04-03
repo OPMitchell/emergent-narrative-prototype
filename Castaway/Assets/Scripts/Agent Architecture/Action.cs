@@ -37,7 +37,7 @@ public enum ActionType
 public class Action
 {
 	[System.Serializable]
-	public class ActionEffect
+	public class SenderActionEffect
 	{
 		[SerializeField] private StatName stat;
         public StatName Stat
@@ -61,6 +61,26 @@ public class Action
             get
             {
                 return pickedUpItem;
+            }
+        }
+	}
+    [System.Serializable]
+	public class TargetActionEffect
+	{
+		[SerializeField] private StatName stat;
+        public StatName Stat
+        {
+            get
+            {
+                return stat;
+            }
+        }
+		[Range(-1.0f,1.0f)][SerializeField] private float change;
+        public float Change
+        {
+            get
+            {
+                return change;
             }
         }
 	}
@@ -112,30 +132,6 @@ public class Action
             targetObject = value;
         }
     }
-	[SerializeField] private ActionEffect effect;
-    public ActionEffect Effect
-    {
-        get
-        {
-            return effect;
-        }
-        private set
-        {
-            effect = value;
-        }
-    }
-	[SerializeField] private Precondition precondition;
-    public Precondition Precondition
-    {
-        get
-        {
-            return precondition;
-        }
-        private set
-        {
-            precondition = value;
-        }
-    }
     [SerializeField] private string dialog;
     public string Dialog
     {
@@ -154,6 +150,42 @@ public class Action
         set
         {
             priority = value;
+        }
+    }
+	[SerializeField] private Precondition precondition;
+    public Precondition Precondition
+    {
+        get
+        {
+            return precondition;
+        }
+        private set
+        {
+            precondition = value;
+        }
+    }
+    [SerializeField] private SenderActionEffect senderEffect;
+    public SenderActionEffect SenderEffect
+    {
+        get
+        {
+            return senderEffect;
+        }
+        private set
+        {
+            senderEffect = value;
+        }
+    }
+    [SerializeField] private TargetActionEffect targetEffect;
+    public TargetActionEffect TargetEffect
+    {
+        get
+        {
+            return targetEffect;
+        }
+        private set
+        {
+            targetEffect = value;
         }
     }
 	public Status Status {get; private set;}

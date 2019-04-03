@@ -45,9 +45,9 @@ public class MemoryPattern
 
         if(!Sender)
         {
-            StatName stat = action.Effect.Stat;
-            float change = action.Effect.Change;
-            
+            StatName stat = action.TargetEffect.Stat;
+            float change = action.TargetEffect.Change;
+
             if((int)stat > 0 && (int)stat < Precondition.physicalIndex)
             {
                 desirability += change;

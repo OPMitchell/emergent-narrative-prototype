@@ -41,8 +41,8 @@ public class ReceivingQueue : EventPriorityQueue
 
     private void AppraiseAction(Action receivedAction)
     {
-        StatName stat = receivedAction.Effect.Stat;
-        float change = receivedAction.Effect.Change;
+        StatName stat = receivedAction.TargetEffect.Stat;
+        float change = receivedAction.TargetEffect.Change;
         if(stat != StatName.None)
         {
             // TO-DO: implement threshold and decay for emotions

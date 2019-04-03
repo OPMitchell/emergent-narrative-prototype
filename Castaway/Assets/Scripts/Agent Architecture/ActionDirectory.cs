@@ -52,9 +52,9 @@ public class ActionDirectory : MonoBehaviour
 		if(action.TargetObject == targetCharacter)
 		{
 			StatName stat = goalCondition.Stat;
-			StatName actionStat = action.Effect.Stat;
+			StatName actionStat = action.TargetEffect.Stat;
 			BooleanCondition condition = goalCondition.BoolCondition;
-			float change = action.Effect.Change;
+			float change = action.TargetEffect.Change;
 
 			if(goalCondition.Stat != StatName.None && stat == actionStat)
 			{
@@ -119,9 +119,9 @@ public class ActionDirectory : MonoBehaviour
 	{
 		if(goalCondition.HoldingItem != null)
 		{
-			if(action.Effect.PickedUpItem != null)
+			if(action.SenderEffect.PickedUpItem != null)
 			{
-				Resource itemType = action.Effect.PickedUpItem.GetComponent<Item>().resource;
+				Resource itemType = action.SenderEffect.PickedUpItem.GetComponent<Item>().resource;
 				Resource goalItemType = goalCondition.HoldingItem.GetComponent<Item>().resource;
 				if(itemType == goalItemType)
 					return true;
