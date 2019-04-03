@@ -44,7 +44,7 @@ public class ActionQueue : EventPriorityQueue
         character.currentAction = null;
         Debug.Log("Finished executing");
         //store a memory of the action
-        GetComponent<MemoryManager>().AddMemoryPattern(new MemoryPattern(GetComponent<MemoryManager>().CurrentID, action));
+        GetComponent<MemoryManager>().AddSentMemoryPattern(new MemoryPattern(GetComponent<MemoryManager>().CurrentID, action, true));
     }
 
 }

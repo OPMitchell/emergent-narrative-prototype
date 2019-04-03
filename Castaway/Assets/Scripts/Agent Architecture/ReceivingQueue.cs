@@ -55,6 +55,6 @@ public class ReceivingQueue : EventPriorityQueue
 
     private void AddMemory(Action receivedAction)
     {
-        memoryManager.AddMemoryPattern(new MemoryPattern(memoryManager.CurrentID, receivedAction));
+        memoryManager.AddReceivedMemoryPattern(new MemoryPattern(memoryManager.CurrentID, receivedAction, false));
     }
 }

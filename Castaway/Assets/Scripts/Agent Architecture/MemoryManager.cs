@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class MemoryManager : MonoBehaviour 
 {
-	public MemoryPool memoryPool {get; private set;}
+	public MemoryPool senderPool {get; private set;}
+	public MemoryPool receiverPool {get; private set;}
+
 	private int currentID;
 	public int CurrentID
 	{
@@ -18,19 +20,40 @@ public class MemoryManager : MonoBehaviour
 
 	void Start() 
 	{
-		memoryPool = new MemoryPool();
+		senderPool = new MemoryPool();
+		receiverPool = new MemoryPool();
 	}
 
-	public MemoryPattern RetrieveMemoryPattern(string keyword)
+	public MemoryPattern RetrieveReceivedMemoryPattern(string keyword)
 	{
-		MemoryPattern memory = memoryPool.RetrieveMemoryPattern(keyword);
+		return RetrieveMemoryPattern(receiverPool, keyword);
+	}
+
+	public void AddReceivedMemoryPattern(MemoryPattern mp)
+	{
+		AddMemoryPattern(receiverPool, mp);
+	}
+
+	public MemoryPattern RetrieveSentMemoryPattern(string keyword)
+	{
+		return RetrieveMemoryPattern(senderPool, keyword);
+	}
+
+	public void AddSentMemoryPattern(MemoryPattern mp)
+	{
+		AddMemoryPattern(senderPool, mp);
+	}
+
+	private MemoryPattern RetrieveMemoryPattern(MemoryPool pool, string keyword)
+	{
+		MemoryPattern memory = pool.RetrieveMemoryPattern(keyword);
 		if(memory != null)
 			Testing.WriteToLog(transform.name, "Retrieved memory: " + Testing.GetMemoryInfo(memory));
 		return memory;
 	}
 
-	public void AddMemoryPattern(MemoryPattern mp)
+	private void AddMemoryPattern(MemoryPool pool, MemoryPattern mp)
 	{
-		memoryPool.AddMemoryPattern(mp);
+		pool.AddMemoryPattern(mp);
 	}
 }

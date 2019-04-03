@@ -53,9 +53,14 @@ public class Plan
         return null;
     }
 
-    public void SetScore(float score)
+    private void SetScore(float score)
     {
         Score = score;
+    }
+
+    private void AddToScore(float amount)
+    {
+        Score += amount;
     }
 
     public void Evaluate(MemoryManager memoryManager)
@@ -64,11 +69,17 @@ public class Plan
 
         //Heuristic 1 - get length
         int numberOfActions = actions.Count;
+        AddToScore((-1.0f)*numberOfActions);
 
         //Heuristic 2 - check similar memories
         foreach(Action action in actions)
         {
-            MemoryPattern memory1 = memoryManager.RetrieveMemoryPattern(action.Name);
+            MemoryPattern memory = memoryManager.RetrieveSentMemoryPattern(action.Name);
+            if(memory != null)
+                AddToScore(memory.Desirability);
         }
+
+        //Heuristic 3 - forecast result on emotions
+
     }
 }
