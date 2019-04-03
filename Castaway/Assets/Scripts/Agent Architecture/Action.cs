@@ -11,6 +11,8 @@ public enum Status
     Failed = 3,
     Successful = 4,
     Interrupted = 5,
+    Resend = 6,
+    ResendSent = 7,
 };
 
 public enum BooleanCondition
@@ -152,6 +154,18 @@ public class Action
             priority = value;
         }
     }
+    [SerializeField] private bool negativeAction;
+    public bool NegativeAction
+    {
+        get
+        {
+            return negativeAction;
+        }
+        private set
+        {
+            negativeAction = value;
+        }
+    }
 	[SerializeField] private Precondition precondition;
     public Precondition Precondition
     {
@@ -230,7 +244,7 @@ public class Action
         return true;
     }
 
-    public bool IsSatisfied()
+    public bool IsPreconditionSatisfied()
     {
         return precondition.IsSatisfied(sendingCharacter, targetObject);
     }

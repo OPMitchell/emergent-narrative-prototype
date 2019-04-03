@@ -24,9 +24,10 @@ public class ActionQueue : EventPriorityQueue
         if(!queue.IsEmpty() && !GetComponent<ActionExecutor>().Executing && character.IsFree() && receivingQueue.IsEmpty())
         {
             Action action = queue.Remove();
-            if(action.IsSatisfied())
-            {            
-                Testing.WriteToLog(transform.name, transform.name + " is executing action: " + Testing.GetActionInfo(action));
+            if(action.IsPreconditionSatisfied())
+            {
+                if(action.Status != Status.ResendSent)
+                    Testing.WriteToLog(transform.name, transform.name + " is executing action: " + Testing.GetActionInfo(action));
                 character.currentAction = action;
                 StartCoroutine(Execute(action));
             }
@@ -42,7 +43,6 @@ public class ActionQueue : EventPriorityQueue
         StartCoroutine(GetComponent<ActionExecutor>().ExecuteAction(action));
         yield return new WaitUntil(() => !GetComponent<ActionExecutor>().Executing);
         character.currentAction = null;
-        Debug.Log("Finished executing");
         //store a memory of the action
         AppraiseAction(action);
         AddMemory(action);

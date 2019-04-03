@@ -164,7 +164,7 @@ public class ActionExecutor : MonoBehaviour
             }
             else
             {
-                action.SetStatus(Status.notSent);
+                action.SetStatus(Status.Resend);
             }
         }
         else if(action.Type == ActionType.TalkToTarget)
@@ -183,7 +183,7 @@ public class ActionExecutor : MonoBehaviour
             }
             else
             {
-                action.SetStatus(Status.notSent);
+                action.SetStatus(Status.Resend);
             }
         }
         else if(action.Type == ActionType.GiveItemToTarget)
@@ -204,7 +204,7 @@ public class ActionExecutor : MonoBehaviour
                 }
                 else
                 {
-                    action.SetStatus(Status.notSent);
+                    action.SetStatus(Status.Resend);
                 }
             }
             else

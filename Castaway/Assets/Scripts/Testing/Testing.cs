@@ -60,4 +60,22 @@ public static class Testing
 		}
 		return ("Memory(keywords = " + keywords + ")");
 	}
+
+	public static string GetGoalInfo(Goal goal)
+	{
+		return "Goal(name = " + goal.Name + ", target = " + goal.TargetCharacter.name + ")";
+	}
+
+	public static string GetPlanInfo(Plan plan)
+	{
+		string s = "Plan contains actions: ";
+		foreach(Action action in plan.GetActions())
+		{
+			s += "\n	";
+			s += GetActionInfo(action);
+		}
+		s += "\n	";
+		s += "Score = " + plan.Score;
+		return s;
+	}
 }

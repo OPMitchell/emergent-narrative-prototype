@@ -35,6 +35,7 @@ GameObject:
   - component: {fileID: 114998440762142338}
   - component: {fileID: 114446420817589070}
   - component: {fileID: 114415099237161764}
+  - component: {fileID: 114628785206832682}
   m_Layer: 11
   m_Name: Rachel
   m_TagString: Character
@@ -149,13 +150,13 @@ MonoBehaviour:
       - holdingItem: {fileID: 0}
         stat: 1
         boolCondition: 1
-        value: 0.3
+        value: 0.5
       responseActionName: ThankBobSmall
     - preconditions:
       - holdingItem: {fileID: 0}
         stat: 1
         boolCondition: 4
-        value: 0.3
+        value: 0.5
       responseActionName: ThankBobGreat
   - receivedActionName: GiveRachelFlowers
     responses:
@@ -178,66 +179,82 @@ MonoBehaviour:
     sendingCharacter: {fileID: 1932041451880542}
     targetObject: {fileID: 1017828091842458, guid: e1d242feffc810d4da900dd1b78b8739,
       type: 2}
-    effect:
-      stat: 0
-      change: 0
-      pickedUpItem: {fileID: 1017828091842458, guid: e1d242feffc810d4da900dd1b78b8739,
-        type: 2}
+    dialog: 
+    priority: 1
+    negativeAction: 0
     precondition:
       holdingItem: {fileID: 0}
       stat: 0
       boolCondition: 0
       value: 0
-    dialog: 
-    priority: 1
+    senderEffect:
+      stat: 0
+      change: 0
+      pickedUpItem: {fileID: 1017828091842458, guid: e1d242feffc810d4da900dd1b78b8739,
+        type: 2}
+    targetEffect:
+      stat: 0
+      change: 0
   - name: ThankBobSmall
     type: 2
     sendingCharacter: {fileID: 1932041451880542}
     targetObject: {fileID: 1373307878645326, guid: 636d44a3cc0d83443b67d939d577c45f,
       type: 2}
-    effect:
-      stat: 0
-      change: 0
-      pickedUpItem: {fileID: 0}
+    dialog: Wow! Thanks Bob!
+    priority: 1
+    negativeAction: 0
     precondition:
       holdingItem: {fileID: 0}
       stat: 0
       boolCondition: 1
       value: 0
-    dialog: Wow! Thanks Bob!
-    priority: 1
+    senderEffect:
+      stat: 0
+      change: 0
+      pickedUpItem: {fileID: 0}
+    targetEffect:
+      stat: 0
+      change: 0
   - name: ThankBobFlowers
     type: 2
     sendingCharacter: {fileID: 1932041451880542}
     targetObject: {fileID: 1373307878645326, guid: 636d44a3cc0d83443b67d939d577c45f,
       type: 2}
-    effect:
-      stat: 0
-      change: 0
-      pickedUpItem: {fileID: 0}
+    dialog: Oh my god! They're amazing! I love you Bob!
+    priority: 1
+    negativeAction: 0
     precondition:
       holdingItem: {fileID: 0}
       stat: 0
       boolCondition: 0
       value: 0
-    dialog: Oh my god! They're amazing! I love you Bob!
-    priority: 1
+    senderEffect:
+      stat: 0
+      change: 0
+      pickedUpItem: {fileID: 0}
+    targetEffect:
+      stat: 0
+      change: 0
   - name: ThankBobGreat
     type: 2
     sendingCharacter: {fileID: 1932041451880542}
     targetObject: {fileID: 1373307878645326, guid: 636d44a3cc0d83443b67d939d577c45f,
       type: 2}
-    effect:
-      stat: 0
-      change: 0
-      pickedUpItem: {fileID: 0}
+    dialog: Aww! Bob you're so sweet! I love you.
+    priority: 1
+    negativeAction: 0
     precondition:
       holdingItem: {fileID: 0}
       stat: 0
       boolCondition: 1
       value: 0
-    dialog: Aww! Bob you're so sweet! I love you.
-    priority: 1
+    senderEffect:
+      stat: 0
+      change: 0
+      pickedUpItem: {fileID: 0}
+    targetEffect:
+      stat: 0
+      change: 0
 --- !u!114 &114601956020424818
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -260,6 +277,17 @@ MonoBehaviour:
       boolCondition: 0
       value: 0
     owner: {fileID: 1932041451880542}
+--- !u!114 &114628785206832682
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1932041451880542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ee55890ac265e14196cfcb5c6afc5a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114782710001930922
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -297,7 +325,7 @@ MonoBehaviour:
   - name: 1
     threshold: 0.5
     decay: 0.5
-    emotionValue: 0.2
+    emotionValue: 0.1
   - name: 2
     threshold: 0.5
     decay: 0.5

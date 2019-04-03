@@ -6,7 +6,7 @@ using System.Linq;
 public class Plan
 {
     private LinkedList<Action> actions = new LinkedList<Action>();
-    public float Score { get; set; }
+    public float Score { get; private set; }
 
     public Plan()
     {
@@ -69,7 +69,7 @@ public class Plan
 
         //Heuristic 1 - get length
         int numberOfActions = actions.Count;
-        AddToScore((-1.0f)*numberOfActions);
+        AddToScore((-0.1f)*numberOfActions);
 
         //Heuristic 2 - check similar memories
         foreach(Action action in actions)
@@ -80,6 +80,43 @@ public class Plan
         }
 
         //Heuristic 3 - forecast result on emotions
+        foreach (Action action in actions)
+        {
+            AddToScore(SelfStatEffectDesirability(action));
+            AddToScore(TargetStatEffectDesirability(action));
+        }
 
+    }
+
+    private float SelfStatEffectDesirability(Action action)
+    {
+        StatName stat = action.SenderEffect.Stat;
+        float change = action.SenderEffect.Change;
+        if(stat != StatName.None)
+        {
+            if((int)stat > 0 && (int)stat < Precondition.physicalIndex)
+                return change;
+            else if ((int)stat >= Precondition.physicalIndex && (int)stat < Precondition.limitIndex)
+                return change*(-1.0f);
+        }
+        return 0.0f;
+    }
+
+    private float TargetStatEffectDesirability(Action action)
+    {
+        float desirability = 0.0f;
+        StatName stat = action.TargetEffect.Stat;
+        float change = action.TargetEffect.Change;
+        if(stat != StatName.None)
+        {
+            if((int)stat > 0 && (int)stat < Precondition.physicalIndex)
+                desirability += change;
+            else if ((int)stat >= Precondition.physicalIndex && (int)stat < Precondition.limitIndex)
+                desirability += change*(-1.0f);
+
+            if(action.NegativeAction)
+                desirability*=-1.0f;
+        }
+        return desirability;
     }
 }

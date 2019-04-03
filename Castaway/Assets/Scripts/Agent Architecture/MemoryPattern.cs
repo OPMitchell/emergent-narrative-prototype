@@ -9,6 +9,7 @@ public class MemoryPattern
     public ActionType Type {get; private set;}
     public float Weight {get; private set;}
     public bool Sender {get; private set;}
+    public bool PositiveAction{get; private set;}
     public float Desirability {get; private set;}
     
     public MemoryPattern(int id, Action action, bool sender)
@@ -35,28 +36,71 @@ public class MemoryPattern
     {
         float desirability = 0.0f;
 
+        desirability += SuccessFailDesirability(action);
+        desirability += SelfStatEffectDesirability(action);
+        desirability += TargetStatEffectDesirability(action);
+
+        return desirability;
+    }
+
+    private float SuccessFailDesirability(Action action)
+    {
         if(Sender)
         {
             if(action.Status == Status.Failed)
-                desirability -= 1.0f;
+                return -0.2f;
             else if (action.Status == Status.Successful)
-                desirability += 1.0f;
+                return 0.2f;
         }
+        return 0.0f;
+    }
 
+    private float SelfStatEffectDesirability(Action action)
+    {
+        StatName stat;
+        float change;
         if(!Sender)
         {
-            StatName stat = action.TargetEffect.Stat;
-            float change = action.TargetEffect.Change;
-
+            stat = action.TargetEffect.Stat;
+            change = action.TargetEffect.Change;
+        }
+        else
+        {
+            stat = action.SenderEffect.Stat;
+            change = action.SenderEffect.Change;
+        }
+        if(stat != StatName.None)
+        {
             if((int)stat > 0 && (int)stat < Precondition.physicalIndex)
+                return change;
+            else if ((int)stat >= Precondition.physicalIndex && (int)stat < Precondition.limitIndex)
+                return change*(-1.0f);
+        }
+        return 0.0f;
+    }
+
+    private float TargetStatEffectDesirability(Action action)
+    {
+        StatName stat;
+        float change;
+        float desirability = 0.0f;
+        if(Sender)
+        {
+            stat = action.TargetEffect.Stat;
+            change = action.TargetEffect.Change;
+            if(stat != StatName.None)
             {
-                desirability += change;
-            }
-            else if((int)stat >= Precondition.physicalIndex && (int)stat < Precondition.limitIndex)
-            {
-                desirability += (-1.0f*change);
+                if((int)stat > 0 && (int)stat < Precondition.physicalIndex)
+                    desirability += change;
+                else if ((int)stat >= Precondition.physicalIndex && (int)stat < Precondition.limitIndex)
+                    desirability += change*(-1.0f);
+
+                if(action.NegativeAction)
+                    desirability*=-1.0f;
+                
+                return desirability;
             }
         }
-        return desirability;
+        return 0.0f;
     }
 }
