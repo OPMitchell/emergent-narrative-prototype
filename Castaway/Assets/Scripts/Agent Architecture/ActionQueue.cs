@@ -43,6 +43,8 @@ public class ActionQueue : EventPriorityQueue
         yield return new WaitUntil(() => !GetComponent<ActionExecutor>().Executing);
         character.currentAction = null;
         Debug.Log("Finished executing");
+        //store a memory of the action
+        GetComponent<MemoryManager>().AddMemoryPattern(new MemoryPattern(GetComponent<MemoryManager>().CurrentID, action));
     }
 
 }

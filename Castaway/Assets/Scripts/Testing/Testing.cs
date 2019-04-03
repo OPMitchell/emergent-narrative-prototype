@@ -48,4 +48,16 @@ public static class Testing
 		}
 		return queue;
 	}
+
+	public static string GetMemoryInfo(MemoryPattern mp)
+	{
+		string keywords = "";
+		for(int i = 0; i < mp.Keywords.Length; i++)
+		{
+			keywords += mp.Keywords[i];
+			if(i != mp.Keywords.Length -1)
+				keywords += ", ";
+		}
+		return ("Memory(keywords = " + keywords + ")");
+	}
 }

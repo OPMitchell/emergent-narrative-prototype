@@ -18,8 +18,12 @@ public class PlanList
         plans.Remove(plans.Single(x => x == plan));
     }
 
-    public Plan GetBestPlan()
+    public Plan GetBestPlan(MemoryManager memoryManager)
     {
+        foreach(Plan p in plans)
+        {
+            p.Evaluate(memoryManager);
+        }
         return plans.OrderByDescending(x => x.Score).FirstOrDefault();
     }
 

@@ -6,12 +6,12 @@ using System.Linq;
 public class Plan
 {
     private LinkedList<Action> actions = new LinkedList<Action>();
-    public int Score { get; set; }
+    public float Score { get; set; }
 
     public Plan()
     {
         actions = new LinkedList<Action>();
-        Score = 0;
+        Score = 0.0f;
     }
 
     public Plan(Plan plan)
@@ -51,5 +51,24 @@ public class Plan
             return actions.ElementAt(0);
         }
         return null;
+    }
+
+    public void SetScore(float score)
+    {
+        Score = score;
+    }
+
+    public void Evaluate(MemoryManager memoryManager)
+    {
+        SetScore(0.0f);
+
+        //Heuristic 1 - get length
+        int numberOfActions = actions.Count;
+
+        //Heuristic 2 - check similar memories
+        foreach(Action action in actions)
+        {
+            MemoryPattern memory1 = memoryManager.RetrieveMemoryPattern(action.Name);
+        }
     }
 }

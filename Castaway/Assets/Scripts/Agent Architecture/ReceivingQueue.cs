@@ -5,10 +5,12 @@ using UnityEngine;
 public class ReceivingQueue : EventPriorityQueue
 {
     private ActionResponseDirectory actionResponseDirectory;
+    private MemoryManager memoryManager;
 
     void Awake()
     {
         actionResponseDirectory = GetComponent<ActionResponseDirectory>();
+        memoryManager = GetComponent<MemoryManager>();
     }
 
     public override void CheckQueue()
@@ -18,11 +20,11 @@ public class ReceivingQueue : EventPriorityQueue
         {
             Action receivedAction = queue.Remove();
             Testing.WriteToLog(transform.name, transform.name + " received action: " + Testing.GetActionInfo(receivedAction));
-            //appraise
+        //appraise
             AppraiseAction(receivedAction);
-            //store in memory
-                // TO-DO: implement memory storage
-            //find response
+        //store in memory
+            AddMemory(receivedAction);
+        //find response
             Action response = actionResponseDirectory.FindResponse(receivedAction);
             if(response != null)
             {
@@ -51,5 +53,8 @@ public class ReceivingQueue : EventPriorityQueue
         }
     }
 
-
+    private void AddMemory(Action receivedAction)
+    {
+        memoryManager.AddMemoryPattern(new MemoryPattern(memoryManager.CurrentID, receivedAction));
+    }
 }
