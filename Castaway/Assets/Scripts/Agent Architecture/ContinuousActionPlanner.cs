@@ -44,23 +44,38 @@ public class ContinuousActionPlanner : MonoBehaviour
 	{
 		while(goalDirectory.GoalList.Count() > 0)
 		{
-			if(currentGoal != goalDirectory.GoalList[0])
+			currentGoal = null;
+			foreach(Goal g in goalDirectory.GoalList)
 			{
-				currentGoal = goalDirectory.GoalList[0];
-				Testing.WriteToLog(transform.name, transform.name + " is evaluating " + Testing.GetGoalInfo(currentGoal));
-			}
-			//if the goal is already satisified then remove it if it's a pursuit goal. Otherwise, don't do anything.
-			if(currentGoal.IsSatisfied())
-			{
-				Testing.WriteToLog(transform.name, transform.name + " achieved goal: " + currentGoal.Name);
-				goalDirectory.RemoveGoal(currentGoal);
+				if(g.IsSatisfied())
+				{
+					if(g.Type == GoalType.Pursuit)
+					{
+						Testing.WriteToLog(transform.name, transform.name + " achieved goal: " + g.Name);
+						goalDirectory.RemoveGoal(g);
+					}
+					else if(g.Type == GoalType.Interest && !g.Dormant)
+					{
+						Testing.WriteToLog(transform.name, transform.name + " achieved goal: " + g.Name);
+						g.Dormant = true;
+					}
+					yield return new WaitForSeconds(manager.GetRandomInt(2, 8));
+				}
+				else
+				{
+					currentGoal = g;
+					if(currentGoal.Type == GoalType.Interest)
+						currentGoal.Dormant = false;
+					break;
+				}
 			}
 			//if the goal isn't satisifed then check if the goal has a plan associated with it.
-			else
+			if(currentGoal != null)
 			{
 				//If the goal hasn't got a plan then let's create one!
 				if(currentGoal.Plan == null)
 				{
+					Testing.WriteToLog(transform.name, transform.name + " is evaluating " + Testing.GetGoalInfo(currentGoal));
 					//create a plan
 					// Create a LinkedList to store the plans and populate it.
 					PlanList planList = new PlanList();
@@ -77,7 +92,7 @@ public class ContinuousActionPlanner : MonoBehaviour
 					{
 						Testing.WriteToLog(transform.name, transform.name + " created at least one plan for goal: " + currentGoal.Name);
 						//pick a plan from List<LinkedList<Action>> plans and assign to g.plan
-						currentGoal.SetPlan(planList.GetBestPlan(GetComponent<MemoryManager>(), transform));
+						currentGoal.SetPlan(planList.GetBestPlan(manager, actionQueue, GetComponent<MemoryManager>(), transform));
 						Testing.WriteToLog(transform.name, transform.name + " nominated a best plan for goal: " + currentGoal.Name + ":");
 						Testing.WriteToLog(transform.name, Testing.GetPlanInfo(currentGoal.Plan));
 					}
@@ -106,12 +121,13 @@ public class ContinuousActionPlanner : MonoBehaviour
 								Testing.WriteToLog(transform.name, transform.name + " failed action: " + Testing.GetActionInfo(currentAction));
 								currentAction.SetStatus(Status.notSent);
 								plan.RemoveAction(currentAction);
+								yield return new WaitForSeconds(manager.GetRandomInt(2, 8));
 							break;
 							case Status.Successful:
 								Testing.WriteToLog(transform.name, transform.name + " succeeded action: " + Testing.GetActionInfo(currentAction));
 								currentAction.SetStatus(Status.notSent);
 								plan.RemoveAction(currentAction);
-								yield return new WaitForSeconds(1.0f);
+								yield return new WaitForSeconds(manager.GetRandomInt(2, 8));
 							break;
 						}
 					}

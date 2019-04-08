@@ -5,6 +5,11 @@ using System.Linq;
 
 public class GoalDirectory : MonoBehaviour 
 {
+    void Awake()
+    {
+        goalList = goalList.OrderBy(x => x.Priority).ToArray();
+    }
+
 	[SerializeField] private Goal[] goalList;
     public Goal[] GoalList
     {

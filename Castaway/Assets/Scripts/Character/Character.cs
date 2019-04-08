@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Character : MonoBehaviour 
 {
-	public float Speed = 5.0f;
+	[Range(1,15)] public float Speed = 5.0f;
 	public int cX {get; private set;}
 	public int cY {get; private set;}
 	private GameObject[,] map;
@@ -13,7 +13,7 @@ public class Character : MonoBehaviour
 	public GameObject heldItem;	
 	public Action currentAction {get;set;}
 	private GameObject _lock;
-
+	private float fixedSpeed;
 	private Coroutine currentActionCoroutine;
 
 	void Awake() 
@@ -24,6 +24,18 @@ public class Character : MonoBehaviour
 		map = manager.Map;
 		SpawnAtRandomPos();
 		currentAction = null;
+		fixedSpeed = Speed;
+	}
+
+	void Update()
+	{
+		PhysicalResourceModel prm = GetComponent<PhysicalResourceModel>();
+		float hunger = prm.GetPhysicalValue(PhysicalRef.Hunger) + 1.0f;
+		float tiredness = prm.GetPhysicalValue(PhysicalRef.Tiredness) + 1.0f;
+		float total = hunger + tiredness;
+		if(total <= 1)
+			total = 1;
+		Speed = fixedSpeed/total;
 	}
 
 	public bool AtPosition(int x, int y)
@@ -73,7 +85,7 @@ public class Character : MonoBehaviour
 			tile.GetComponent<Tile>().AddItem(droppedItem);
 			heldItem = null;
 			droppedItem.name = ReplaceCoordinates(droppedItem.name, tile.X, tile.Y);
-			droppedItem.GetComponent<SpriteRenderer>().sortingLayerName = "Item";
+			//droppedItem.GetComponent<SpriteRenderer>().sortingLayerName = "Item";
 		}
 	}
 
@@ -139,6 +151,8 @@ public class Character : MonoBehaviour
 					vertical = -1;
 				else if(currentNode.Y > cY)
 					vertical = 1;
+				if(vertical != 0 && horizontal != 0)
+					horizontal = 0;
 
 				animator.SetInteger("Horizontal", horizontal);
 				animator.SetInteger("Vertical", vertical);

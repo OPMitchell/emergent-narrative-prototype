@@ -170,21 +170,31 @@ public class ActionExecutor : MonoBehaviour
         else if(action.Type == ActionType.TalkToTarget)
         {
             GameObject targetCharacter = GameObject.Find(action.TargetObject.name);
-            Character c = targetCharacter.GetComponent<Character>();
-            if(c.GetLock(gameObject))
+            if(targetCharacter == gameObject)
             {
-                yield return new WaitUntil(() => c.currentAction == null);
-                Tile tile = manager.GetPassableNeighbourTile(manager.Map[c.cX,c.cY].GetComponent<Tile>()).GetComponent<Tile>();
-                character.WalkToCoordinates(tile.X, tile.Y);
-                yield return new WaitUntil(() => (character.AtPosition(tile.X, tile.Y)));
                 dialogueManager.Speak(gameObject, action.Dialog);
                 yield return new WaitForSeconds(5.0f);
                 action.SetStatus(Status.Successful);
             }
             else
             {
-                action.SetStatus(Status.Resend);
+                Character c = targetCharacter.GetComponent<Character>();
+                if(c.GetLock(gameObject))
+                {
+                    yield return new WaitUntil(() => c.currentAction == null);
+                    Tile tile = manager.GetPassableNeighbourTile(manager.Map[c.cX,c.cY].GetComponent<Tile>()).GetComponent<Tile>();
+                    character.WalkToCoordinates(tile.X, tile.Y);
+                    yield return new WaitUntil(() => (character.AtPosition(tile.X, tile.Y)));
+                    dialogueManager.Speak(gameObject, action.Dialog);
+                    yield return new WaitForSeconds(5.0f);
+                    action.SetStatus(Status.Successful);
+                }
+                else
+                {
+                    action.SetStatus(Status.Resend);
+                }
             }
+           
         }
         else if(action.Type == ActionType.GiveItemToTarget)
         {

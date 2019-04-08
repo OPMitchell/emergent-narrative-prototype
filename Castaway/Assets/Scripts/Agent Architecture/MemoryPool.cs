@@ -31,6 +31,18 @@ public class MemoryPool
         }
     }
 
+    public MemoryPattern RetrieveMemoryPattern(int id)
+    {
+        foreach(MemoryPattern mp in memories)
+        {
+            if(mp.ID == id)
+            {
+                return mp;
+            }
+        }
+        return null;
+    }
+
     public MemoryPattern RetrieveMemoryPattern(string keyword)
     {
         hashmap.Clear();

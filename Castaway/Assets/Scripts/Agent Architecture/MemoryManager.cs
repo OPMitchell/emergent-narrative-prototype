@@ -12,9 +12,7 @@ public class MemoryManager : MonoBehaviour
 	{
 		get
 		{
-			int temp = currentID;
-			currentID++;
-			return temp;
+			return currentID;
 		}
 	}
 
@@ -39,6 +37,11 @@ public class MemoryManager : MonoBehaviour
 		return RetrieveMemoryPattern(senderPool, keyword);
 	}
 
+	public MemoryPattern RetrieveSentMemoryPatternByID(int id)
+	{
+		return RetrieveMemoryPattern(senderPool, id);
+	}
+
 	public void AddSentMemoryPattern(MemoryPattern mp)
 	{
 		AddMemoryPattern(senderPool, mp);
@@ -52,8 +55,17 @@ public class MemoryManager : MonoBehaviour
 		return memory;
 	}
 
+	private MemoryPattern RetrieveMemoryPattern(MemoryPool pool, int id)
+	{
+		MemoryPattern memory = pool.RetrieveMemoryPattern(id);
+		if(memory != null)
+			Testing.WriteToLog(transform.name, "Retrieved memory: " + Testing.GetMemoryInfo(memory));
+		return memory;
+	}
+
 	private void AddMemoryPattern(MemoryPool pool, MemoryPattern mp)
 	{
 		pool.AddMemoryPattern(mp);
+		currentID++;
 	}
 }

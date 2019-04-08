@@ -20,7 +20,7 @@ public class PhysicalResource
         }
     }
 
-    [SerializeField] [Range(0.0f, 1.0f)] private float threshold;
+    [SerializeField] [Range(0.0f, 2.0f)] private float threshold;
     public float Threshold
     {
         get
@@ -29,7 +29,7 @@ public class PhysicalResource
         }
     }
 
-   [SerializeField] [Range(0.0f, 1.0f)] private float decay;
+   [SerializeField] [Range(0.0f, 2.0f)] private float decay;
     public float Decay
     {
         get
@@ -50,12 +50,4 @@ public class PhysicalResource
             physicalValue = value;
         }
     }
-}
-
-public enum PhysicalRef
-{
-    None = 0,
-    Hunger = 1,
-    Tiredness = 2,
-    Health = 3,
 }

@@ -141,6 +141,10 @@ public class Action
         {
             return dialog;
         }
+        private set
+        {
+            dialog = value;
+        }
     }
     [Range(1,10)][SerializeField] private int priority;
 	public int Priority
@@ -209,6 +213,21 @@ public class Action
         SetStatus(Status.notSent);
     }
 
+    public Action(Action action)
+    {
+        Name = action.name;
+        Type = action.type;
+        SendingCharacter = action.sendingCharacter;
+        TargetObject = action.targetObject;
+        SenderEffect = action.senderEffect;
+        TargetEffect = action.targetEffect;
+        Priority = action.priority;
+        precondition = action.precondition;
+        NegativeAction = action.negativeAction;
+        Dialog = action.dialog;
+        Status = Status.notSent;
+    }
+
     public Action(string name, ActionType type, GameObject sender, GameObject target, int priority)
     {
         Name = name;
@@ -246,6 +265,11 @@ public class Action
 
     public bool IsPreconditionSatisfied()
     {
-        return precondition.IsSatisfied(sendingCharacter, targetObject);
+        if(precondition == null)
+            return true;
+        else
+        {
+            return precondition.IsSatisfied(sendingCharacter, targetObject);
+        }
     }
 }

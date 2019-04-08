@@ -17,7 +17,7 @@ public class ActionDirectory : MonoBehaviour
     {
         if(i >= 0 && i < ActionList.Count())
         {
-            return ActionList[i];
+            return new Action(ActionList[i]);
         }
         return null;
     }
@@ -27,7 +27,7 @@ public class ActionDirectory : MonoBehaviour
 		foreach(Action action in ActionList)
 		{
 			if(action.Name.ToLower() == actionName.ToLower())
-				return action;
+				return new Action(action);
 		}
         return null;
     }
@@ -40,7 +40,7 @@ public class ActionDirectory : MonoBehaviour
 			bool satisfiesStat = SatisfiesStat(action, goalCondition, targetCharacter);
 			bool satisfiesItem = SatisfiesItem(action, goalCondition);
 			if(satisfiesStat && satisfiesItem)
-				matches.Add(action);
+				matches.Add(new Action(action));
 		}
 		return matches;
 	}

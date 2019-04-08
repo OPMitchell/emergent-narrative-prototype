@@ -7,13 +7,13 @@ public enum Resource
 	nature = 0,
 	buildable = 1,
 	logs = 2,
-	bread = 3,
+	food = 3,
 	flowers = 4,
 };
 
 public class ResourceManager : MonoBehaviour
 {
-	private int[] Resources = new int[3];
+	private int[] Resources = new int[5];
 
 	public void AddResource(Resource resource, int quantity)
 	{

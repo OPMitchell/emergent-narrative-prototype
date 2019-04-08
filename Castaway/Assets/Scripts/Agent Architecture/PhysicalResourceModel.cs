@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Xml.Serialization;
 using UnityEngine;
 
@@ -15,45 +15,53 @@ public class PhysicalResourceModel : MonoBehaviour
 
     public float GetPhysicalValue(PhysicalRef resourceName)
     {
-        return Findphysical(resourceName).PhysicalValue;
+        return FindPhysical(resourceName).PhysicalValue;
     }
 
     public float GetPhysicalValue(string resourceName)
     {
-        return Findphysical(resourceName).PhysicalValue;
+        return FindPhysical(resourceName).PhysicalValue;
     }
 
-    public float GetphysicalThreshold(PhysicalRef resourceName)
+    public float GetPhysicalThreshold(PhysicalRef resourceName)
     {
-        return Findphysical(resourceName).Threshold;
+        return FindPhysical(resourceName).Threshold;
     }
 
-    public float GetphysicalThreshold(string resourceName)
+    public float GetPhysicalThreshold(string resourceName)
     {
-        return Findphysical(resourceName).Threshold;
+        return FindPhysical(resourceName).Threshold;
     }
 
-    public float GetphysicalDecay(PhysicalRef resourceName)
+    public float GetPhysicalDecay(PhysicalRef resourceName)
     {
-        return Findphysical(resourceName).Decay;
+        return FindPhysical(resourceName).Decay;
     }
 
-    public float GetphysicalDecay(string resourceName)
+    public float GetPhysicalDecay(string resourceName)
     {
-        return Findphysical(resourceName).Decay;
+        return FindPhysical(resourceName).Decay;
     }
 
     public void AddToValue(PhysicalRef resourceName, float amount)
     {
-        Findphysical(resourceName).PhysicalValue += amount;
+        PhysicalResource pr = FindPhysical(resourceName);
+        if(pr.PhysicalValue + (pr.Threshold * amount) > 1.0f)
+            pr.PhysicalValue = 1.0f;
+        else
+            pr.PhysicalValue += pr.Threshold * amount;
     }
 
     public void AddToValue(string resourceName, float amount)
     {
-        Findphysical(resourceName).PhysicalValue += amount;
+        PhysicalResource pr = FindPhysical(resourceName);
+        if(pr.PhysicalValue + (pr.Threshold * amount) > 1.0f)
+            pr.PhysicalValue = 1.0f;
+        else
+            pr.PhysicalValue += pr.Threshold * amount;
     }
 
-    private PhysicalResource Findphysical(PhysicalRef resourceName)
+    private PhysicalResource FindPhysical(PhysicalRef resourceName)
     {
         foreach (PhysicalResource p in Resources)
         {
@@ -63,7 +71,7 @@ public class PhysicalResourceModel : MonoBehaviour
         return null;
     }
 
-    private PhysicalResource Findphysical(string resourceName)
+    private PhysicalResource FindPhysical(string resourceName)
     {
         foreach (PhysicalResource p in Resources)
         {
@@ -71,6 +79,59 @@ public class PhysicalResourceModel : MonoBehaviour
                 return p;
         }
         return null;
+    }
+
+    public void AppraiseActionAsReceiver(Action action)
+    {
+        if(action.TargetEffect != null)
+        {
+            StatName stat = action.TargetEffect.Stat;
+            float change = action.TargetEffect.Change;
+            if(stat != StatName.None)
+            {
+                if((int)stat >= Precondition.physicalIndex && (int)stat < Precondition.limitIndex)
+                    AddToValue(stat.ToString(), change);
+            }
+        }
+    }
+
+    public void AppraiseActionAsSender(Action action)
+    {
+        if(action.SenderEffect != null)
+        {
+            StatName stat = action.SenderEffect.Stat;
+            float change = action.SenderEffect.Change;
+            if(stat != StatName.None)
+            {
+                if((int)stat >= Precondition.physicalIndex && (int)stat < Precondition.limitIndex)
+                    AddToValue(stat.ToString(), change);
+            }
+        }
+    }
+
+    void Start()
+    {
+        StartCoroutine(Decay());
+    }
+
+    IEnumerator Decay()
+    {
+        while(true)
+        {
+            foreach(PhysicalResource pr in Resources)
+            {
+                if(pr.PhysicalValue + pr.Decay > 1.0f)
+                    pr.PhysicalValue = 1.0f;
+                else
+                    pr.PhysicalValue += pr.Decay;
+            }
+            yield return new WaitForSeconds(1.0f);
+        }
+    }
+
+    public PhysicalResource[] GetPhysicalResources()
+    {
+        return Resources;
     }
     
 }

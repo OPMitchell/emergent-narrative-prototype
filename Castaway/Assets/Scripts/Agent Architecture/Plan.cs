@@ -63,13 +63,13 @@ public class Plan
         Score += amount;
     }
 
-    public void Evaluate(MemoryManager memoryManager)
+    public void Evaluate(MemoryManager memoryManager, ActionQueue actionQueue)
     {
         SetScore(0.0f);
 
         //Heuristic 1 - get length
         int numberOfActions = actions.Count;
-        AddToScore((-0.1f)*numberOfActions);
+        AddToScore((-0.05f)*numberOfActions);
 
         //Heuristic 2 - check similar memories
         foreach(Action action in actions)
@@ -84,6 +84,15 @@ public class Plan
         {
             AddToScore(SelfStatEffectDesirability(action));
             AddToScore(TargetStatEffectDesirability(action));
+
+            for(int i = memoryManager.CurrentID; i > memoryManager.CurrentID - 2; i--)
+            {
+                MemoryPattern mp = memoryManager.RetrieveSentMemoryPatternByID(i);
+                if(mp != null && mp.Action.Compare(action))
+                {
+                    AddToScore(-1.0f);
+                }
+            }
         }
 
     }

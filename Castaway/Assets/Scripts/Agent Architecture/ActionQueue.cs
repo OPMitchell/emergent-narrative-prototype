@@ -50,21 +50,12 @@ public class ActionQueue : EventPriorityQueue
 
     private void AppraiseAction(Action action)
     {
-        StatName stat = action.SenderEffect.Stat;
-        float change = action.SenderEffect.Change;
-        if(stat != StatName.None)
-        {
-            // TO-DO: implement threshold and decay for emotions
-            if((int)stat > 0 && (int)stat < Precondition.physicalIndex)
-			    GetComponent<EmotionalPersonalityModel>().AddToValue(stat.ToString(), change);
-            else if((int)stat >= Precondition.physicalIndex && (int)stat < Precondition.limitIndex)
-			    GetComponent<PhysicalResourceModel>().AddToValue(stat.ToString(), change);
-        }
+        GetComponent<EmotionalPersonalityModel>().AppraiseActionAsSender(action);
+        GetComponent<PhysicalResourceModel>().AppraiseActionAsSender(action);
     }
 
     private void AddMemory(Action action)
     {
         GetComponent<MemoryManager>().AddSentMemoryPattern(new MemoryPattern(GetComponent<MemoryManager>().CurrentID, action, true));
     }
-
 }

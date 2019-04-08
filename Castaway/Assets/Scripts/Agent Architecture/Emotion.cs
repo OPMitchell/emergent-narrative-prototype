@@ -20,7 +20,7 @@ public class Emotion
         }
     }
 
-    [SerializeField] [Range(0.0f, 1.0f)] private float threshold;
+    [SerializeField] [Range(0.0f, 2.0f)] private float threshold;
     public float Threshold
     {
         get
@@ -29,7 +29,7 @@ public class Emotion
         }
     }
 
-   [SerializeField] [Range(0.0f, 1.0f)] private float decay;
+   [SerializeField] [Range(0.0f, 2.0f)] private float decay;
     public float Decay
     {
         get
@@ -50,42 +50,4 @@ public class Emotion
             emotionValue = value;
         }
     }
-}
-
-/*
-public enum EmotionRef
-{
-    Joy = 100,
-    Distress = 101,
-    Hope= 102,
-    Fear = 103,
-    Satisfaction = 104,
-    FearsConfirmed = 105,
-    Relief = 106,
-    Disappointment = 107,
-    Pride = 108,
-    Shame = 109,
-    Gratification = 110,
-    Remorse = 111,
-    HappyFor = 200,
-    Pity = 201,
-    Gloating = 202,
-    Resentment = 203,
-    Admiration = 204,
-    Reproach = 205,
-    Gratitude = 206,
-    Anger = 207,
-    Love = 208,
-    Hate = 209
-}
-*/
-
-public enum EmotionRef
-{
-    None = 0,
-    Joy = 1,
-    Distress = 2,
-    Fear = 3,
-    Satisfaction = 4,
-    Disappointment = 5,
 }

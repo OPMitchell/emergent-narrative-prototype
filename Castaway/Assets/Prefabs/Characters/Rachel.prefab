@@ -31,10 +31,11 @@ GameObject:
   - component: {fileID: 114946798693891556}
   - component: {fileID: 114953455194517480}
   - component: {fileID: 114601956020424818}
-  - component: {fileID: 114889207736647880}
-  - component: {fileID: 114998440762142338}
+  - component: {fileID: 114856575264235412}
+  - component: {fileID: 114113814226734592}
   - component: {fileID: 114446420817589070}
   - component: {fileID: 114415099237161764}
+  - component: {fileID: 114521629924178644}
   - component: {fileID: 114628785206832682}
   m_Layer: 11
   m_Name: Rachel
@@ -110,6 +111,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71daf6d8cf4e4c046ae8727d59ca40a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114113814226734592
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1932041451880542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ea63eecf039020479988643e1cc39a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Resources:
+  - name: 6
+    threshold: 1
+    decay: 0.001
+    physicalValue: 0
+  - name: 7
+    threshold: 1
+    decay: 0.001
+    physicalValue: 0
 --- !u!114 &114294081138422862
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -255,6 +276,18 @@ MonoBehaviour:
     targetEffect:
       stat: 0
       change: 0
+--- !u!114 &114521629924178644
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1932041451880542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91061ac23d8973f46b75398eaf605b7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionTendencies: []
 --- !u!114 &114601956020424818
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -266,17 +299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13e9b6a249e48d444bf87bf835e0e627, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goalList:
-  - name: PickUpFlowers
-    type: 1
-    targetCharacter: {fileID: 1932041451880542}
-    successCondition:
-      holdingItem: {fileID: 1624406105291854, guid: 2affcf4976ae0954aac3816ab630bcfa,
-        type: 2}
-      stat: 0
-      boolCondition: 0
-      value: 0
-    owner: {fileID: 1932041451880542}
+  goalList: []
 --- !u!114 &114628785206832682
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -299,18 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71427a96c9bb3f84fac7995d01162a89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114856591633011584
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1932041451880542}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a6e42991dc9b4b4e9585bcff7ebdbef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114889207736647880
+--- !u!114 &114856575264235412
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -323,25 +335,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Emotions:
   - name: 1
-    threshold: 0.5
-    decay: 0.5
-    emotionValue: 0.1
+    threshold: 1
+    decay: 0.001
+    emotionValue: 0
   - name: 2
-    threshold: 0.5
-    decay: 0.5
-    emotionValue: 0.1
+    threshold: 1
+    decay: 0.001
+    emotionValue: 0
   - name: 3
-    threshold: 0.5
-    decay: 0.5
-    emotionValue: 0.1
+    threshold: 1
+    decay: 0.001
+    emotionValue: 0
   - name: 4
-    threshold: 0.5
-    decay: 0.5
-    emotionValue: 0.1
+    threshold: 1
+    decay: 0.001
+    emotionValue: 0
   - name: 5
-    threshold: 0.5
-    decay: 0.5
-    emotionValue: 0.1
+    threshold: 1
+    decay: 0.001
+    emotionValue: 0
+--- !u!114 &114856591633011584
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1932041451880542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a6e42991dc9b4b4e9585bcff7ebdbef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114908081652709892
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -377,30 +400,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f05c3a344a73b8448a69558d2c58770b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114998440762142338
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1932041451880542}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ea63eecf039020479988643e1cc39a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Resources:
-  - name: 1
-    threshold: 0.5
-    decay: 0.5
-    physicalValue: 0
-  - name: 2
-    threshold: 0.5
-    decay: 0.5
-    physicalValue: 0
-  - name: 3
-    threshold: 0.5
-    decay: 0.5
-    physicalValue: 0
 --- !u!212 &212634488725519230
 SpriteRenderer:
   m_ObjectHideFlags: 1

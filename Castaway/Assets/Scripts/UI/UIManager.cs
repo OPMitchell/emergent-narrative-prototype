@@ -25,6 +25,9 @@ public class UIManager : MonoBehaviour
     public GameObject characterPanel;
     public Button characterThumbnail;
 
+    public GameObject characterStatPanel;
+    public GameObject statUIPrefab;
+
     public Button currentButton {get; private set;}
 
     ClickController clickController;
@@ -46,6 +49,7 @@ public class UIManager : MonoBehaviour
         zonesPanel.SetActive(false);
         resourcesPanel.SetActive(false);
         buildPanel.SetActive(false);
+        characterStatPanel.SetActive(false);
 
         AddPanelsToList();
         AddButtonsToList();
@@ -74,6 +78,7 @@ public class UIManager : MonoBehaviour
         panels.Add(zonesPanel);
         panels.Add(resourcesPanel);
         panels.Add(buildPanel);
+        panels.Add(characterStatPanel);
     }
 
     void AddButtonsToList()
@@ -180,6 +185,7 @@ public class UIManager : MonoBehaviour
             image.sprite = GameObject.Find(character.name).GetComponent<SpriteRenderer>().sprite;
             thumbnail.transform.SetParent(characterPanel.transform, false);
             thumbnail.onClick.AddListener( () => {FocusCamera(character.name);} );
+            thumbnail.onClick.AddListener( () => {ShowStats(character.name);} );
         }
     }
 
@@ -189,7 +195,48 @@ public class UIManager : MonoBehaviour
         GameObject targetCharacter = GameObject.Find(characterName);
         CameraController cameraController = Camera.main.GetComponent<CameraController>();
         if(focusCamera != null)
+        {
             StopCoroutine(focusCamera);
+        }
         focusCamera = StartCoroutine(cameraController.SmoothMoveToTarget(targetCharacter));
+    }
+
+    private void ShowStats(string characterName)
+    {
+        ClearStatsPanel();
+        GameObject statText = Instantiate(statUIPrefab);
+        statText.transform.SetParent(characterStatPanel.transform);
+        statText.GetComponent<TMPro.TextMeshProUGUI>().text = characterName;
+        GameObject targetCharacter = GameObject.Find(characterName);
+        foreach(Emotion e in targetCharacter.GetComponent<EmotionalPersonalityModel>().GetEmotions())
+        {
+            AddStatBox(targetCharacter, (StatName)e.Name);
+        }
+        foreach(PhysicalResource pr in targetCharacter.GetComponent<PhysicalResourceModel>().GetPhysicalResources())
+        {
+            AddStatBox(targetCharacter, (StatName)pr.Name);
+        }
+        characterStatPanel.SetActive(true);
+    }
+
+    public void HideCharacterStats()
+    {
+        characterStatPanel.SetActive(false);
+    }
+
+    private void AddStatBox(GameObject targetCharacter, StatName stat)
+    {
+        GameObject statText = Instantiate(statUIPrefab);
+        statText.GetComponent<StatUIBoxAutoUpdate>().targetCharacter = targetCharacter;
+        statText.GetComponent<StatUIBoxAutoUpdate>().stat = stat;
+        statText.transform.SetParent(characterStatPanel.transform);
+    }
+
+    private void ClearStatsPanel()
+    {
+        foreach (Transform child in characterStatPanel.transform) 
+        {
+            GameObject.Destroy(child.gameObject);
+        }
     }
 }

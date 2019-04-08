@@ -63,5 +63,9 @@ public class CameraController : MonoBehaviour
 			transform.position = Vector3.MoveTowards(transform.position, target, 4.0f);
 			yield return null;
 		}
+		if(targetToFollow == null)
+		{
+			GameObject.Find("GameManager").GetComponent<UIManager>().HideCharacterStats();
+		}
 	}
 }

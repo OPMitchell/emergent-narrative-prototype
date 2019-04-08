@@ -11,6 +11,7 @@ public class TerrainGenerator : MonoBehaviour
 
 	public GameObject tree;
 	public GameObject tree2;
+	public GameObject appleTree;
 	public GameObject flowers1;
 	public GameObject flowers2;
 
@@ -62,12 +63,14 @@ public class TerrainGenerator : MonoBehaviour
 			selection = 2;
 		if(selection == 1)
 		{
-			int ran = Random.Range(0,2);
+			int ran = Random.Range(0,4);
 			GameObject t = null;
 			if(ran == 0)
 				t = Instantiate(tree, new Vector3(x*tileWidth,y*tileWidth,0), Quaternion.identity) as GameObject;
-			else
+			else if(ran == 1 || ran == 2)
 				t = Instantiate(tree2, new Vector3(x*tileWidth,y*tileWidth,0), Quaternion.identity) as GameObject;
+			else
+				t = Instantiate(appleTree, new Vector3(x*tileWidth,y*tileWidth,0), Quaternion.identity) as GameObject;
 			t.name = "Tree (" + x + "," + y + ")";
 			float scale = Random.Range(1.2f, 2.0f);
 			t.transform.localScale = new Vector3(scale, scale, scale);

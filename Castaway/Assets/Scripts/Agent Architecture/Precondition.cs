@@ -4,21 +4,6 @@ using System.Xml.Serialization;
 using System.Linq;
 using UnityEngine;
 
-public enum StatName
-{
-    None = 0,
-    //emotional
-    Joy = 1,
-    Distress = 2,
-    Fear = 3,
-    Satisfaction = 4,
-    Disappointment = 5,
-    //physical
-    Hunger = 6,
-    Tiredness = 7,
-    Health = 8,
-}
-
 [System.Serializable]
 public class Precondition
 {

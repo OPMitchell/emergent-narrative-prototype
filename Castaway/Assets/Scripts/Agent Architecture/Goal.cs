@@ -48,6 +48,32 @@ public class Goal
         }
     }
     
+    [SerializeField] private GameObject owner;
+    public GameObject Owner
+    {
+        get
+        {
+            return owner;
+        }
+        private set
+        {
+            owner = value;
+        }
+    }
+
+    [Range(1,10)][SerializeField] private int priority;
+    public int Priority
+    {
+        get
+        {
+            return priority;
+        }
+        private set
+        {
+            priority = value;
+        }
+    }
+
     [SerializeField] private Precondition successCondition;
     public Precondition SuccessCondition
     {
@@ -62,23 +88,10 @@ public class Goal
     }
     public bool Complete {get; set;}
 
-    [SerializeField] private GameObject owner;
-    public GameObject Owner
-    {
-        get
-        {
-            return owner;
-        }
-        private set
-        {
-            owner = value;
-        }
-    }
-
-
     public Plan Plan {get; private set;}
     public List<Action> FailedActions { get; private set; }
     public int TimesFailed { get; set; }
+    public bool Dormant {get;set;}
 
     public Goal()
     {

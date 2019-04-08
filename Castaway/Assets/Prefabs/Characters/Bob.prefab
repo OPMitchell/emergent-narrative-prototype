@@ -35,6 +35,7 @@ GameObject:
   - component: {fileID: 114107991907712548}
   - component: {fileID: 114096044881453808}
   - component: {fileID: 114370709372849128}
+  - component: {fileID: 114788716158042914}
   - component: {fileID: 114658376479229324}
   m_Layer: 11
   m_Name: Bob
@@ -142,7 +143,7 @@ MonoBehaviour:
       pickedUpItem: {fileID: 0}
     targetEffect:
       stat: 1
-      change: 0.1
+      change: 0.2
   - name: ComplimentRachel
     type: 2
     sendingCharacter: {fileID: 1373307878645326}
@@ -184,6 +185,25 @@ MonoBehaviour:
     targetEffect:
       stat: 0
       change: 0
+  - name: TummyGrumble
+    type: 2
+    sendingCharacter: {fileID: 1373307878645326}
+    targetObject: {fileID: 1373307878645326}
+    dialog: My tummy is grumbling!
+    priority: 1
+    negativeAction: 0
+    precondition:
+      holdingItem: {fileID: 0}
+      stat: 0
+      boolCondition: 0
+      value: 0
+    senderEffect:
+      stat: 0
+      change: 0
+      pickedUpItem: {fileID: 0}
+    targetEffect:
+      stat: 0
+      change: 0
 --- !u!114 &114107991907712548
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -196,17 +216,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Resources:
-  - name: 1
-    threshold: 0.5
-    decay: 0.5
+  - name: 6
+    threshold: 1
+    decay: 0.001
     physicalValue: 0
-  - name: 2
-    threshold: 0.5
-    decay: 0.5
-    physicalValue: 0
-  - name: 3
-    threshold: 0.5
-    decay: 0.5
+  - name: 7
+    threshold: 1
+    decay: 0.001
     physicalValue: 0
 --- !u!114 &114226980711113352
 MonoBehaviour:
@@ -310,25 +326,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Emotions:
   - name: 1
-    threshold: 0.5
-    decay: 0.5
-    emotionValue: 0.1
+    threshold: 1
+    decay: 0.001
+    emotionValue: 0
   - name: 2
-    threshold: 0.5
-    decay: 0.5
-    emotionValue: 0.1
+    threshold: 1
+    decay: 0.001
+    emotionValue: 0
   - name: 3
-    threshold: 0.5
-    decay: 0.5
-    emotionValue: 0.1
+    threshold: 1
+    decay: 0.001
+    emotionValue: 0
   - name: 4
-    threshold: 0.5
-    decay: 0.5
-    emotionValue: 0.1
+    threshold: 1
+    decay: 0.001
+    emotionValue: 0
   - name: 5
-    threshold: 0.5
-    decay: 0.5
-    emotionValue: 0.1
+    threshold: 1
+    decay: 0.001
+    emotionValue: 0
 --- !u!114 &114786154213912640
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -342,15 +358,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goalList:
   - name: MakeRachelHappy
-    type: 1
+    type: 2
     targetCharacter: {fileID: 1932041451880542, guid: 787ac422e662f4a409791138c9f5f696,
       type: 2}
+    owner: {fileID: 1373307878645326}
+    priority: 1
     successCondition:
       holdingItem: {fileID: 0}
       stat: 1
       boolCondition: 4
-      value: 0.3
-    owner: {fileID: 1373307878645326}
+      value: 0.2
+--- !u!114 &114788716158042914
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1373307878645326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91061ac23d8973f46b75398eaf605b7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionTendencies:
+  - trigger:
+      holdingItem: {fileID: 0}
+      stat: 6
+      boolCondition: 4
+      value: 0.02
+    action: TummyGrumble
 --- !u!114 &114892604677349494
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -362,7 +397,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3db761d4d08824d418263a9d2b5322ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 10
+  Speed: 15
   heldItem: {fileID: 0}
 --- !u!212 &212853595491029672
 SpriteRenderer:
