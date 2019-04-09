@@ -9,75 +9,58 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1153389228776278}
+  m_RootGameObject: {fileID: 1017828091842458}
   m_IsPrefabAsset: 1
---- !u!1 &1153389228776278
+--- !u!1 &1017828091842458
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4887326352979582}
-  - component: {fileID: 212609024113665770}
-  - component: {fileID: 114705579761664834}
-  - component: {fileID: 114409336607630072}
+  - component: {fileID: 4338765111473708}
+  - component: {fileID: 212752164138630840}
+  - component: {fileID: 114169982097047728}
   m_Layer: 10
-  m_Name: woodenwall
-  m_TagString: Untagged
+  m_Name: flowers1
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4887326352979582
+--- !u!4 &4338765111473708
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1153389228776278}
+  m_GameObject: {fileID: 1017828091842458}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 762.5696, y: -226.09433, z: 0}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114409336607630072
+--- !u!114 &114169982097047728
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1153389228776278}
+  m_GameObject: {fileID: 1017828091842458}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd883e2f3555fe741aa7f14091d5ab2b, type: 3}
+  m_Script: {fileID: 11500000, guid: 174f615921ebb89438ea3fa320ba264b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isStockpilable: 0
   Parent: {fileID: 0}
-  resource: 1
-  requiredResource: 2
-  resourceCost: 2
-  passable: 0
---- !u!114 &114705579761664834
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1153389228776278}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcc054ce3f3925243b3db34ea8c331c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selected: {fileID: 1905393516796246, guid: c2482316bf3038241af944ff796ede8f, type: 2}
-  selected2: {fileID: 1525460179248890, guid: 45275e0442d352743b5b7497c90384d9, type: 2}
---- !u!212 &212609024113665770
+  resource: 4
+--- !u!212 &212752164138630840
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1153389228776278}
+  m_GameObject: {fileID: 1017828091842458}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -104,10 +87,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -837403859
-  m_SortingLayer: 6
+  m_SortingLayerID: -739202457
+  m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6a4270bb62394ba45b02bcd3a17db092, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ded4a0fba53990742b4642e4f2cd3f9f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

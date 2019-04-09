@@ -84,7 +84,7 @@ public class ActionDirectory : MonoBehaviour
 							return true;
 					}
 				}
-				else if(condition == BooleanCondition.LessThan)
+				else if(condition == BooleanCondition.LessThanOrEqualTo)
 				{
 					if((int)stat > 0 && (int)stat < Precondition.physicalIndex)
 					{

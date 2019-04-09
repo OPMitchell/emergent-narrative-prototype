@@ -84,15 +84,9 @@ public class Plan
         {
             AddToScore(SelfStatEffectDesirability(action));
             AddToScore(TargetStatEffectDesirability(action));
-
-            for(int i = memoryManager.CurrentID; i > memoryManager.CurrentID - 2; i--)
-            {
-                MemoryPattern mp = memoryManager.RetrieveSentMemoryPatternByID(i);
-                if(mp != null && mp.Action.Compare(action))
-                {
-                    AddToScore(-1.0f);
-                }
-            }
+            int repeatCount = memoryManager.senderPool.CountMemoryPatternsFromActionName(action.Name);
+            if(repeatCount > 0)
+                AddToScore(repeatCount*-0.5f);
         }
 
     }

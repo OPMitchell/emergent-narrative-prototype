@@ -149,22 +149,29 @@ public class ActionExecutor : MonoBehaviour
         else if(action.Type == ActionType.PickUpItem)
         {
             List<GameObject> items = manager.GetItemsOfResource(action.TargetObject.GetComponent<Item>().resource);
-            GameObject g = items[manager.GetRandomInt(0, items.Count)];
-            Item item = g.GetComponent<Item>();
-            Tile parent = item.Parent.GetComponent<Tile>();
-            if(item.GetLock(gameObject) && character.WalkToCoordinates(parent.X, parent.Y))
+            if(items.Count > 0)
             {
-                yield return new WaitUntil(() => (character.AtPosition(parent.X, parent.Y)));
-                if(character.PickUpItem(parent))
+                GameObject g = items[manager.GetRandomInt(0, items.Count)];
+                Item item = g.GetComponent<Item>();
+                Tile parent = item.Parent.GetComponent<Tile>();
+                if(item.GetLock(gameObject) && character.WalkToCoordinates(parent.X, parent.Y))
                 {
-                    action.SetStatus(Status.Successful);
+                    yield return new WaitUntil(() => (character.AtPosition(parent.X, parent.Y)));
+                    if(character.PickUpItem(parent))
+                    {
+                        action.SetStatus(Status.Successful);
+                    }
+                    else
+                        action.SetStatus(Status.Failed);
                 }
                 else
-                    action.SetStatus(Status.Failed);
+                {
+                    action.SetStatus(Status.Resend);
+                }
             }
             else
             {
-                action.SetStatus(Status.Resend);
+                action.SetStatus(Status.Failed);
             }
         }
         else if(action.Type == ActionType.TalkToTarget)
@@ -208,8 +215,36 @@ public class ActionExecutor : MonoBehaviour
                     character.WalkToCoordinates(tile.X, tile.Y);
                     yield return new WaitUntil(() => (character.AtPosition(tile.X, tile.Y)));
                     character.DestroyItem();
-                    dialogueManager.Speak(gameObject, action.Dialog);
-                    yield return new WaitForSeconds(5.0f);
+                    if(action.Dialog != "")
+                    {
+                        dialogueManager.Speak(gameObject, action.Dialog);
+                        yield return new WaitForSeconds(5.0f);
+                    }
+                    action.SetStatus(Status.Successful);
+                }
+                else
+                {
+                    action.SetStatus(Status.Resend);
+                }
+            }
+            else
+            {
+                action.SetStatus(Status.Failed);
+            }
+        }
+        else if(action.Type == ActionType.Eat)
+        {
+            if(character.heldItem.GetComponent<Item>().resource == action.Precondition.HoldingItem.GetComponent<Item>().resource)
+            {
+                Character c = GetComponent<Character>();
+                if(c.GetLock(gameObject))
+                {
+                    character.DestroyItem();
+                    if(action.Dialog != "")
+                    {
+                        dialogueManager.Speak(gameObject, action.Dialog);
+                        yield return new WaitForSeconds(5.0f);
+                    }
                     action.SetStatus(Status.Successful);
                 }
                 else

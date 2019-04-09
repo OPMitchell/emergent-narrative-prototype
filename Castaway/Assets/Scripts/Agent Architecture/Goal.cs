@@ -13,6 +13,8 @@ public enum GoalType
 [System.Serializable]
 public class Goal
 {
+    public const int MaxFail = 3;
+
     [SerializeField] private string name;
     public string Name
     {
@@ -106,6 +108,17 @@ public class Goal
         TargetCharacter = targetCharacter;
         SuccessCondition = successCondition;
         Complete = false;
+    }
+
+    public void AddFailedAction(Action action)
+    {
+        FailedActions.Add(action);
+    }
+
+    public void ClearFailedActions()
+    {
+        FailedActions.Clear();
+        TimesFailed = 0;
     }
 
     public void SetPlan(Plan p)

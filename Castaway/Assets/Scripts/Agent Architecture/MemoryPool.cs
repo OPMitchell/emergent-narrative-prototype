@@ -43,6 +43,19 @@ public class MemoryPool
         return null;
     }
 
+    public int CountMemoryPatternsFromActionName(string keyword)
+    {
+        int count = 0;
+        foreach(MemoryPattern mp in memories)
+        {
+            if(mp.Action.Name == keyword)
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
     public MemoryPattern RetrieveMemoryPattern(string keyword)
     {
         hashmap.Clear();

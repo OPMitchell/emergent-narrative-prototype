@@ -213,9 +213,9 @@ public class GameManager : MonoBehaviour
 			{
 				return (float)EPM.GetEmotionValue(EmotionRef.Joy);
 			}
-			else if(statName == EmotionRef.Satisfaction.ToString())
+			else if(statName == EmotionRef.Anger.ToString())
 			{
-				return (float)EPM.GetEmotionValue(EmotionRef.Satisfaction);
+				return (float)EPM.GetEmotionValue(EmotionRef.Anger);
 			}
 			else if(statName == "inventory")
 			{

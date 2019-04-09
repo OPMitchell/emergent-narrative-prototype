@@ -72,6 +72,8 @@ public class ContinuousActionPlanner : MonoBehaviour
 			//if the goal isn't satisifed then check if the goal has a plan associated with it.
 			if(currentGoal != null)
 			{
+				if(currentGoal.TimesFailed >= Goal.MaxFail)
+					currentGoal.ClearFailedActions();
 				//If the goal hasn't got a plan then let's create one!
 				if(currentGoal.Plan == null)
 				{
@@ -86,6 +88,8 @@ public class ContinuousActionPlanner : MonoBehaviour
 						// Set the goal to complete and it will be removed from the collection the next time Update() is run.
 						currentGoal.Complete = true;
 						Testing.WriteToLog(transform.name, transform.name + " cancelled goal: " + currentGoal.Name + " because a plan is impossible to make.");
+						currentGoal.ClearFailedActions();
+						Testing.WriteToLog(transform.name, "Clearing previously failed action list in attempt to satisfy goal...");
 					}
 					// If we successfully constructed one or more plans then we need to pick one for the agent to use.
 					else
@@ -118,16 +122,19 @@ public class ContinuousActionPlanner : MonoBehaviour
 							break;
 							case Status.Failed:
 								//action repair
+								currentGoal.TimesFailed++;
 								Testing.WriteToLog(transform.name, transform.name + " failed action: " + Testing.GetActionInfo(currentAction));
 								currentAction.SetStatus(Status.notSent);
-								plan.RemoveAction(currentAction);
-								yield return new WaitForSeconds(manager.GetRandomInt(2, 8));
+								currentGoal.AddFailedAction(new Action(currentAction));
+								currentGoal.SetPlan(null);
+								Testing.WriteToLog(transform.name, transform.name + " is replanning: " + Testing.GetGoalInfo(currentGoal));
+								yield return new WaitForSeconds(manager.GetRandomInt(1, 3));
 							break;
 							case Status.Successful:
 								Testing.WriteToLog(transform.name, transform.name + " succeeded action: " + Testing.GetActionInfo(currentAction));
 								currentAction.SetStatus(Status.notSent);
 								plan.RemoveAction(currentAction);
-								yield return new WaitForSeconds(manager.GetRandomInt(2, 8));
+								yield return new WaitForSeconds(manager.GetRandomInt(1, 3));
 							break;
 						}
 					}
@@ -141,10 +148,24 @@ public class ContinuousActionPlanner : MonoBehaviour
 		}
 	}
 
+	private void RemovePreviouslyFailedActions(List<Action> satisfyingActions, List<Action> ignoreList)
+	{
+		for(int i = 0; i < satisfyingActions.Count; i++)
+		{
+			for(int j = 0; j < ignoreList.Count; j++)
+			{
+				if(satisfyingActions[i].Compare(ignoreList[j]))
+				{
+					satisfyingActions.RemoveAt(i);
+				}
+			}
+		}
+	}
+
 	private void CreatePlans(Goal g, GameObject target, Precondition successCondition, PlanList plans, Plan p, List<Action> ignoreList)
 	{
 		List<Action> satisfyingActions = actionDirectory.FindActionsSatisfyingGoalCondition(target, successCondition);		
-		//RemovePreviouslyFailedActions(satisfyingActions, ignoreList);
+		RemovePreviouslyFailedActions(satisfyingActions, currentGoal.FailedActions);
 		foreach(Action action in satisfyingActions)
 		{
 			Plan newPlan = new Plan(p);

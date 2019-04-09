@@ -24,17 +24,10 @@ public class ActionQueue : EventPriorityQueue
         if(!queue.IsEmpty() && !GetComponent<ActionExecutor>().Executing && character.IsFree() && receivingQueue.IsEmpty())
         {
             Action action = queue.Remove();
-            if(action.IsPreconditionSatisfied())
-            {
-                if(action.Status != Status.ResendSent)
-                    Testing.WriteToLog(transform.name, transform.name + " is executing action: " + Testing.GetActionInfo(action));
-                character.currentAction = action;
-                StartCoroutine(Execute(action));
-            }
-            else
-            {
-                Testing.WriteToLog(transform.name, transform.name + " tried to execute action: " + Testing.GetActionInfo(action) + ", but failed the precondition.");
-            }
+            if(action.Status != Status.ResendSent)
+                Testing.WriteToLog(transform.name, transform.name + " is executing action: " + Testing.GetActionInfo(action));
+            character.currentAction = action;
+            StartCoroutine(Execute(action));
         }
     }
 

@@ -33,6 +33,7 @@ public enum ActionType
     Cut = 5,
     Haul = 6,
     Build = 7,
+    Eat = 8,
 };
 
 [System.Serializable]

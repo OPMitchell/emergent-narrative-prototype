@@ -5,7 +5,7 @@ public enum EmotionRef
     Joy = 1,
     Distress = 2,
     Fear = 3,
-    Satisfaction = 4,
+    Anger = 4,
     Disappointment = 5,
 }
 
@@ -23,7 +23,7 @@ public enum StatName
     Joy = 1,
     Distress = 2,
     Fear = 3,
-    Satisfaction = 4,
+    Anger = 4,
     Disappointment = 5,
     //physical
     Hunger = 6,

@@ -75,6 +75,22 @@ public class Character : MonoBehaviour
 		}
 	}
 
+	public void GiveItem(GameObject item)
+	{
+		if(heldItem == null)
+		{
+			heldItem = item;
+			heldItem.GetComponent<SpriteRenderer>().sortingLayerName = "HeldItem";
+		}
+		else
+		{
+			GameObject temp = heldItem;
+			heldItem = item;
+			temp.GetComponent<Item>().Free(gameObject);
+			heldItem.GetComponent<SpriteRenderer>().sortingLayerName = "HeldItem";
+		}
+	}
+
 	public void DropItem(Tile tile)
 	{
 		if(tile.item == null && heldItem != null && AtPosition(tile.X, tile.Y))

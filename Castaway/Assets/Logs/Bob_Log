@@ -1,74 +1,67 @@
-4/8/2019 10:52:41 AM - Bob is evaluating Goal(name = MakeRachelHappy, target = Rachel)
-4/8/2019 10:52:41 AM - Bob created at least one plan for goal: MakeRachelHappy
-4/8/2019 10:52:41 AM - Plan contains actions: 
-	Action(name = PickUpFlowers, type = PickUpItem, sender = Bob, target = flowers1, priority = 1)
-	Action(name = GiveRachelFlowers, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1)
-	Score = 0.1
-4/8/2019 10:52:41 AM - Plan contains actions: 
-	Action(name = ComplimentRachel, type = TalkToTarget, sender = Bob, target = Rachel, priority = 1)
-	Score = 0.05
-4/8/2019 10:52:41 AM - Bob nominated a best plan for goal: MakeRachelHappy:
-4/8/2019 10:52:41 AM - Plan contains actions: 
-	Action(name = PickUpFlowers, type = PickUpItem, sender = Bob, target = flowers1, priority = 1)
-	Action(name = GiveRachelFlowers, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1)
-	Score = 0.1
-4/8/2019 10:52:41 AM - Bob is queueing action: Action(name = PickUpFlowers, type = PickUpItem, sender = Bob, target = flowers1, priority = 1)
-4/8/2019 10:52:41 AM - Bob added action: Action(name = PickUpFlowers, type = PickUpItem, sender = Bob, target = flowers1, priority = 1) to their action queue
-4/8/2019 10:52:41 AM - Bob is executing action: Action(name = PickUpFlowers, type = PickUpItem, sender = Bob, target = flowers1, priority = 1)
-4/8/2019 10:52:52 AM - Bob succeeded action: Action(name = PickUpFlowers, type = PickUpItem, sender = Bob, target = flowers1, priority = 1)
-4/8/2019 10:52:54 AM - Bob is queueing action: Action(name = GiveRachelFlowers, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1)
-4/8/2019 10:52:54 AM - Bob added action: Action(name = GiveRachelFlowers, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1) to their action queue
-4/8/2019 10:52:54 AM - Bob is executing action: Action(name = GiveRachelFlowers, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1)
-4/8/2019 10:53:00 AM - Bob added action: Action(name = TummyGrumble, type = TalkToTarget, sender = Bob, target = Bob, priority = 0) to their action queue
-4/8/2019 10:53:01 AM - Bob added action: Action(name = Cut, type = Cut, sender = Bob, target = Grass (33,29), priority = 1) to their action queue
-4/8/2019 10:53:07 AM - Bob is executing action: Action(name = TummyGrumble, type = TalkToTarget, sender = Bob, target = Bob, priority = 0)
-4/8/2019 10:53:07 AM - Bob achieved goal: MakeRachelHappy
-4/8/2019 10:53:12 AM - Bob added action: Action(name = TummyGrumble, type = TalkToTarget, sender = Bob, target = Bob, priority = 0) to their receiving queue
-4/8/2019 10:53:12 AM - Bob received action: Action(name = TummyGrumble, type = TalkToTarget, sender = Bob, target = Bob, priority = 0)
-4/8/2019 10:53:12 AM - Bob found no valid response found for action: Action(name = TummyGrumble, type = TalkToTarget, sender = Bob, target = Bob, priority = 0)
-4/8/2019 10:53:13 AM - Bob succeeded action: Action(name = GiveRachelFlowers, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1)
-4/8/2019 10:53:18 AM - Bob added action: Action(name = ThankBobFlowers, type = TalkToTarget, sender = Rachel, target = Bob, priority = 0) to their receiving queue
-4/8/2019 10:53:18 AM - Bob received action: Action(name = ThankBobFlowers, type = TalkToTarget, sender = Rachel, target = Bob, priority = 0)
-4/8/2019 10:53:18 AM - Bob found no valid response found for action: Action(name = ThankBobFlowers, type = TalkToTarget, sender = Rachel, target = Bob, priority = 0)
-4/8/2019 10:53:19 AM - Bob is executing action: Action(name = Cut, type = Cut, sender = Bob, target = Grass (33,29), priority = 1)
-4/8/2019 10:53:19 AM - Bob is evaluating Goal(name = MakeRachelHappy, target = Rachel)
-4/8/2019 10:53:19 AM - Bob created at least one plan for goal: MakeRachelHappy
-4/8/2019 10:53:19 AM - Retrieved memory: Memory(keywords = Bob, flowers1, PickUpItem, PickUpFlowers)
-4/8/2019 10:53:19 AM - Retrieved memory: Memory(keywords = Bob, Rachel, GiveItemToTarget, GiveRachelFlowers)
-4/8/2019 10:53:19 AM - Plan contains actions: 
-	Action(name = PickUpFlowers, type = PickUpItem, sender = Bob, target = flowers1, priority = 1)
-	Action(name = GiveRachelFlowers, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1)
-	Score = 0.7
-4/8/2019 10:53:19 AM - Plan contains actions: 
-	Action(name = ComplimentRachel, type = TalkToTarget, sender = Bob, target = Rachel, priority = 1)
-	Score = 0.05
-4/8/2019 10:53:19 AM - Bob nominated a best plan for goal: MakeRachelHappy:
-4/8/2019 10:53:19 AM - Plan contains actions: 
-	Action(name = PickUpFlowers, type = PickUpItem, sender = Bob, target = flowers1, priority = 1)
-	Action(name = GiveRachelFlowers, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1)
-	Score = 0.7
-4/8/2019 10:53:20 AM - Bob is queueing action: Action(name = PickUpFlowers, type = PickUpItem, sender = Bob, target = flowers1, priority = 1)
-4/8/2019 10:53:20 AM - Bob added action: Action(name = PickUpFlowers, type = PickUpItem, sender = Bob, target = flowers1, priority = 1) to their action queue
-4/8/2019 10:53:21 AM - Bob added action: Action(name = HaulItem, type = Haul, sender = Bob, target = logs (35,30), priority = 3) to their action queue
-4/8/2019 10:53:21 AM - Bob added action: Action(name = Cut, type = Cut, sender = Bob, target = Grass (34,33), priority = 1) to their action queue
-4/8/2019 10:53:21 AM - Bob is executing action: Action(name = PickUpFlowers, type = PickUpItem, sender = Bob, target = flowers1, priority = 1)
-4/8/2019 10:53:26 AM - Bob succeeded action: Action(name = PickUpFlowers, type = PickUpItem, sender = Bob, target = flowers1, priority = 1)
-4/8/2019 10:53:26 AM - Bob is executing action: Action(name = Cut, type = Cut, sender = Bob, target = Grass (34,33), priority = 1)
-4/8/2019 10:53:29 AM - Bob is queueing action: Action(name = GiveRachelFlowers, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1)
-4/8/2019 10:53:29 AM - Bob added action: Action(name = GiveRachelFlowers, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1) to their action queue
-4/8/2019 10:53:31 AM - Bob is executing action: Action(name = GiveRachelFlowers, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1)
-4/8/2019 10:53:37 AM - Bob is executing action: Action(name = HaulItem, type = Haul, sender = Bob, target = logs (35,30), priority = 3)
-4/8/2019 10:53:37 AM - Bob achieved goal: MakeRachelHappy
-4/8/2019 10:53:38 AM - Bob added action: Action(name = HaulItem, type = Haul, sender = Bob, target = logs (34,33), priority = 3) to their action queue
-4/8/2019 10:53:38 AM - Bob is executing action: Action(name = HaulItem, type = Haul, sender = Bob, target = logs (34,33), priority = 3)
-4/8/2019 10:53:38 AM - Bob added action: Action(name = HaulItem, type = Haul, sender = Bob, target = logs (36,33), priority = 3) to their action queue
-4/8/2019 10:53:46 AM - Bob added action: Action(name = ThankBobFlowers, type = TalkToTarget, sender = Rachel, target = Bob, priority = 0) to their receiving queue
-4/8/2019 10:53:46 AM - Bob received action: Action(name = ThankBobFlowers, type = TalkToTarget, sender = Rachel, target = Bob, priority = 0)
-4/8/2019 10:53:46 AM - Bob found no valid response found for action: Action(name = ThankBobFlowers, type = TalkToTarget, sender = Rachel, target = Bob, priority = 0)
-4/8/2019 10:53:47 AM - Bob is executing action: Action(name = HaulItem, type = Haul, sender = Bob, target = logs (36,33), priority = 3)
-4/8/2019 10:53:48 AM - Bob added action: Action(name = HaulItem, type = Haul, sender = Bob, target = logs (37,32), priority = 3) to their action queue
-4/8/2019 10:53:48 AM - Bob is executing action: Action(name = HaulItem, type = Haul, sender = Bob, target = logs (37,32), priority = 3)
-4/8/2019 10:54:00 AM - Bob added action: Action(name = Cut, type = Cut, sender = Bob, target = Grass (31,28), priority = 1) to their action queue
-4/8/2019 10:54:00 AM - Bob is executing action: Action(name = Cut, type = Cut, sender = Bob, target = Grass (31,28), priority = 1)
-4/8/2019 10:54:03 AM - Bob added action: Action(name = HaulItem, type = Haul, sender = Bob, target = apple (31,28), priority = 3) to their action queue
-4/8/2019 10:54:03 AM - Bob is executing action: Action(name = HaulItem, type = Haul, sender = Bob, target = apple (31,28), priority = 3)
+4/9/2019 10:26:03 AM - Bob is evaluating Goal(name = ComfortRachel, target = Rachel)
+4/9/2019 10:26:03 AM - Bob created at least one plan for goal: ComfortRachel
+4/9/2019 10:26:03 AM - Plan contains actions: 
+	Action(name = EncourageRachel, type = TalkToTarget, sender = Bob, target = Rachel, priority = 1)
+	Score = 0.15
+4/9/2019 10:26:03 AM - Plan contains actions: 
+	Action(name = PickUpApple, type = PickUpItem, sender = Bob, target = apple, priority = 1)
+	Action(name = GiveAppleToRachel, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1)
+	Score = 0.25
+4/9/2019 10:26:03 AM - Bob nominated a best plan for goal: ComfortRachel:
+4/9/2019 10:26:03 AM - Plan contains actions: 
+	Action(name = PickUpApple, type = PickUpItem, sender = Bob, target = apple, priority = 1)
+	Action(name = GiveAppleToRachel, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1)
+	Score = 0.25
+4/9/2019 10:26:03 AM - Bob is queueing action: Action(name = PickUpApple, type = PickUpItem, sender = Bob, target = apple, priority = 1)
+4/9/2019 10:26:03 AM - Bob added action: Action(name = PickUpApple, type = PickUpItem, sender = Bob, target = apple, priority = 1) to their action queue
+4/9/2019 10:26:03 AM - Bob is executing action: Action(name = PickUpApple, type = PickUpItem, sender = Bob, target = apple, priority = 1)
+4/9/2019 10:26:10 AM - Bob succeeded action: Action(name = PickUpApple, type = PickUpItem, sender = Bob, target = apple, priority = 1)
+4/9/2019 10:26:12 AM - Bob is queueing action: Action(name = GiveAppleToRachel, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1)
+4/9/2019 10:26:12 AM - Bob added action: Action(name = GiveAppleToRachel, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1) to their action queue
+4/9/2019 10:26:12 AM - Bob is executing action: Action(name = GiveAppleToRachel, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1)
+4/9/2019 10:26:24 AM - Bob succeeded action: Action(name = GiveAppleToRachel, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1)
+4/9/2019 10:26:25 AM - Bob is evaluating Goal(name = ComfortRachel, target = Rachel)
+4/9/2019 10:26:25 AM - Bob created at least one plan for goal: ComfortRachel
+4/9/2019 10:26:25 AM - Plan contains actions: 
+	Action(name = EncourageRachel, type = TalkToTarget, sender = Bob, target = Rachel, priority = 1)
+	Score = 0.15
+4/9/2019 10:26:25 AM - Retrieved memory: Memory(keywords = Bob, apple, PickUpItem, PickUpApple)
+4/9/2019 10:26:25 AM - Retrieved memory: Memory(keywords = Bob, Rachel, GiveItemToTarget, GiveAppleToRachel)
+4/9/2019 10:26:25 AM - Plan contains actions: 
+	Action(name = PickUpApple, type = PickUpItem, sender = Bob, target = apple, priority = 1)
+	Action(name = GiveAppleToRachel, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1)
+	Score = 5.960464E-08
+4/9/2019 10:26:25 AM - Bob nominated a best plan for goal: ComfortRachel:
+4/9/2019 10:26:25 AM - Plan contains actions: 
+	Action(name = EncourageRachel, type = TalkToTarget, sender = Bob, target = Rachel, priority = 1)
+	Score = 0.15
+4/9/2019 10:26:25 AM - Bob is queueing action: Action(name = EncourageRachel, type = TalkToTarget, sender = Bob, target = Rachel, priority = 1)
+4/9/2019 10:26:25 AM - Bob added action: Action(name = EncourageRachel, type = TalkToTarget, sender = Bob, target = Rachel, priority = 1) to their action queue
+4/9/2019 10:26:25 AM - Bob is executing action: Action(name = EncourageRachel, type = TalkToTarget, sender = Bob, target = Rachel, priority = 1)
+4/9/2019 10:26:35 AM - Bob succeeded action: Action(name = EncourageRachel, type = TalkToTarget, sender = Bob, target = Rachel, priority = 1)
+4/9/2019 10:26:37 AM - Bob is evaluating Goal(name = ComfortRachel, target = Rachel)
+4/9/2019 10:26:37 AM - Bob created at least one plan for goal: ComfortRachel
+4/9/2019 10:26:37 AM - Retrieved memory: Memory(keywords = Bob, Rachel, TalkToTarget, EncourageRachel)
+4/9/2019 10:26:37 AM - Plan contains actions: 
+	Action(name = EncourageRachel, type = TalkToTarget, sender = Bob, target = Rachel, priority = 1)
+	Score = 0.05000001
+4/9/2019 10:26:37 AM - Retrieved memory: Memory(keywords = Bob, apple, PickUpItem, PickUpApple)
+4/9/2019 10:26:37 AM - Retrieved memory: Memory(keywords = Bob, Rachel, GiveItemToTarget, GiveAppleToRachel)
+4/9/2019 10:26:37 AM - Plan contains actions: 
+	Action(name = PickUpApple, type = PickUpItem, sender = Bob, target = apple, priority = 1)
+	Action(name = GiveAppleToRachel, type = GiveItemToTarget, sender = Bob, target = Rachel, priority = 1)
+	Score = 5.960464E-08
+4/9/2019 10:26:37 AM - Bob nominated a best plan for goal: ComfortRachel:
+4/9/2019 10:26:37 AM - Plan contains actions: 
+	Action(name = EncourageRachel, type = TalkToTarget, sender = Bob, target = Rachel, priority = 1)
+	Score = 0.05000001
+4/9/2019 10:26:37 AM - Bob is queueing action: Action(name = EncourageRachel, type = TalkToTarget, sender = Bob, target = Rachel, priority = 1)
+4/9/2019 10:26:37 AM - Bob added action: Action(name = EncourageRachel, type = TalkToTarget, sender = Bob, target = Rachel, priority = 1) to their action queue
+4/9/2019 10:26:41 AM - Bob added action: Action(name = AcceptEncouragement, type = TalkToTarget, sender = Rachel, target = Bob, priority = 0) to their receiving queue
+4/9/2019 10:26:41 AM - Bob received action: Action(name = AcceptEncouragement, type = TalkToTarget, sender = Rachel, target = Bob, priority = 0)
+4/9/2019 10:26:41 AM - Bob found no valid response found for action: Action(name = AcceptEncouragement, type = TalkToTarget, sender = Rachel, target = Bob, priority = 0)
+4/9/2019 10:26:42 AM - Bob is executing action: Action(name = EncourageRachel, type = TalkToTarget, sender = Bob, target = Rachel, priority = 1)
+4/9/2019 10:26:48 AM - Bob achieved goal: ComfortRachel
+4/9/2019 10:26:55 AM - Bob added action: Action(name = AcceptEncouragement, type = TalkToTarget, sender = Rachel, target = Bob, priority = 0) to their receiving queue
+4/9/2019 10:26:55 AM - Bob received action: Action(name = AcceptEncouragement, type = TalkToTarget, sender = Rachel, target = Bob, priority = 0)
+4/9/2019 10:26:55 AM - Bob found no valid response found for action: Action(name = AcceptEncouragement, type = TalkToTarget, sender = Rachel, target = Bob, priority = 0)

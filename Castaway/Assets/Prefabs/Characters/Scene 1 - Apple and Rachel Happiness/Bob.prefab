@@ -204,6 +204,47 @@ MonoBehaviour:
     targetEffect:
       stat: 0
       change: 0
+  - name: EatApple
+    type: 8
+    sendingCharacter: {fileID: 1373307878645326}
+    targetObject: {fileID: 1373307878645326}
+    dialog: Mmmm! Yummy apple!
+    priority: 1
+    negativeAction: 0
+    precondition:
+      holdingItem: {fileID: 1757116968961928, guid: aca77f877c4daba48a4ddc17b7c5a776,
+        type: 2}
+      stat: 0
+      boolCondition: 0
+      value: 0
+    senderEffect:
+      stat: 0
+      change: 0
+      pickedUpItem: {fileID: 0}
+    targetEffect:
+      stat: 6
+      change: -0.1
+  - name: PickUpApple
+    type: 4
+    sendingCharacter: {fileID: 1373307878645326}
+    targetObject: {fileID: 1757116968961928, guid: aca77f877c4daba48a4ddc17b7c5a776,
+      type: 2}
+    dialog: 
+    priority: 1
+    negativeAction: 0
+    precondition:
+      holdingItem: {fileID: 0}
+      stat: 0
+      boolCondition: 0
+      value: 0
+    senderEffect:
+      stat: 0
+      change: 0
+      pickedUpItem: {fileID: 1757116968961928, guid: aca77f877c4daba48a4ddc17b7c5a776,
+        type: 2}
+    targetEffect:
+      stat: 6
+      change: -0.1
 --- !u!114 &114107991907712548
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -366,8 +407,18 @@ MonoBehaviour:
     successCondition:
       holdingItem: {fileID: 0}
       stat: 1
-      boolCondition: 4
+      boolCondition: 5
       value: 0.2
+  - name: KeepFed
+    type: 2
+    targetCharacter: {fileID: 1373307878645326}
+    owner: {fileID: 1373307878645326}
+    priority: 1
+    successCondition:
+      holdingItem: {fileID: 0}
+      stat: 6
+      boolCondition: 1
+      value: 0.07
 --- !u!114 &114788716158042914
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -384,7 +435,7 @@ MonoBehaviour:
       holdingItem: {fileID: 0}
       stat: 6
       boolCondition: 4
-      value: 0.02
+      value: 0.05
     action: TummyGrumble
 --- !u!114 &114892604677349494
 MonoBehaviour:
